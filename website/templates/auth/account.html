@@ -1,0 +1,25 @@
+{% extends 'layout/index.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h1>Account</h1>
+<form method="post">
+    <h3 align="center">singup</h3>
+    <label class="w3-panel"> Email
+        <input type="email" name="email" class="w3-input" value="{{ user.email }}" disabled>
+    </label>
+    <label class="w3-panel"> First name
+        <input type="text" name="firstName" class="w3-input" value="{{ user.firstName }}">
+    </label>
+    <label class="w3-panel"> Password
+        <input type="password" name="password1" class="w3-input">
+    </label>
+    <label class="w3-panel"> Password (confirm)
+        <input type="password" name="password2" class="w3-input">
+    </label>
+    <input type="submit" class="w3-btn w3-theme w3-right w3-margin">
+</form>
+
+<a href="/logout" class="w3-btn w3-theme w3-card w3-right w3-margin w3-round-large">Logout</a>
+{% endblock %}
