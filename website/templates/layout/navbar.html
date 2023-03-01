@@ -4,7 +4,11 @@
             <i class="fa fa-home"></i>
             Home
         </a>
-        <a href="/account" class="w3-bar-item w3-btn w3-right">
+        <a href="/try" class="w3-bar-item w3-btn {% if request.path == '/try' %} w3-white {% endif %}">
+            <i class="fa fa-try "></i>
+            Test
+        </a>
+        <a href="/account" class="w3-bar-item w3-btn w3-right {% if request.path == '/account' %} w3-white {% endif %}">
             <i class="fa fa-user"></i>
             Account
         </a>
