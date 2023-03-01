@@ -7,7 +7,7 @@
 
 void setup() {
     WiFi.mode(WIFI_STA);
-    WiFi.begin("FASTWEB7612", "modena7612");
+    WiFi.begin("", "");
     ArduinoOTA.setHostname("esp7612");
     ArduinoOTA.begin();
     int a;
