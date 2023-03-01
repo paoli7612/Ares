@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, flash
 from flask_login import login_required, current_user
-from device import enqueue
+from device import Ares
 
 views = Blueprint('views', __name__)
 
@@ -16,7 +16,7 @@ def try_view():
         return render_template('try.html', user=current_user, port=7612, hname=current_user.email)
     else:
         print(request.args)
-        enqueue(request.form)
+        Ares.form(request.form)
         return redirect('result')
 
 @views.route('/result')

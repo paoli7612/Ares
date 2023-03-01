@@ -1,25 +1,26 @@
-from .device import Device
+from . import template
+from random import randint
+import os
 
-def enqueue(form):
-    s = form['setup']
-    l = form['loop']
-    print("""
-        #include <Arduino.h>
-        #include <Arduino.h>
 
-        void setup() {
-            """ + s + """
-        }
-
-        void loop() {
-            """ + l + """
-        }
-    """)
-
-class Esp8266(Device):
+class Ares:
     def __init__(self):
-        Device.__init__(self)
+        pass
 
-class Esp32(Device):
-    def __init__(self):
-        Device.__init__(self)
+    @staticmethod
+    def form(form):
+        source = template.build(form['setup'], form['loop'])
+        Ares.newProject(source)
+
+    def newProject(source, name=None):
+        os.chdir('/home/alberto/Repository/Ares/ares')
+        if name is None:
+            name = "%d.experiment" % randint(1, 100000)
+        with open('./src/main.cpp', 'w') as f:
+            f.write(source)
+        os.system("pwd")
+        print("platformio run --environment esp1")
+        os.system('platformio run --environment esp1')
+
+
+
