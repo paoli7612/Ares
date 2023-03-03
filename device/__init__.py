@@ -2,7 +2,6 @@ from . import template
 from random import randint
 import os
 
-
 class Ares:
     def __init__(self):
         pass
