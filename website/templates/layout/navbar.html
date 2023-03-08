@@ -1,5 +1,6 @@
 <nav class="w3-bar w3-theme">
-    {% if user.is_authenticated %}
+
+    {% if current_user.is_authenticated %}
         <a href="/" class="w3-bar-item w3-btn {% if request.path == '/' %} w3-white {% endif %}">
             <i class="fa fa-home"></i>
             Home
@@ -8,15 +9,30 @@
             <i class="fa fa-try "></i>
             Test
         </a>
+        <a href="/experiment" class="w3-bar-item w3-btn {% if '/experiment' in request.path  %} w3-white {% endif %}">
+            <i class="fa fa-flask"></i>
+            Experiments
+        </a>
         <a href="/account" class="w3-bar-item w3-btn w3-right {% if request.path == '/account' %} w3-white {% endif %}">
             <i class="fa fa-user"></i>
             Account
         </a>
     {% else %}
+        <a href="/" class="w3-bar-item w3-btn {% if request.path == '/' %} w3-white {% endif %}">
+            <i class="fa fa-circle"></i>
+            Welcome
+        </a>
         <a href="/login" class="w3-bar-item w3-btn w3-right">
             <i class="fa fa-user"></i>
             Login
         </a>
-        <a href="/singup" class="w3-bar-item w3-btn w3-right">singup</a>
+        <a href="/singup" class="w3-bar-item w3-btn w3-right">
+            <i class="fa fa-arrow-right"></i>
+            Singup
+        </a>
     {% endif %}
+    <a href="/comunity" class="w3-bar-item w3-btn {% if '/comunity' in request.path  %} w3-white {% endif %}">
+        <i class="fa fa-users"></i>
+        Comunity
+    </a>
 </nav>

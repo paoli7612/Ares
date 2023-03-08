@@ -14,3 +14,8 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(128))
     first_name = db.Column(db.String(128))
     notes = db.relationship('Note')
+
+class Experiment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(128), unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

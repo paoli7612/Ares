@@ -1,0 +1,40 @@
+{% extends 'layout/index.html' %}
+
+{% block title %}Flask{% endblock %}
+
+{% block content %}
+<h1>New Experiment</h1>
+<form class="w3-panel" method="post">
+    <label class="w3-margin">
+        What is the title of your <b>experiment</b>?
+        <input type="text" name="title" class="w3-input w3-margin-bottom w3-card w3-round-large" placeholder="Title">
+    </label>
+    <label class="w3-margin">
+        Write a description for this <b>experiment</b>
+        <textarea name="description" class="w3-input w3-card w3-round-large" placeholder="description"></textarea>
+    </label>
+    <div class="w3-row">
+        <label class="w3-half w3-padding">
+            How many <b>devices</b> you need?
+            <input type="number" class="w3-input w3-card w3-round-large" name="devices" min="1">
+        </label>
+        <label class="w3-half w3-padding">
+            how much time you need?
+            <input type="time" class="w3-input w3-card w3-round-large" name="time" value="00:02:00" step="1" min="00:00:10">
+        </label>
+    </div>
+    <div class="w3-panel w3-right">
+        <a href="/experiment" class="w3-button w3-round-large w3-card-4">
+            <i class="fa fa-arrow-left"></i>
+            Back
+        </a>
+        <button type="submit" class="w3-button w3-theme w3-card-4 w3-round-large">
+            <i class="fa fa-plus"></i>
+            New Experiment
+        </button>
+    </div>
+
+
+</form>
+
+{% endblock %}

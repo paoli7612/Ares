@@ -7,10 +7,10 @@
 <form method="post">
     <h3 align="center">singup</h3>
     <label class="w3-panel"> Email
-        <input type="email" name="email" class="w3-input" value="{{ user.email }}" disabled>
+        <input type="email" name="email" class="w3-input" value="{{ current_user.email }}" disabled>
     </label>
     <label class="w3-panel"> First name
-        <input type="text" name="firstName" class="w3-input" value="{{ user.firstName }}">
+        <input type="text" name="firstName" class="w3-input" value="{{ current_user.firstName }}">
     </label>
     <label class="w3-panel"> Password
         <input type="password" name="password1" class="w3-input">

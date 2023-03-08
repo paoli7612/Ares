@@ -14,9 +14,11 @@ def create_app():
 
     from .views import views
     from .auth import auth
+    from .comunity import comunity
 
     app.register_blueprint(views, url_prexif='/')
     app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(comunity, url_prefix='/comunity')
 
     from .models import User, Note
 

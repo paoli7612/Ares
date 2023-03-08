@@ -9,7 +9,7 @@ auth = Blueprint('auth', __name__)
 @auth.route('/account')
 @login_required
 def account():
-    return render_template('auth/account.html', user = current_user)
+    return render_template('auth/account.html')
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -25,9 +25,9 @@ def login():
                 flash('incorrect password', 'red')      
         else:
             flash('incorrect email', 'red')      
-        return redirect(url_for('views.index'))
+        return redirect(url_for('views.home'))
 
-    return render_template('auth/login.html', user=current_user)
+    return render_template('auth/login.html')
 
 @auth.route('/logout')
 @login_required
@@ -59,4 +59,4 @@ def sing_up():
         except: 
             flash('email exist', category='red')
 
-    return render_template('auth/singup.html', user=current_user)
+    return render_template('auth/singup.html')

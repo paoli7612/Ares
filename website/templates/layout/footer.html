@@ -1,0 +1,29 @@
+<footer class="w3-bar w3-theme w3-large">
+    {% if current_user.is_authenticated %}
+        <a href="/new-post" class="w3-bar-item w3-btn {% if request.path == '/new-post' %} w3-white {% endif %}">
+            <i class="fa fa-plus"></i>
+            New post
+        </a>
+        <a href="/new-question" class="w3-bar-item w3-btn {% if request.path == '/new-question' %} w3-white {% endif %}">
+            <i class="fa fa-question "></i>
+            New question
+        </a>
+    {% else %}
+        <a href="/" class="w3-bar-item w3-btn {% if request.path == '/' %} w3-white {% endif %}">
+            <i class="fa fa-circle"></i>
+            Welcome
+        </a>
+        <a href="/login" class="w3-bar-item w3-btn w3-right">
+            <i class="fa fa-user"></i>
+            Login
+        </a>
+        <a href="/singup" class="w3-bar-item w3-btn w3-right">
+            <i class="fa fa-arrow-right"></i>
+            Singup
+        </a>
+    {% endif %}
+    <a href="/comunity" class="w3-bar-item w3-btn {% if '/comunity' in request.path  %} w3-white {% endif %}">
+        <i class="fa fa-users"></i>
+        Comunity
+    </a>
+</footer>

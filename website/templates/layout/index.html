@@ -1,36 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-indigo.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        body {
-            background-color: rgb(66, 66, 66);
-            background-image: url("{{ url_for('static', filename='images/wpaper.png') }}");
-        }
-    </style>
+    {% include 'layout/head.html' %}
 </head>
+
 <body>
     {% include 'layout/navbar.html' %}
-    {% with messages = get_flashed_messages(with_categories=True) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="w3-panel w3-{{ category }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-
+    {% include 'layout/flash.html' %}
+    
     <div class="w3-panel w3-margin-top w3-card-4 w3-round-large w3-white" style="max-width: 800px; margin:auto">
         {% block content %}
         {% endblock %}
     </div>
-        
+    {% if '/comunity' in request.path  %}
+        {% include 'layout/footer.html' %}
+    {% endif %}
+
     <script src="{{ url_for('static', filename='index.js') }}"></script>
 </body>
 </html>
