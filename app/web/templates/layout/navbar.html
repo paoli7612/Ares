@@ -8,16 +8,16 @@
 {% endmacro %}
 
 <nav class="w3-bar w3-theme w3-xlarge">
-{% if current_user.is_authenticated %}
-    {{ item('Home', 'home', 'views.home') }}
+    {% if current_user.is_authenticated %}
+        {{ item('Home', 'home', 'views.home') }}
+        {{ item('Experiments', 'flask', 'experiment.index') }}
+        {{ item('Account', 'user', 'auth.account', 'w3-right') }}
+        {{ item('Test', 'try', 'views.test', 'w3-right') }}
+    {% else %}
+        {{ item('Welcome', 'home', 'views.welcome') }}
+        {{ item('Signin', 'sign-in', 'auth.signin', 'w3-right') }}
+        {{ item('Signup', 'user-plus', 'auth.signup', 'w3-right') }}
+    {% endif %}
     {{ item('Platforms', 'deviantart', 'platform.index') }}
     {{ item('Rooms', 'building', 'room.index') }}
-    {{ item('Experiments', 'flask', 'experiment.index') }}
-    {{ item('Account', 'user', 'auth.account', 'w3-right') }}
-    {{ item('Test', 'try', 'views.test', 'w3-right') }}
-{% else %}
-    {{ item('Welcome', 'home', 'views.welcome') }}
-    {{ item('Signin', 'sign-in', 'auth.signin', 'w3-right') }}
-    {{ item('Signup', 'user-plus', 'auth.signup', 'w3-right') }}
-{% endif %}
 </nav>

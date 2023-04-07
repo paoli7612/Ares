@@ -1,13 +1,21 @@
-{% from "layout/components.html" import cHeader, cPlatform %}
+{% from "layout/components.html" import cHeader, cPlatform, cEmpty, cAdvice %}
 {% extends 'layout/index.html' %}
 
-{% block title %}Platforms{% endblock %}
+{% block title %}Platforms{% endblock title %}
 
 {% block content %}
-    {{ cHeader('Platform', [('plus', url_for('platform.new'))]) }}
+    {% if current_user.is_authenticated %}
+        {{ cHeader('Platforms', buttons=[('plus', url_for('platform.new'))], desc=doc.index) }}
+    {% else %}
+        {{ cHeader('Platforms', desc=doc.index + doc.stranger) }}
+    {% endif %}
     <div class="w3-panel">
         {% for e in platforms %}
             {{ cPlatform(e)}}
+        {% else %}
+            {{ cEmpty(doc.empty) }}
+            <div style="height: 500px"></div>
+            {{ cAdvice(doc.advice) }}
         {% endfor %}
     </div>
 {% endblock %}

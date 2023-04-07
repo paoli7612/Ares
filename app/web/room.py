@@ -3,12 +3,13 @@ from flask_login import current_user, login_required
 from .models import Room, Platform, Experiment
 from . import db
 from .forms import RoomForm, PlatformRoom, ExperimentForm
+from doc import Room as RoomDoc
 
 room = Blueprint('room', __name__)
 
 @room.route('/')
 def index():
-    return render_template('room/index.html', rooms=Room.query.all())
+    return render_template('room/index.html', rooms=Room.query.all(), doc=RoomDoc)
 
 @room.route('<int:id>/eye')
 def eye(id):

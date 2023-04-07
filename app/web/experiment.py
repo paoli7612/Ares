@@ -1,4 +1,3 @@
-import os
 from flask import Blueprint, render_template, request, redirect, flash, url_for
 from flask_login import current_user
 from werkzeug.utils import secure_filename
@@ -6,12 +5,14 @@ from .models import Experiment, Source, Room, Source_platformRoom
 from . import db
 from .forms import ExperimentForm
 from ares import Ares
+from doc import Experiment as ExperimentDoc
+
 
 experiment = Blueprint('experiment', __name__)
 
 @experiment.route('/')
 def index():
-    return render_template('experiment/index.html', experiments=Experiment.query.filter_by(user_id=current_user.id))
+    return render_template('experiment/index.html', experiments=Experiment.query.filter_by(user_id=current_user.id), doc=ExperimentDoc)
 
 @experiment.route("/<int:id>", methods=['GET', 'POST'])
 def single(id):

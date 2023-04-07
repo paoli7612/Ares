@@ -1,4 +1,4 @@
-{% from 'layout/components.html' import cIcon%}
+{% from 'layout/components.html' import cIcon %}
 {% extends 'layout/index.html' %}
 
 {% block title %}Account{% endblock %}
@@ -27,6 +27,7 @@
 </div>
 
 <div class="w3-panel w3-card-4 w3-center w3-round-large w3-padding-large">
+    {{ button('info-circle', 'views.info', 'info') }}
     {{ button('cog', 'auth.settings', 'settings') }}
     {{ button('flask', 'experiment.index', 'my experiments') }}
     {{ button('sign-out', 'auth.logout', 'logout') }}

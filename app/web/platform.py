@@ -1,17 +1,14 @@
-import os
 from flask import Blueprint, render_template, request, redirect, flash, url_for
-from flask_login import current_user
-from werkzeug.utils import secure_filename
-from .models import Experiment, Source
 from . import db
 from .models import Platform
 from .forms import PlatformForm
+from doc import Platform as PlatformDoc
 
 platform = Blueprint('platform', __name__)
 
 @platform.route('/')
 def index():
-    return render_template('platform/index.html', platforms=Platform.query.all())
+    return render_template('platform/index.html', platforms=Platform.query.all(), doc=PlatformDoc)
 
 @platform.route('/new', methods=['GET', 'POST'])
 def new():

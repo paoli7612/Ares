@@ -18,6 +18,11 @@ def index():
 def home():
     return render_template('views/home.html')
 
+@views.route('/info')
+def info():
+    return render_template('views/info.html')
+
+
 @views.route('/welcome')
 def welcome():
     if current_user.is_authenticated:
