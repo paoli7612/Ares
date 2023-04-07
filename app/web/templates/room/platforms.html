@@ -5,7 +5,7 @@
 {% block title %}Room: {{ room.name }}{% endblock %}
 
 {% block content %}
-{{ cHeader('Platform of ' + room.name) }}
+{{ cHeader('Platform of ' + room.name, back='room.index') }}
 <div class="w3-row">
     {% for pr in room.platforms %}
         {{ cPlatformRoom(pr) }}

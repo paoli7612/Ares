@@ -45,7 +45,7 @@ def edit(id):
             flash('Edited Successfully!', category='green') 
             return redirect(url_for('room.index'))
         flash('Error', category='red')
-    return render_template('pages/form.html', form=form)
+    return render_template('pages/form.html', form=form, backName='room.index')
 
 @room.route('<int:id>/delete', methods=['GET', 'POST'])
 def delete(id):
@@ -53,7 +53,7 @@ def delete(id):
         Room.query.filter_by(id=id).delete()
         db.session.commit()
         return redirect(url_for('room.index'))
-    return render_template('pages/ask.html', title='Deleting room', question='Are you sure?', icon='trash')
+    return render_template('pages/ask.html', title='Deleting room', question='Are you sure?', icon='trash', backName='room.index')
 
 @room.route('<int:id>/platforms', methods=['GET', 'POST'])
 def platforms(id):
