@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import current_user
 from .models import Room, Platform, Experiment
 from . import db
-from .forms import RoomForm, Platform_room, ExperimentForm
+from .forms import RoomForm, PlatformRoom, ExperimentForm
 
 room = Blueprint('room', __name__)
 
@@ -60,7 +60,7 @@ def platforms(id):
     room = Room.query.get(id)
     if request.method == 'POST':
         if 'platform' in request.form.keys():
-            pr = Platform_room()
+            pr = PlatformRoom()
             pr.platform_id = request.form['platform']
             pr.room_id = id
             room.platforms.append(pr)
@@ -68,7 +68,7 @@ def platforms(id):
         else:
             id = request.form['id']
             newName = request.form['name']
-            pr = Platform_room.query.get(int(id))
+            pr = PlatformRoom.query.get(int(id))
             pr.name = newName
             db.session.add(pr)
             db.session.commit()

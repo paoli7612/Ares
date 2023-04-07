@@ -44,11 +44,4 @@ def create_database(app):
         print("Database created")
         with app.app_context():
             db.create_all()
-
-    with app.app_context():
-        from .models import Platform
-        for name in ['esp8266', 'esp32']:
-            p = Platform(name=name, description=name + name)
-            #db.session.add(p)
-            #db.session.commit()
     return app

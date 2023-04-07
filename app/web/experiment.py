@@ -2,7 +2,7 @@ import os
 from flask import Blueprint, render_template, request, redirect, flash, url_for
 from flask_login import current_user
 from werkzeug.utils import secure_filename
-from .models import Experiment, Source, Room
+from .models import Experiment, Source, Room, Source_platformRoom
 from . import db
 from .forms import ExperimentForm
 from ares import Ares
@@ -32,7 +32,18 @@ def single(id):
             else:
                 flash('extension is not permitted', category='red')
         elif request.form['action'] == 'setPlatformSource':
-            print('______________', request.form)
+            for k, v in request.form.items():
+                if k == 'action':
+                    continue
+                spr = Source_platformRoom()
+                print("____________")
+                print(k, v)
+                print("____________")
+                spr.source_id = int(v)
+                spr.platformRoom_id = int(k)
+                db.session.add(spr)
+                db.session.commit()
+                
 
     return render_template('experiment/single.html',
                            experiment=experiment,
