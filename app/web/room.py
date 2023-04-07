@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-from flask_login import current_user
+from flask_login import current_user, login_required
 from .models import Room, Platform, Experiment
 from . import db
 from .forms import RoomForm, PlatformRoom, ExperimentForm
@@ -12,11 +12,10 @@ def index():
 
 @room.route('<int:id>/eye')
 def eye(id):
-    room = Room.query.get(id)
-    return render_template('room/eye.html', room=room)
-
+    return render_template('room/eye.html', room=Room.query.get(id))
 
 @room.route('/new', methods=['GET', 'POST'])
+@login_required
 def new():
     form = RoomForm('new', request.form)
     if request.method == 'POST':
@@ -26,13 +25,13 @@ def new():
             room.description = form.data['description']
             db.session.add(room)
             db.session.commit()
-            flash('Edited Successfully!', category='green')
+            flash('New room created', category='green')
             return redirect(url_for('room.index'))
-        flash('Error', category='red')
+        flash('Error!', category='red')
     return render_template('pages/form.html', form=form)
 
-
 @room.route('<int:id>/edit', methods=['GET', 'POST'])
+@login_required
 def edit(id):
     room = Room.query.get(id)
     form = RoomForm('edit', request.form, obj=room)
@@ -44,7 +43,7 @@ def edit(id):
             db.session.commit()
             flash('Edited Successfully!', category='green') 
             return redirect(url_for('room.index'))
-        flash('Error', category='red')
+        flash('Error!', category='red')
     return render_template('pages/form.html', form=form, backName='room.index')
 
 @room.route('<int:id>/delete', methods=['GET', 'POST'])
@@ -77,6 +76,7 @@ def platforms(id):
 
 @room.route('<int:id>/newExperiment', methods=['GET', 'POST'])
 def experiment(id):
+    """ User want create a new experiment on this room """
     form = ExperimentForm('new', request.form)
     if request.method == 'POST':
         if form.validate():
