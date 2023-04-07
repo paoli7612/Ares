@@ -49,4 +49,4 @@ def delete(id):
         Platform.query.filter_by(id=id).delete()
         db.session.commit()
         return redirect(url_for('platform.index'))
-    return render_template('pages/ask.html', title='Deleting platform', question='Are you sure?', icon='trash')
+    return render_template('pages/ask.html', title='Deleting platform', question='Are you sure?', icon='trash', backName='platform.index')

@@ -8,8 +8,8 @@
 {% macro cIcon(name, class="") %}
     <i class="fa fa-{{ name }} {{ class }}"></i>
 {% endmacro %}
-{% macro cButton(icon, link, class="") %}
-    <a href="{{ link }}" class="w3-btn w3-circle w3-card-4 w3-xlarge w3-theme {{ class }}">
+{% macro cButton(icon, link, color='theme', class="") %}
+    <a href="{{ link }}" class="w3-btn w3-circle w3-card-4 w3-xlarge w3-{{ color }} {{ class }}">
         {{ cIcon(icon)}}
     </a>
 {% endmacro %}
@@ -19,6 +19,21 @@
         {{ label }}
     </a>
 {% endmacro %}
+{% macro cBack(name = '', color='white') %}
+    {% if name %}
+        {{ cLink('Back', 'arrow-left', url_for(name), color=color) }}
+    {% else %}
+        {{ cLink('Back', 'arrow-left', request.referrer, color=color) }}
+    {% endif %}
+{% endmacro %}
+{% macro cBackButton(name = '', color='theme-l3') %}
+    {% if name %}
+        {{ cButton('arrow-left', url_for(name), color=color) }}
+    {% else %}
+        {{ cButton('arrow-left', request.referrer, color=color) }}
+    {% endif %}
+{% endmacro %}
+
 {% macro cImage(name, width='128px') %}
     <img src="/static/images/{{name}}.png" class="w3-cicrcle" style="width: {{ width }}">
 {% endmacro %}
@@ -30,9 +45,13 @@
         {{ 'readonly="readonly"' if readonly }}
     />
 {% endmacro %}
-{% macro cHeader(title, buttons=[]) %}
+{% macro cHeader(title, buttons=[], back='') %}
     <div class="w3-row">
-        <h1 class="w3-left">{{ title }}</h1>
+        <h1 class="w3-left">
+        {% if back %}
+            {{ cBackButton(back) }}
+        {% endif %}
+            {{ title }}</h1>
         {% if buttons %}
         <div class="w3-right">
             {% for icon, link in buttons: %}
@@ -69,9 +88,9 @@
         <i class="fa fa-{{ icon }}"></i>
     </button>
 {% endmacro %}
-{% macro cSubmitBack(label, icon) %}
+{% macro cSubmitBack(label, icon, back='') %}
     <div class="w3-right w3-margin">
-        {{ cLink('Back', 'arrow-left', request.referrer, 'white') }}
+        {{ cBack(back) }}
         <button type="submit" class="w3-btn w3-theme w3-round-large w3-card-4">
             <i class="fa fa-{{ icon }}"></i>
             {{ label }}

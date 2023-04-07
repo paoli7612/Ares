@@ -48,7 +48,8 @@ def logout():
     if request.method == 'POST':
         logout_user()
         return redirect(url_for('auth.signin'))
-    return render_template('auth/logout.html')
+    return render_template('pages/ask.html', title='Logout', question='Are you sure?', icon='sign-out', label='Logout')
+
 
 @auth.route('/signin', methods=['GET', 'POST'])
 def signin():
