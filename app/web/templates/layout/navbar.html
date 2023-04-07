@@ -1,0 +1,23 @@
+{% from "layout/components.html" import cIcon %}
+
+{% macro item(title, icon, name, class="") %}
+<a href="{{ url_for(name) }}" class="w3-bar-item w3-btn {{ 'w3-white' if request.path.split('/')[1] in name.split('.') }} {{ class }}">
+    {{ cIcon(icon) }}
+    {{ title }}
+</a>
+{% endmacro %}
+
+<nav class="w3-bar w3-theme w3-xlarge">
+{% if current_user.is_authenticated %}
+    {{ item('Home', 'home', 'views.home') }}
+    {{ item('Platforms', 'deviantart', 'platform.index') }}
+    {{ item('Rooms', 'building', 'room.index') }}
+    {{ item('Experiments', 'flask', 'experiment.index') }}
+    {{ item('Account', 'user', 'auth.account', 'w3-right') }}
+    {{ item('Test', 'try', 'views.test', 'w3-right') }}
+{% else %}
+    {{ item('Welcome', 'home', 'views.welcome') }}
+    {{ item('Signin', 'sign-in', 'auth.signin', 'w3-right') }}
+    {{ item('Signup', 'user-plus', 'auth.signup', 'w3-right') }}
+{% endif %}
+</nav>

@@ -1,0 +1,14 @@
+{% from "layout/components.html" import cHeader %}
+{% extends 'layout/index.html' %}
+
+{% block title %} Source ({{ source.id }}){% endblock %}
+
+{% block content %}
+
+{{ cHeader(source.name, [('arrow-left', url_for('experiment.single', id=experiment_id)), ('trash', url_for('source.delete', id=source.id))]) }}
+
+<pre>
+    {{ text }}
+</pre>
+
+{% endblock %}

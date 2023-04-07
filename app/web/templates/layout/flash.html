@@ -1,0 +1,16 @@
+<div class="w3-panel">
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="w3-panel w3-{{ category }} w3-margin w3-card-4 w3-round-large w3-display-container" id="{{ i }}">
+                <span class="w3-xlarge w3-display-middle">
+                    {{ message }}
+                </span>
+                <button class="w3-right w3-btn w3-circle  w3-xlarge" onclick="this.parentNode.remove()">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>

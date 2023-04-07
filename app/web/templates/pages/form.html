@@ -1,0 +1,17 @@
+{% from "layout/components.html" import cSubmitBack %}
+{% extends 'layout/index.html' %}
+{% block title %}{{ form.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ form.title }}</h1>
+<form method="post">
+    {{ form.csrf_token }}
+    {% for field in form %}
+        <div class="w3-panel">
+            {{ field.label(class="w3-margin") }}
+            {{ field(class='w3-input w3-card w3-round-large') }}
+        </div>
+    {% endfor %}
+    {{ cSubmitBack(form.title, form.icon) }}
+</form>
+{% endblock %}

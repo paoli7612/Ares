@@ -1,0 +1,72 @@
+{% from 'layout/components.html' import cSubmitBack, cSubmit, cImage %}
+
+{% macro fExperiment(action, e, icon) %}
+    <h1>{{ action.capitalize() }} Experiment</h1>
+    <form method="post">
+        <label class="w3-margin ">
+            What is the title of your <b>experiment</b>?
+            <input type="text" name="title" class="w3-input w3-margin-bottom w3-card w3-round-large" placeholder="Title"
+                required="required" value="{{ e.title or '' }}">
+        </label>
+        <label class="w3-margin">
+            Write a description for this <b>experiment</b>
+            <textarea name="description" class="w3-input w3-card w3-round-large"
+                placeholder="description">{{ e.description or '' }}</textarea>
+        </label>
+
+        {{ cSubmitBack('Edit', icon) }}
+    </form>
+{% endmacro %}
+
+{% macro fAddPlatformRoom(platforms) %}
+    <form method="POST" class="w3-right w3-third w3-panel w3-theme-d4 w3-padding w3-round-large">
+        <h3 class="w3-center">Add platform</h3>
+        <select class="w3-select w3-round-large w3-card-4" name="platform">
+            {% for platform in platforms %}
+                <option value="{{ platform.id }}">{{ platform.name }}</name>
+            {% endfor %}
+        </select>
+        {{ cSubmitBack('Add device', 'plus')}}
+    </form>
+{% endmacro %}
+
+{% macro fSource() %}
+    <form method="POST" class="w3-right w3-third w3-panel w3-theme-d4 w3-padding w3-round-large" enctype = "multipart/form-data">
+        <input type="hidden" name="action" value="addSource">
+        <h3 class="w3-center">Add source</h3>
+        <input type="file" class="w3-input" name='source'>
+        {{ cSubmitBack('Add source', 'plus')}}
+    </form>
+{% endmacro %}
+
+{% macro fAddPlatformSource(ss, name='', value='') %}
+<div class="w3-margin">
+    <select class="w3-select w3-quarter w3-card w3-round-large" name="{{ name }}" value="{{ value }}">
+        {% for s in ss %}
+            <option value="{{s.id}}">{{ s.name }}</option>
+        {% endfor %}
+    </select>
+</div>
+{% endmacro %}
+
+{% macro fPlatformsSources(pp, ss) %}
+<form method="POST">
+    <input type="hidden" name='action' value='setPlatformSource'>
+    <table class="w3-table-all w3-card-4 w3-round-large w3-white">
+        <tr>
+            <th colspan="2">Platform</th><th>Source</th>
+        </tr>
+        {% for p in pp %}
+        <tr>
+            <td class="w3-center">{{ cImage(p.platform.name) }}<br>{{ p.platform.name }}</td>
+            <td>{{ p.name }}</td>
+            <td>
+                {{ fAddPlatformSource(ss, p.id, p.source) }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {{ cSubmit('Save', 'save') }}
+</form>
+{% endmacro %}
+

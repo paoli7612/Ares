@@ -1,0 +1,17 @@
+{% from "layout/components.html" import cHeader, cSubmitBack, cSelectPlatform %}
+{% extends 'layout/index.html' %}
+
+{% block title %}Test{% endblock %}
+
+{% block content %}
+{{ cHeader('Test upload file',[ ('edit', url_for('views.test'))]) }}
+<form method="post" id="input" enctype="multipart/form-data">
+    <div class="w3-row">
+    <div class="w3-third w3-right">
+        {{ cSelectPlatform(platforms) }}
+    </div>
+        <input type="file" class="w3-input w3-round-circle w3-third w3-center w3-margin-right" name="source">
+    </div>
+    {{ cSubmitBack('test', 'try') }}
+</form>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% from "layout/components.html" import cHeader, cPlatformRoom %}
+{% from "layout/forms.html" import fAddPlatformRoom %}
+{% extends 'layout/index.html' %}
+
+{% block title %}Room: {{ room.name }}{% endblock %}
+
+{% block content %}
+{{ cHeader('Platform of ' + room.name) }}
+<div class="w3-row">
+    {% for pr in room.platforms %}
+        {{ cPlatformRoom(pr) }}
+    {% else %}
+        nessuno
+    {% endfor %}
+</div>
+
+{{ fAddPlatformRoom(platforms) }}
+
+{% endblock %}

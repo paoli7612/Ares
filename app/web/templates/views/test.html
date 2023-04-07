@@ -1,0 +1,30 @@
+{% from "layout/components.html" import cHeader, cSubmitBack %}
+{% extends 'layout/index.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{{ cHeader('Test build file',[('upload', url_for('views.test_upload'))]) }}
+<form method="post" id="input">
+        <select class="w3-select w3-round-large w3-card-4" name="esp">
+            <option value="32">ESP32</option>
+            <option value="8266">ESP8266</option>
+        </select>
+
+    <pre class="w3-panel w3-card-4 w3-round-large w3-margin w3-padding w3-theme-l4">
+
+<span class="w3-text-theme">#include &lt;WiFiUdp.h&gt;</span>
+<span class="w3-text-theme">#include &lt;ArduinoOTA.h&gt;</span>
+
+<span class="w3-text-theme">void</span> setup() {
+    <span class="w3-text-theme">ArduinoOTA</span>.begin();
+<textarea name="setup" rows="10" class="w3-card-4 w3-round-large" style="width: 90%; margin-left: 32px;" placeholder="setup"></textarea>
+}
+
+<span class="w3-text-theme">void</span>  loop() {
+    <span class="w3-text-theme">ArduinoOTA</span>.handle();
+<textarea name="loop" rows="10" class="w3-card-4 w3-round-large" style="width: 90%; margin-left: 32px;" placeholder="loop"></textarea>
+}</pre>
+    {{ cSubmitBack('test', 'try') }}
+</form>
+{% endblock %}

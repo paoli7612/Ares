@@ -1,0 +1,11 @@
+{% from 'layout/components.html' import cSubmitBack %}
+{% extends 'layout/index.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+<form method="post">
+    {{ question }}
+    {{ cSubmitBack('Confirm', icon)}}
+</form>
+{% endblock %}

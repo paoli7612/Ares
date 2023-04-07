@@ -1,0 +1,10 @@
+{% from "layout/forms.html" import experiment_form %}
+{% extends 'layout/index.html' %}
+
+{% block title %}New Experiment{% endblock %}
+
+{% block content %}
+
+{{ experiment_form('new', experiment, 'plus') }}
+
+{% endblock %}

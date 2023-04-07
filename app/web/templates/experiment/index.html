@@ -1,0 +1,13 @@
+{% from "layout/components.html" import cHeader, cExperiment %}
+{% extends 'layout/index.html' %}
+
+{% block title %}Experiments{% endblock %}
+
+{% block content %}
+    {{ cHeader('Experiments') }}
+    <div class="w3-panel">
+        {% for e in experiments %}
+            {{ cExperiment(e)}}
+        {% endfor %}
+    </div>
+{% endblock %}

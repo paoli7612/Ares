@@ -1,0 +1,13 @@
+{% from "layout/components.html" import cHeader, cRoom %}
+{% extends 'layout/index.html' %}
+
+{% block title %}Rooms{% endblock %}
+
+{% block content %}
+    {{ cHeader('Rooms', [('plus', url_for('room.new'))]) }}
+    <div class="w3-panel">
+        {% for r in rooms %}
+            {{ cRoom(r)}}
+        {% endfor %}
+    </div>
+{% endblock %}

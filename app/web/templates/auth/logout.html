@@ -1,0 +1,14 @@
+{% from "layout/macros.html" import submit_back %}
+{% extends 'layout/index.html' %}
+
+{% block title %}Sing up{% endblock %}
+
+{% block content %}
+
+<form method="post" class="w3-panel">
+    <h1>Are you sure?</h1>
+    <p>If you log out, you will lose your last changes</p>
+    {{ submit_back('Logout', 'sign-out')}}
+</form>
+
+{% endblock %}

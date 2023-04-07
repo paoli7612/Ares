@@ -1,0 +1,13 @@
+{% from "layout/components.html" import cHeader, cPlatform %}
+{% extends 'layout/index.html' %}
+
+{% block title %}Platforms{% endblock %}
+
+{% block content %}
+    {{ cHeader('Platform', [('plus', url_for('platform.new'))]) }}
+    <div class="w3-panel">
+        {% for e in platforms %}
+            {{ cPlatform(e)}}
+        {% endfor %}
+    </div>
+{% endblock %}

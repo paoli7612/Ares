@@ -1,0 +1,50 @@
+{% from "layout/components.html" import cHeader, cSubHeader, cSubmit, cButton, cError, cPlatformSource, cSource %}
+{% from "layout/forms.html" import fSource, fPlatformsSources %}
+{% extends 'layout/index.html' %}
+
+{% block title %} Experiment ({{ experiment.id }}){% endblock %}
+
+{% block content %}
+{{ cHeader(experiment.name, [
+    ('trash', url_for('experiment.delete', id=experiment.id)),
+    ('edit', url_for('experiment.edit', id=experiment.id))
+]) }}
+{{ cSubHeader('Room: ' + room.name, [
+    ('eye', url_for('room.eye', id=room.id))    
+])}}
+
+{% if experiment.description: %}
+<h4>{{ experiment.description }}</h4>
+{% else: %}
+{{ cError('There is no description') }}</h4>
+{% endif %}
+<fieldset class="w3-border-theme w3-card-4 w3-round-large w3-margin">
+    <legend
+        class="w3-center w3-padding w3-white w3-margin-bottom w3-text-theme w3-xlarge w3-card w3-round-large w3-border w3-border-theme">
+        <b>Sources</b>
+    </legend>
+    
+    {% for s in sources: %}
+        {{ cSource(s) }}
+    {% else %}
+        {{ cError('There are any source loaded hier') }}</h4>
+    {% endfor %}
+
+    {{ fSource() }}
+</fieldset>
+
+<fieldset class="w3-border-theme w3-card-4 w3-round-large w3-margin">
+    <legend
+        class="w3-center w3-padding w3-white w3-margin-bottom w3-text-theme w3-xlarge w3-card w3-round-large w3-border w3-border-theme">
+        <b>Platforms</b>
+    </legend>
+    {{ fPlatformsSources(room.platforms, sources) }}
+</fieldset>
+
+<fieldset class="w3-border-theme w3-card-4 w3-round-large w3-margin">
+    <legend
+        class="w3-center w3-padding w3-white w3-margin-bottom w3-text-theme w3-xlarge w3-card w3-round-large w3-border w3-border-theme">
+        <b>Testbed</b>
+    </legend>
+</fieldset>
+<br>{% endblock %}

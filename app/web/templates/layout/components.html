@@ -1,0 +1,159 @@
+
+{% macro cError(text) %}
+    <p class="w3-text-red w3-center">
+        <i class="fa fa-warning"></i>
+        {{ text }}
+    </p>
+{% endmacro %}
+{% macro cIcon(name, class="") %}
+    <i class="fa fa-{{ name }} {{ class }}"></i>
+{% endmacro %}
+{% macro cButton(icon, link, class="") %}
+    <a href="{{ link }}" class="w3-btn w3-circle w3-card-4 w3-xlarge w3-theme {{ class }}">
+        {{ cIcon(icon)}}
+    </a>
+{% endmacro %}
+{% macro cLink(label, icon, link, color='theme') %}
+    <a href="{{ link }}" class="w3-btn w3-round-large w3-card-4 w3-{{ color }}">
+        {{ cIcon(icon)}}
+        {{ label }}
+    </a>
+{% endmacro %}
+{% macro cImage(name, width='128px') %}
+    <img src="/static/images/{{name}}.png" class="w3-cicrcle" style="width: {{ width }}">
+{% endmacro %}
+{% macro cInput(name, value='', class='', readonly=False) %}
+    <input
+        class="w3-input w3-round-large w3-card {{ class }} name={{name}}" 
+        value="{{ value }}"
+        name="{{ name }}"
+        {{ 'readonly="readonly"' if readonly }}
+    />
+{% endmacro %}
+{% macro cHeader(title, buttons=[]) %}
+    <div class="w3-row">
+        <h1 class="w3-left">{{ title }}</h1>
+        {% if buttons %}
+        <div class="w3-right">
+            {% for icon, link in buttons: %}
+                {{ cButton(icon, link) }}
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+{% macro cSubHeader(title, buttons=[]) %}
+    <div class="w3-theme-l2 w3-padding w3-border w3-border-theme"> 
+        <div class="w3-row" style="width: 60%; margin: auto">
+            <h3 class="w3-left">{{ title }}</h3>
+            {% if buttons %}
+            <div class="w3-right">
+                {% for icon, link in buttons: %}
+                    {{ cButton(icon, link) }}
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+{% macro cSubmit(label, icon) %}
+    <div class="w3-right w3-margin">
+        <button type="submit" class="w3-btn w3-theme w3-round-large w3-card-4">
+            <i class="fa fa-{{ icon }}"></i>
+            {{ label }}
+        </button>
+    </div>
+{% endmacro %}
+{% macro cSubmitButton(icon, class='') %}
+    <button type="submit" class="w3-btn w3-theme w3-circle w3-card-4 {{ class }}">
+        <i class="fa fa-{{ icon }}"></i>
+    </button>
+{% endmacro %}
+{% macro cSubmitBack(label, icon) %}
+    <div class="w3-right w3-margin">
+        {{ cLink('Back', 'arrow-left', request.referrer, 'white') }}
+        <button type="submit" class="w3-btn w3-theme w3-round-large w3-card-4">
+            <i class="fa fa-{{ icon }}"></i>
+            {{ label }}
+        </button>
+    </div>
+{% endmacro %}
+{% macro cExperiment(e) %}
+    <div class="w3-card-4 w3-round-large  {% if e.freeze %}{{ (not e.freeze) * 'w3-theme-l2' }} {{ e.freeze * 'w3-grey' }}{% else %} w3-theme-d2{% endif %}  w3-margin-bottom">
+        <div class="w3-padding w3-center">
+            <a class="w3-btn w3-block w3-theme-d2 w3-round-large w3-card w3-xlarge" href="{{ url_for('experiment.single', id=e.id) }}">{{ e.name }}</a>
+        </div>
+        <div class="w3-panel">
+            <p class="w3-margin">{{ e.description }}</p>
+        </div>
+    </div>
+{% endmacro %}
+{% macro cSource(s) %}
+    <div class="w3-panel w3-center">
+        <b class="w3-margin-right">{{ s.name }} - {{ s.id }}</b>
+        {{ cButton('eye', url_for('source.single', id=s.id)) }}
+    </div>
+{% endmacro %}
+{% macro cPlatform(p) %}
+    <div class="w3-panel w3-center w3-margin w3-padding w3-theme-l2 w3-round-large">
+        <b class="w3-margin-right w3-large">{{ p.name }}</b>
+        {{ cImage(p.name) }}
+        <div class="w3-right w3-margin">
+            {{ cButton('trash', url_for('platform.delete', id=p.id)) }}
+            {{ cButton('edit', url_for('platform.edit', id=p.id)) }}
+        </div>
+    </div>
+{% endmacro %}
+{% macro cSelectPlatform(pp) %}
+    <select class="w3-select w3-round-large w3-card-4" name="platform">
+        {% for platform in pp %}
+            <option value="{{ platform.id }}">{{ platform.name }}</name>
+        {% endfor %}
+    </select>
+{% endmacro %}
+{% macro cPlatformSource(pr, ss) %}
+    <div class="w3-panel w3-theme-l2 w3-round-large w3-margin w3-padding w3-display-container">
+        <div class="w3-left">
+            {{ cImage(pr.platform.name) }}
+            <b class="w3-margin-right w3-large">{{ pr.platform.name }}</b> - 
+            <b class="w3-margin-right w3-large">{{ pr.name }}</b>
+        </div>
+        <select class="w3-select w3-third w3-round-large w3-display-right w3-margin-right">
+            {% for s  in ss %}
+                <option value="{{ s.id }}">{{ s.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+{% endmacro %}
+{% macro cRoom(r) %}
+    <div class="w3-panel w3-center w3-theme-d2 w3-round-large">
+        {{ cIcon('building', 'w3-xxlarge w3-margin') }}
+        <b class="w3-margin-right w3-large">{{ r.name }}</b>
+        <div class="w3-right w3-margin">
+            {{ cButton('eye', url_for('room.eye', id=r.id)) }}
+            {{ cButton('flask', url_for('room.experiment', id=r.id)) }}
+            {{ cButton('trash', url_for('room.delete', id=r.id)) }}
+            {{ cButton('deviantart', url_for('room.platforms', id=r.id)) }}
+            {{ cButton('edit', url_for('room.edit', id=r.id)) }}
+        </div>
+    </div>
+{% endmacro %}
+{% macro cPlatformRoom(pr) %}
+    <div class="w3-round-large w3-col m6">
+        <div class="w3-margin w3-card-4 w3-padding w3-display-container w3-round-large">
+            {{ cImage(pr.platform.name) }}<br>
+            <form id="{{ pr.id }}" method="POST" class="w3-display-bottomright w3-margin">
+                <p class="w3-right">
+                    Platform: <b>{{ pr.platform.name }}</b>
+                </p>
+                {{ cInput('id', value=pr.id, class='w3-hide')}}
+                {{ cInput('name', value=pr.name)}}
+                <script>
+                    $('#{{pr.id}}').on('change', function() {
+                        $(this).submit();
+                    });
+                </script>
+            </form>
+        </div>
+    </div>
+{% endmacro %}
