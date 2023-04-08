@@ -1,10 +1,16 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
-from .models import User
+from .models import User, UserStatus
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
 
 auth = Blueprint('auth', __name__)
+
+def register_user(email, username, password, status=UserStatus.USER):
+    user = User(email=email, username=username, password=generate_password_hash(password, method='sha256'), status=status)
+    db.session.add(user)
+    db.session.commit()
+
 
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -22,9 +28,7 @@ def signup():
             flash('control password wrong', category='yellow')
             return redirect(url_for('auth.signup'))
 
-        user = User(email=email, username=username, password=generate_password_hash(password1, method='sha256') )
-        db.session.add(user)
-        db.session.commit()
+        register_user(email, username, password1)
         login_user(user, remember=True)
         flash('Account created', category='green')
         return redirect(url_for('auth.account'))

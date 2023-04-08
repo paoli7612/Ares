@@ -47,7 +47,7 @@
 {% endmacro %}
 
 {% macro cImage(name, width='128px') %}
-    <img src="/static/images/{{name}}.png" class="w3-cicrcle" style="width: {{ width }}">
+    <img src="/static/{{name}}" class="w3-cicrcle" style="width: {{ width }}">
 {% endmacro %}
 {% macro cInput(name, value='', class='', readonly=False) %}
     <input
@@ -132,7 +132,7 @@
 {% macro cPlatform(p) %}
     <div class="w3-panel w3-center w3-margin w3-padding w3-theme-l2 w3-round-large">
         <b class="w3-margin-right w3-large">{{ p.name }}</b>
-        {{ cImage(p.name) }}
+        {{ cImage(p.img) }}
         <div class="w3-right w3-margin">
             {{ cButton('trash', url_for('platform.delete', id=p.id)) }}
             {{ cButton('edit', url_for('platform.edit', id=p.id)) }}
@@ -176,7 +176,7 @@
 {% macro cPlatformRoom(pr) %}
     <div class="w3-round-large w3-col m6">
         <div class="w3-margin w3-card-4 w3-padding w3-display-container w3-round-large">
-            {{ cImage(pr.platform.name) }}<br>
+            {{ cImage(pr.platform.n) }}<br>
             <form id="{{ pr.id }}" method="POST" class="w3-display-bottomright w3-margin">
                 <p class="w3-right">
                     Platform: <b>{{ pr.platform.name }}</b>

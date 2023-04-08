@@ -1,0 +1,16 @@
+{% from 'layout/test-db.html' import cUsers, cPlatforms %}
+{% extends 'layout/index.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+    <form method="POST">
+        <input type="submit" value="reset">
+    </form>
+
+    {{ cUsers(users, ['id', 'email', 'username', 'theme', 'status', 'experiments']) }}
+    {{ cPlatforms(platforms, ['id', 'name', 'description', 'img']) }}
+
+{% endblock %}
+

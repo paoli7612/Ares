@@ -22,7 +22,7 @@
         </div>
     </div>
     <div class="w3-panel">
-        <img src="https://i.pravatar.cc/300?img={{current_user.firstName}}" alt="avatar" class="w3-circle w3-margin w3-card-4">
+        {{ current_user.getPicture()|safe }}
     </div>
 </div>
 

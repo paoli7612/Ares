@@ -1,0 +1,41 @@
+{% macro td(name, obj) %}
+    <td>{{ obj[name] }}</td>
+{% endmacro %}
+
+{% macro tr(obj, names) %}
+    {% for name in names %}
+        {{ td(name, obj)}}
+    {% endfor %}
+{% endmacro %}
+
+{% macro header(title) %}
+    <h3 class="w3-margin w3-center">{{ title.capitalize() }}</h3>
+{% endmacro %}
+
+{% macro cUsers(users, fields) %}
+    {{ header('users') }}
+    <table class="w3-table-all">
+        <tr>
+            {% for field in fields %}
+                <th>{{ field}} </th>
+            {% endfor %}
+        </tr>
+        {% for user in users %}
+            {{ user.to_tr()|safe }}
+        {% endfor %}
+    </table>
+{% endmacro %}
+
+{% macro cPlatforms(platform, fields) %}
+    {{ header('platforms') }}
+    <table class="w3-table-all">
+        <tr>
+            {% for field in fields %}
+                <th>{{ field}} </th>
+            {% endfor %}
+        </tr>
+        {% for platform in platform %}
+            {{ platform.to_tr()|safe }}
+        {% endfor %}
+    </table>
+{% endmacro %}

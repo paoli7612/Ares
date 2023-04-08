@@ -12,7 +12,7 @@ class Doc:
     error = '' # show if a new histance is not generated, because there are errors
 
 class Test(Doc):
-    index = """Hier you can test your sources c++. After this test you's gonna be know if you code compile on our platform."""
+    index = 'Hier you can test your sources c++. After this test you\'s gonna be know if you code compile on our platform. '
     success = 'Completed! You\'r code compile correctly on our system'
     error = 'Oh no! there are errors in you code. Sorry but we cannot accept this file'
 

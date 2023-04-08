@@ -2,10 +2,23 @@ from flask import Blueprint, render_template, request, redirect, flash, url_for
 from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
 from . import db
-from .models import Experiment, User, Source, Platform
+
+from .models import Experiment, User, Source, Platform, Room
 from ares import Ares
 
 views = Blueprint('views', __name__)
+
+@views.route('/test-db', methods=['GET', 'POST'])
+def testDb():
+    if request.method == 'POST':
+        import db
+        db.reset()
+
+    return render_template('views/test-db.html',
+                        users = User.query.all(),
+                        platforms = Platform.query.all(),
+                        experiments = Experiment.query.all(),
+                        rooms = Room.query.all())
 
 @views.route('/')
 def index():
