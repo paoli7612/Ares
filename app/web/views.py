@@ -13,12 +13,12 @@ def testDb():
     if request.method == 'POST':
         import db
         db.reset()
-
     return render_template('views/test-db.html',
                         users = User.query.all(),
                         platforms = Platform.query.all(),
                         experiments = Experiment.query.all(),
-                        rooms = Room.query.all())
+                        rooms = Room.query.all(),
+                        sources = Source.query.all())
 
 @views.route('/')
 def index():

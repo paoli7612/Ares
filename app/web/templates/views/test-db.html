@@ -1,4 +1,4 @@
-{% from 'layout/test-db.html' import cUsers, cPlatforms %}
+{% from 'layout/test-db.html' import cUsers, cPlatforms, cExperiments, cRooms, cSource %}
 {% extends 'layout/index.html' %}
 
 {% block title %}Home{% endblock %}
@@ -9,8 +9,11 @@
         <input type="submit" value="reset">
     </form>
 
-    {{ cUsers(users, ['id', 'email', 'username', 'theme', 'status', 'experiments']) }}
-    {{ cPlatforms(platforms, ['id', 'name', 'description', 'img']) }}
+    {{ cUsers(users, ['email', 'username', 'theme', 'status', 'experiments']) }}
+    {{ cPlatforms(platforms, ['name', 'description', 'img', 'rooms']) }}
+    {{ cRooms(rooms, ['name', 'description', 'img']) }}
+    {{ cExperiments(experiments, ['name', 'description', 'minutes', 'user', 'room', 'state']) }}
+    {{ cSource(sources, ['path', 'experiment', 'platform']) }}
 
 {% endblock %}
 

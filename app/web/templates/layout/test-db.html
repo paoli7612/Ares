@@ -26,7 +26,7 @@
     </table>
 {% endmacro %}
 
-{% macro cPlatforms(platform, fields) %}
+{% macro cPlatforms(platforms, fields) %}
     {{ header('platforms') }}
     <table class="w3-table-all">
         <tr>
@@ -34,8 +34,50 @@
                 <th>{{ field}} </th>
             {% endfor %}
         </tr>
-        {% for platform in platform %}
+        {% for platform in platforms %}
             {{ platform.to_tr()|safe }}
+        {% endfor %}
+    </table>
+{% endmacro %}
+
+{% macro cExperiments(experiments, fields) %}
+    {{ header('experimentss') }}
+    <table class="w3-table-all">
+        <tr>
+            {% for field in fields %}
+                <th>{{ field}} </th>
+            {% endfor %}
+        </tr>
+        {% for experiment in experiments %}
+            {{ experiment.to_tr()|safe }}
+        {% endfor %}
+    </table>
+{% endmacro %}
+
+{% macro cRooms(rooms, fields) %}
+    {{ header('rooms') }}
+    <table class="w3-table-all">
+        <tr>
+            {% for field in fields %}
+                <th>{{ field}} </th>
+            {% endfor %}
+        </tr>
+        {% for room in rooms %}
+            {{ room.to_tr()|safe }}
+        {% endfor %}
+    </table>
+{% endmacro %}
+
+{% macro cSource(sources, fields) %}
+    {{ header('sources') }}
+    <table class="w3-table-all">
+        <tr>
+            {% for field in fields %}
+                <th>{{ field }} </th>
+            {% endfor %}
+        </tr>
+        {% for source in sources %}
+            {{ source.to_tr()|safe }}
         {% endfor %}
     </table>
 {% endmacro %}
