@@ -1,4 +1,5 @@
 {% from "layout/components.html" import cHeader, cPlatform, cEmpty, cAdvice %}
+{% from 'layout/models.html' import cPlatformLarge %}
 {% extends 'layout/index.html' %}
 
 {% block title %}Platforms{% endblock title %}
@@ -11,7 +12,7 @@
     {% endif %}
     <div class="w3-panel">
         {% for e in platforms %}
-            {{ cPlatform(e)}}
+            {{ cPlatformLarge(e)}}
         {% else %}
             {{ cEmpty(doc.empty) }}
             <div style="height: 500px"></div>

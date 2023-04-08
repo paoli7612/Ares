@@ -12,6 +12,12 @@ def tr(*values):
         txt += td(value)
     return txt + "</tr>"
 
+#platformRoom = db.Table('platform_room',
+#    db.Column('id', db.Integer),
+#    db.Column('platform_id', db.Integer, db.ForeignKey('platform.id')),
+#    db.Column('room_id', db.Integer, db.ForeignKey('room.id'))
+#)
+
 class UserStatus(enum.Enum):
     ADMIN = 'admin'
     EDITOR = 'editor'
@@ -25,7 +31,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(128))
     theme = db.Column(db.String(64), default='green')
     status = db.Column(sqlalchemy.Enum(UserStatus), default='user')
-    experiments = db.relationship('Experiment', backref="user")
+    experiments = db.relationship('Experiment', backref='user')
 
     def getPicture(self):
         return """
@@ -43,6 +49,10 @@ class User(db.Model, UserMixin):
         for experiment in self.experiments:
             experiments.append(str(experiment))
         return tr(self.email, self.username, self.theme, self.status, experiments)
+    
+    def isAdmin(self):
+        print("ISADMIN", self.status == UserStatus.ADMIN)
+        return self.status == UserStatus.ADMIN
 
 class ExperimentState(enum.Enum):
     READY = 'ready'
@@ -57,25 +67,34 @@ class Experiment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
     state = db.Column(sqlalchemy.Enum(ExperimentState), default='UNREADY')
+    sources = db.relationship('Source', backref='user')
 
     def __str__(self):
         return self.name
 
     def to_tr(self):
-        return tr(self.name, self.description, self.minutes, self.user, self.room, self.state)
-
+        return tr(self.name, self.description, self.minutes, self.user, self.room, self.state, self.room.mounts)
+    
+    def classColor(self):
+        if self.state == ExperimentState.FREEZE:
+            return 'w3-theme-l4'
+        elif self.state == ExperimentState.READY:
+            return 'w3-theme'
+        elif self.state == ExperimentState.UNREADY:
+            return 'w3-theme-d4'
+        
 class Room(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), unique=True)
     description = db.Column(db.Text(), default='')
-    platformRooms = db.relationship('PlatformRoom', backref='room')
-    img = db.Column(db.String(128), default='images/none.png')
+    img = db.Column(db.String(128), default='none.png')
     experiments = db.relationship('Experiment', backref='room')
-
+    mounts = db.relationship('Mount', backref='room')
+    
     def to_tr(self):
-        platforms = []
-        for pr in self.platformRooms:
-            platforms.append(str(pr.platform))
+        platforms = list()
+        for mount in self.mounts:
+            platforms.append(str(mount.platform) + str(mount.name) )
         return tr(self.name, self.description, self.img, platforms)
     
     def __str__(self):
@@ -85,48 +104,41 @@ class Platform(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), unique=True)
     description = db.Column(db.Text(), default='')
-    img = db.Column(db.String(128), default='images/none.png')
-    platformRooms = db.relationship('PlatformRoom', backref='platform')
+    img = db.Column(db.String(128), default='none.png')
+    mounts = db.relationship('Mount', backref='platform')
 
     def __str__(self):
         return self.name
 
     def to_tr(self):
-        rooms = []
-        for pr in self.platformRooms:
-            rooms.append(str(pr.room))
+        rooms = list()
+        for m in self.mounts:
+            rooms.append(str(m.room))
+            
         return tr(self.name, self.description, self.img, rooms)
     
-    def get_imgPath(self):
-        return self.img
-
 class Source(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
-    experiment_id = db.Column(db.Integer, db.ForeignKey('experiment.id'))
-    experiment = db.relationship('Experiment')
-    platformRoom_id = db.Column(db.Integer, db.ForeignKey('platform_room.id'))
+    experiment_id = db.Column(db.Integer, db.ForeignKey('experiment.id', ondelete="CASCADE"), nullable=False)
+    mount_id = db.Column(db.Integer, db.ForeignKey('mount.id'))
 
-    def getPath(self):
-        return '/experiments/%d/%d.source' % (self.experiment_id, self.id)
+    def __str__(self):
+        return self.name
 
     def to_tr(self):
-        return tr(self.getPath(), self.experiment, self.platformRoom)
-
-class PlatformRoom(db.Model):
+        return tr(self.name, self.user)
+    
+class Mount(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
     platform_id = db.Column(db.Integer, db.ForeignKey('platform.id'))
-    source = db.relationship('Source', backref='platformRoom')
+    sources = db.relationship('Source', backref='mount')
 
-    def __str__(self):
-        return "(plat-room)"
+    def to_tr(self):
+        sources = list()
+        for s in self.sources:
+            sources.append(str(s) + " di " + str(s.experiment))
+        return tr(self.platform, self.room, sources)
 
-class Source_platformRoom(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    source_id = db.Column(db.Integer, db.ForeignKey('source.id'))
-    platformRoom_id = db.Column(db.Integer, db.ForeignKey('platform_room.id'))
-
-    def __str__(self):
-        return "CIASODSA"

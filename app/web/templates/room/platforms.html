@@ -1,4 +1,5 @@
 {% from "layout/components.html" import cHeader, cPlatformRoom %}
+{% from 'layout/models.html' import cMountSmall %}
 {% from "layout/forms.html" import fAddPlatformRoom %}
 {% extends 'layout/index.html' %}
 
@@ -7,8 +8,8 @@
 {% block content %}
 {{ cHeader('Platform of ' + room.name, back='room.index') }}
 <div class="w3-row">
-    {% for pr in room.platforms %}
-        {{ cPlatformRoom(pr) }}
+    {% for mount in room.mounts %}
+        {{ cMountSmall(mount) }}
     {% else %}
         nessuno
     {% endfor %}

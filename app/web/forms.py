@@ -29,4 +29,4 @@ class ExperimentForm(MyModelForm):
     _name = 'Experiment'
     class Meta:
         model = Experiment
-        exclude = ('minutes', )
+        exclude = ('state', )

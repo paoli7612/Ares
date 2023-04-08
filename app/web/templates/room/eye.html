@@ -1,18 +1,20 @@
-{% from "layout/components.html" import cHeader, cPlatformRoom, cImage %}
+{% from "layout/components.html" import cHeader, cPlatformRoom, cImagec, cEmpty %}
 {% from "layout/forms.html" import fAddPlatformRoom %}
 {% extends 'layout/index.html' %}
 
 {% block title %}Room: {{ room.name }}{% endblock %}
 
 {% block content %}
-{{ cHeader('Platform of ' + room.name) }}
-<div class="w3-row">
-    {% for pr in room.platforms %}
-        {{ cPlatformRoom(pr) }}
+    {% if current_user.is_authenticated %}
+        {{ cHeader('Room', desc=doc.index ) }}
     {% else %}
-        nessuno
-    {% endfor %}
-</div>
-{{ cImage(room.name, '100%') }}
-
+        {{ cHeader('Room', desc=doc.index ~ doc.strnager) }}
+    {% endif %}
+    <div class="w3-panel">
+        {% for r in rooms %}
+            {{ cRoomLarge(r)}}
+        {% else %}
+            {{ cEmpty(doc.empty) }}
+        {% endfor %}
+    </div>
 {% endblock %}

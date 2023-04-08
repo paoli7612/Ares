@@ -1,19 +1,19 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import current_user, login_required
-from .models import Room, Platform, Experiment
+from .models import Room, Platform, Experiment, Mount
 from . import db
-from .forms import RoomForm, PlatformRoom, ExperimentForm
-from doc import Room as RoomDoc
+from .forms import RoomForm, ExperimentForm
+import doc
 
 room = Blueprint('room', __name__)
 
 @room.route('/')
 def index():
-    return render_template('room/index.html', rooms=Room.query.all(), doc=RoomDoc)
+    return render_template('room/index.html', rooms=Room.query.all(), doc=doc.Room)
 
 @room.route('<int:id>/eye')
 def eye(id):
-    return render_template('room/eye.html', room=Room.query.get(id))
+    return render_template('room/eye.html', room=Room.query.get(id), doc=doc.Room)
 
 @room.route('/new', methods=['GET', 'POST'])
 @login_required
@@ -40,6 +40,7 @@ def edit(id):
         if form.validate():
             room.name = form.data['name']
             room.description = form.data['description']
+            room.img = form.data['img']
             db.session.add(room)
             db.session.commit()
             flash('Edited Successfully!', category='green') 
@@ -60,15 +61,14 @@ def platforms(id):
     room = Room.query.get(id)
     if request.method == 'POST':
         if 'platform' in request.form.keys():
-            pr = PlatformRoom()
-            pr.platform_id = request.form['platform']
-            pr.room_id = id
-            room.platforms.append(pr)
+            m = Mount(room = room)
+            m.platform = Platform.query.get(request.form['platform'])
+            db.session.add(m)
             db.session.commit()
         else:
             id = request.form['id']
             newName = request.form['name']
-            pr = PlatformRoom.query.get(int(id))
+            pr = Mount.query.get(int(id))
             pr.name = newName
             db.session.add(pr)
             db.session.commit()
@@ -84,11 +84,11 @@ def experiment(id):
             experiment = Experiment()
             experiment.name = form.data['name']
             experiment.description = form.data['description']
-            experiment.room_id = id
-            experiment.user_id = current_user.id
+            experiment.room = Room.query.get(id)
+            experiment.user = current_user
             db.session.add(experiment)
             db.session.commit()
             flash('Edited Successfully!', category='green')
-            return redirect(url_for('experiment.index'))
+            return redirect(url_for('experiment.single', id=experiment.id))
         flash('Error', category='red')
     return render_template('pages/form.html', form=form)

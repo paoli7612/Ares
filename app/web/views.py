@@ -3,7 +3,7 @@ from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
 from . import db
 
-from .models import Experiment, User, Source, Platform, Room
+from .models import Experiment, User, Source, Platform, Room, Mount
 from ares import Ares
 
 views = Blueprint('views', __name__)
@@ -18,7 +18,8 @@ def testDb():
                         platforms = Platform.query.all(),
                         experiments = Experiment.query.all(),
                         rooms = Room.query.all(),
-                        sources = Source.query.all())
+                        sources = Source.query.all(),
+                        mounts = Mount.query.all())
 
 @views.route('/')
 def index():

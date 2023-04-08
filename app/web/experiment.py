@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template, request, redirect, flash, url_for
 from flask_login import current_user
 from werkzeug.utils import secure_filename
-from .models import Experiment, Source, Room, Source_platformRoom
+from .models import Experiment, Source, Mount
 from . import db
 from .forms import ExperimentForm
 from ares import Ares
-from doc import Experiment as ExperimentDoc
+import doc
 
 
 experiment = Blueprint('experiment', __name__)
@@ -13,13 +13,11 @@ experiment = Blueprint('experiment', __name__)
 @experiment.route('/')
 def index():
     return render_template('experiment/index.html',
-                           experiments=Experiment.query.filter_by(user_id=current_user.id), doc=ExperimentDoc)
+                           experiments=Experiment.query.filter_by(user_id=current_user.id), doc=doc.Experiment)
 
 @experiment.route("/<int:id>", methods=['GET', 'POST'])
 def single(id):
     experiment = Experiment.query.get(id)
-    sources = Source.query.filter_by(experiment_id=id)
-    room = Room.query.get(experiment.room_id)
     if request.method == 'POST':
         if request.form['action'] == 'addSource':
             file = request.files['source']
@@ -49,9 +47,7 @@ def single(id):
 
     return render_template('experiment/single.html',
                            experiment=experiment,
-                           sources=sources,
-                           room=room)
-
+                           doc=doc.Experiment)
 @experiment.route('<int:id>/edit', methods=['GET', 'POST'])
 def edit(id):
     experiment = Experiment.query.get(id)
@@ -74,3 +70,15 @@ def delete(id):
         db.session.commit()
         return redirect(url_for('experiment.index'))
     return render_template('pages/ask.html', title='Deleting experiment', question='Are you sure?', icon='trash')
+
+@experiment.route('<int:id>/savePlatforms', methods=['POST'])
+def savePlatforms(id):
+    for mount_id, source_id in request.form.items():
+        if source_id:
+            print(source_id, mount_id)
+            mount = Mount.query.get(int(mount_id))
+            source = Source.query.get(int(source_id))
+            source.mount = mount
+            db.session.add(source)
+    db.session.commit()
+    return redirect(url_for('experiment.single', id=id))

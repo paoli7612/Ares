@@ -30,8 +30,9 @@ class Room(Doc):
 
 class Experiment(Doc, Logged):
     index = """In this pase you can see all your <b>experiments</b>. Each experiment can be
-        <i style="padding: 4px" class="w3-round w3-theme-l3">unready</i> (There are more thing to do before testing it),
+        <i style="padding: 4px" class="w3-round w3-theme-d4">unready</i> (There are more thing to do before testing it),
         <i style="padding: 4px" class="w3-round w3-theme">ready</i> when you want, we can add this experiment to our queue, so test it, 
-        <i style="padding: 4px" class="w3-round w3-theme-d3">freeze</i>: you cannot apport modified until test is not finished"""
+        <i style="padding: 4px" class="w3-round w3-theme-l4">freeze</i>: you cannot apport modified until test is not finished"""
     empty = 'Oh, geez! You haven\'t created anyhing'
     advice = 'You can go on Rooms\'s page and create a new experiment'
+    single = 'In this page you can see this experiment. You can add some sources (.cpp) so decide where load ( in what platform ). Then you can start test. <b>This experiment will be freeze until it end</b>'

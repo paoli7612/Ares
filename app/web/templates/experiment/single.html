@@ -1,5 +1,6 @@
-{% from "layout/components.html" import cHeader, cSubHeader, cSubmit, cButton, cError, cPlatformSource, cSource %}
+{% from "layout/components.html" import cHeader, cSubHeader, cSubmit, cButton, cError, cSource, cSelectSource, cSubmitBack, cInfo %}
 {% from "layout/forms.html" import fSource, fPlatformsSources %}
+{% from 'layout/models.html' import cMountMedium %}
 {% extends 'layout/index.html' %}
 
 {% block title %} Experiment ({{ experiment.id }}){% endblock %}
@@ -8,9 +9,12 @@
 {{ cHeader(experiment.name, [
     ('trash', url_for('experiment.delete', id=experiment.id)),
     ('edit', url_for('experiment.edit', id=experiment.id))
-]) }}
-{{ cSubHeader('Room: ' + room.name, [
-    ('eye', url_for('room.eye', id=room.id))    
+], back='experiment.index') }}
+<div class="w3-panel">
+    {{ cInfo(doc.single) }}
+</div>
+{{ cSubHeader('Room: ' + experiment.room.name, [
+    ('eye', url_for('room.eye', id=experiment.room.id))    
 ])}}
 
 {% if experiment.description: %}
@@ -24,7 +28,7 @@
         <b>Sources</b>
     </legend>
     
-    {% for s in sources: %}
+    {% for s in experiment.sources: %}
         {{ cSource(s) }}
     {% else %}
         {{ cError('There are any source loaded hier') }}</h4>
@@ -38,7 +42,14 @@
         class="w3-center w3-padding w3-white w3-margin-bottom w3-text-theme w3-xlarge w3-card w3-round-large w3-border w3-border-theme">
         <b>Platforms</b>
     </legend>
-    {{ fPlatformsSources(room.platforms, sources) }}
+    <form method="POST" action="{{ url_for('experiment.savePlatforms', id=experiment.id) }}">
+    {% for mount in experiment.room.mounts %}
+        {{ cMountMedium(mount, experiment) }}
+    {% endfor %}
+    <div class="w3-block">
+        {{ cSubmitBack('Save', 'save')}}
+    </div>
+    </form>
 </fieldset>
 
 <fieldset class="w3-border-theme w3-card-4 w3-round-large w3-margin">
@@ -46,5 +57,12 @@
         class="w3-center w3-padding w3-white w3-margin-bottom w3-text-theme w3-xlarge w3-card w3-round-large w3-border w3-border-theme">
         <b>Testbed</b>
     </legend>
+
+    {% if experiment.minutes %}
+        <b>Minutes</b>: {{ experiment.minutes }}
+    {% else %}
+        {{ cError }}
+    {% endif %}
+
 </fieldset>
 <br>{% endblock %}

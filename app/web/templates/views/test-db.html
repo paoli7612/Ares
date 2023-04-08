@@ -1,4 +1,4 @@
-{% from 'layout/test-db.html' import cUsers, cPlatforms, cExperiments, cRooms, cSource %}
+{% from 'layout/test-db.html' import cUsers, cPlatforms, cExperiments, cRooms, cSources, cMounts %}
 {% extends 'layout/index.html' %}
 
 {% block title %}Home{% endblock %}
@@ -11,9 +11,10 @@
 
     {{ cUsers(users, ['email', 'username', 'theme', 'status', 'experiments']) }}
     {{ cPlatforms(platforms, ['name', 'description', 'img', 'rooms']) }}
-    {{ cRooms(rooms, ['name', 'description', 'img']) }}
+    {{ cRooms(rooms, ['name', 'description', 'img', 'platforms']) }}
     {{ cExperiments(experiments, ['name', 'description', 'minutes', 'user', 'room', 'state']) }}
-    {{ cSource(sources, ['path', 'experiment', 'platform']) }}
+    {{ cSources(sources, ['path', 'user']) }}
+    {{ cMounts(mounts, ['platform', 'room', 'source']) }}
 
 {% endblock %}
 

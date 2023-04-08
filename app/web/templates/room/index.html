@@ -1,4 +1,5 @@
 {% from "layout/components.html" import cHeader, cRoom, cEmpty %}
+{% from 'layout/models.html' import cRoomLarge with context %}
 {% extends 'layout/index.html' %}
 
 {% block title %}Rooms{% endblock %}
@@ -11,7 +12,7 @@
     {% endif %}
     <div class="w3-panel">
         {% for r in rooms %}
-            {{ cRoom(r)}}
+            {{ cRoomLarge(r)}}
         {% else %}
             {{ cEmpty(doc.empty) }}
         {% endfor %}

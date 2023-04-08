@@ -41,7 +41,7 @@
 {% endmacro %}
 
 {% macro cExperiments(experiments, fields) %}
-    {{ header('experimentss') }}
+    {{ header('experiments') }}
     <table class="w3-table-all">
         <tr>
             {% for field in fields %}
@@ -68,7 +68,7 @@
     </table>
 {% endmacro %}
 
-{% macro cSource(sources, fields) %}
+{% macro cSources(sources, fields) %}
     {{ header('sources') }}
     <table class="w3-table-all">
         <tr>
@@ -78,6 +78,20 @@
         </tr>
         {% for source in sources %}
             {{ source.to_tr()|safe }}
+        {% endfor %}
+    </table>
+{% endmacro %}
+
+{% macro cMounts(mounts, fields) %}
+    {{ header('mounts') }}
+    <table class="w3-table-all">
+        <tr>
+            {% for field in fields %}
+                <th>{{ field }} </th>
+            {% endfor %}
+        </tr>
+        {% for mount in mounts %}
+            {{ mount.to_tr()|safe }}
         {% endfor %}
     </table>
 {% endmacro %}

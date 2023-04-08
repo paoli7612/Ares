@@ -1,4 +1,4 @@
-from web.models import Platform, User, Experiment, Room, UserStatus, Source, PlatformRoom
+from web.models import Platform, User, Experiment, Room, UserStatus, Source, Mount
 from web.auth import register_user
 from web import db
 import doc
@@ -9,11 +9,11 @@ def reset():
 
     Platform.query.delete()
     new(Platform(name='esp8266',
-                img='/platforms/esp8266.png',
+                img='esp8266.png',
                 description='The ESP8266 is a low-cost Wi-Fi microchip, with built-in TCP/IP networking software, and microcontroller capability, produced by Espressif'
         ))
     new(Platform(name='esp32',
-                img='/platforms/esp32.png',
+                img='esp32.png',
                 description='ESP32 is a series of low-cost, low-power system on a chip microcontrollers with integrated Wi-Fi and dual-mode Bluetooth'
         ))
 
@@ -23,7 +23,7 @@ def reset():
     register_user('hater@gmail.com', 'hater', 'qwerty')
 
     Room.query.delete()
-    new(Room(id=1, name='lab7612', description='My first laboratory'))
+    new(Room(id=1, img='lab7612.png', name='lab7612', description='My first laboratory'))
     new(Room(id=2, name='L1.7', description='Laboratory 7 in Physic (F.I.M.)'))
 
     Experiment.query.delete()
@@ -38,17 +38,14 @@ def reset():
             room_id=2,
             user_id=1))
     
-    PlatformRoom.query.delete()
-    for n in range(5):
-        new(PlatformRoom(platform_id=1, room_id=1))
-    for n in range(3):
-        new(PlatformRoom(platform_id=2, room_id=1))
-        new(PlatformRoom(platform_id=2, room_id=2))
+
+    Mount.query.delete()
+    m =Mount(platform_id=1, room_id=1, name='Sensore di temperatura')
+    new(m)
+    new(Mount(platform_id=1, room_id=1, name='Controllre'))
 
     Source.query.delete()
-    for n in range(4):
-        new(Source(experiment_id=1))
-    for n in range(3):
-        new(Source(experiment_id=2))
+    s = Source(name='led.cpp', experiment_id=1)
+    new(s)
 
     db.session.commit()
