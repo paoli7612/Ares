@@ -1,4 +1,4 @@
-{% from 'layout/components.html' import cSubmitBack, cSubmit, cImage %}
+{% from 'layout/components.html' import cSubmitBack, cSubmit, cImage, cInput %}
 
 {% macro fExperiment(action, e, icon) %}
     <h1>{{ action.capitalize() }} Experiment</h1>
@@ -18,7 +18,7 @@
     </form>
 {% endmacro %}
 
-{% macro fAddPlatformRoom(platforms) %}
+{% macro fMount(platforms) %}
     <form method="POST" class="w3-right w3-third w3-panel w3-theme-d4 w3-padding w3-round-large">
         <h3 class="w3-center">Add platform</h3>
         <select class="w3-select w3-round-large w3-card-4" name="platform">
@@ -30,8 +30,8 @@
     </form>
 {% endmacro %}
 
-{% macro fSource() %}
-    <form method="POST" class="w3-right w3-third w3-panel w3-theme-d4 w3-padding w3-round-large" enctype = "multipart/form-data">
+{% macro fSource(experiment) %}
+    <form action="{{ url_for('experiment.addSource', id=experiment.id) }}" method="POST" class="w3-right w3-third w3-panel w3-theme-d4 w3-padding w3-round-large" enctype="multipart/form-data">
         <input type="hidden" name="action" value="addSource">
         <h3 class="w3-center">Add source</h3>
         <input type="file" class="w3-input" name='source'>
@@ -67,6 +67,13 @@
         {% endfor %}
     </table>
     {{ cSubmit('Save', 'save') }}
+</form>
+{% endmacro %}
+
+{% macro fTestBed(experiment) %}
+<form method="POST" action="{{ url_for ('experiment.testbed', id=experiment.id)}}">
+    {{ cInput('minutes', experiment.minutes) }}
+    {{ cSubmit('Enqueue', 'play-circle') }}
 </form>
 {% endmacro %}
 

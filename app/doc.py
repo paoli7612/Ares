@@ -21,12 +21,21 @@ class Platform(Doc):
     index = 'In this page you can see all our platforms that you can found in <b>rooms</b>. '
     empty = 'Sorry. In this moment there arent platforms registered in our system. '
     advice = 'Please, wait our admins...'
+    created = 'New platform created!'
+    class Action:
+        created = 'New platform created!'
+        edited = 'platform edited!'
+        deleted = 'platform deleted!'
 
 class Room(Doc):
     info = 'A <b>Room</b> is a space where there is platforms and you can test you code on this devices. '
     index = 'In this page you can see all our <b>rooms</b>. In each <b>room</b> there are different <b>platforms</b>. '
     empty = 'Sorry. In this moment there arent <b>rooms</b> registered in our system. '
     strnager = 'After you login, can select a room to create a new <b>experiment</b>. '
+    class Action:
+        created = 'New room created!'
+        edited = 'Room edited!'
+        deleted = 'Room deleted!'
 
 class Experiment(Doc, Logged):
     index = """In this pase you can see all your <b>experiments</b>. Each experiment can be
@@ -36,3 +45,5 @@ class Experiment(Doc, Logged):
     empty = 'Oh, geez! You haven\'t created anyhing'
     advice = 'You can go on Rooms\'s page and create a new experiment'
     single = 'In this page you can see this experiment. You can add some sources (.cpp) so decide where load ( in what platform ). Then you can start test. <b>This experiment will be freeze until it end</b>'
+
+idNotAdmin = 'Sorry! You have not permission to stay in this page. '

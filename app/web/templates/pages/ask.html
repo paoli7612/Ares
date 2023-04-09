@@ -6,10 +6,11 @@
 <h1>{{ title }}</h1>
 <form method="post">
     {{ question }}
+
     {% if label %}
-        {{ cSubmitBack(label, icon)}}
+        {{ cSubmitBack(label, icon, autofocus=1)}}
     {% else %}
-        {{ cSubmitBack('Confirm', icon, backName)}}
+        {{ cSubmitBack('Confirm', icon, backName, autofocus=1)}}
     {% endif %}
 </form>
 {% endblock %}

@@ -1,28 +1,32 @@
-{% macro cImg(src, folder='') %}
-    <img src="/static/{{ folder }}{{ '/' if folder }}{{ src }}" class="w3-block"/>
+{% macro cImg(src, folder='', class='') %}
+    <img src="/static/{{ folder }}{{ '/' if folder }}{{ src }}" class="w3-block {{ class }}"/>
 {% endmacro %}
 
 {% macro cIcon(name, class="") %}
     <i class="fa fa-{{ name }} {{ class }}"></i>
 {% endmacro %}
+
 {% macro cError(text) %}
     <p class="w3-text-red w3-center">
         {{ cIcon('warning') }}
         {{ text|safe }}
     </p>
 {% endmacro %}
+
 {% macro cAdvice(text) %}
     <p class="w3-text-theme w3-right">
         {{ cIcon('info-circle', 'w3-xxlarge') }}
         {{ text|safe }}
     </p>
 {% endmacro %}
+
 {% macro cInfo(text) %}
     <p class="w3-right">
         {{ cIcon('info-circle', 'w3-xxlarge') }}
         {{ text|safe }}
     </p>
 {% endmacro %}
+
 {% macro cEmpty(label) %}
     <p class="w3-text-red w3-center">
         {{ cIcon('warning', 'w3-xlarge w3-margin-right') }}
@@ -30,17 +34,20 @@
         {{ cIcon('warning', 'w3-xlarge w3-margin-left') }}
     </p>
 {% endmacro %}
+
 {% macro cButton(icon, link, color='theme', class="") %}
-    <a href="{{ link }}" class="w3-btn w3-circle w3-card-4 w3-xlarge w3-{{ color }} {{ class }}">
+    <a href="{{ link }}" class="w3-btn w3-circle w3-card-4 w3-{{ color }} {{ class }}">
         {{ cIcon(icon)}}
     </a>
 {% endmacro %}
-{% macro cLink(label, icon, link, color='theme') %}
-    <a href="{{ link }}" class="w3-btn w3-round-large w3-card-4 w3-{{ color }}">
+
+{% macro cLink(label, icon, link, color='theme', class='') %}
+    <a href="{{ link }}" class="w3-btn w3-round-large w3-card-4 {{ class }} w3-{{ color }}">
         {{ cIcon(icon)}}
         {{ label }}
     </a>
 {% endmacro %}
+
 {% macro cBack(name = '', color='white') %}
     {% if name %}
         {{ cLink('Back', 'arrow-left', url_for(name), color=color) }}
@@ -48,6 +55,7 @@
         {{ cLink('Back', 'arrow-left', request.referrer, color=color) }}
     {% endif %}
 {% endmacro %}
+
 {% macro cBackButton(name = '', color='theme-l3') %}
     {% if name %}
         {{ cButton('arrow-left', url_for(name), color=color) }}
@@ -59,32 +67,50 @@
 {% macro cImage(name, width='128px') %}
     <img src="/static/{{name}}" class="w3-cicrcle" style="width: {{ width }}">
 {% endmacro %}
-{% macro cInput(name, value='', class='', readonly=False) %}
+
+{% macro cInput(name, value='', class='', readonly='', required='') %}
     <input
-        class="w3-input w3-round-large w3-card {{ class }} name={{name}}" 
+        class="w3-input w3-round-large w3-card {{ class }}"
         value="{{ value }}"
         name="{{ name }}"
         {{ 'readonly="readonly"' if readonly }}
+        {{ 'required="required"' if required }}
     />
 {% endmacro %}
-{% macro cHeader(title, buttons=[], back='', desc='') %}
+
+
+{% macro cTextArea(name, value='', class='', readonly='', required='') %}
+    <textarea
+        class="w3-input w3-round-large w3-card {{ class }}"
+        value="{{ value }}"
+        name="{{ name }}"
+        {{ 'readonly="readonly"' if readonly }}
+        {{ 'required="required"' if required }}
+    ></textarea>
+{% endmacro %}
+
+{% macro cHeader(title, buttons=[], new='', back='', desc='') %}
+<div class="w3-row">
     <div class="w3-row">
-        <div class="w3-row">
-            <h1 class="w3-left">
-                {% if back %}
-                    {{ cBackButton(back) }}
-                {% endif %}
-                {{ title }}
-            </h1>
-            {% if buttons %}
-                <div class="w3-right">
-                    {% for icon, link in buttons: %}
-                        {{ cButton(icon, link) }}
-                    {% endfor %}
-                </div>
+        <h1 class="w3-left">
+            {% if back %}
+                {{ cBackButton(back) }}
             {% endif %}
+            {{ title }}
+        </h1>
+        {% if buttons %}
+            <div class="w3-right w3-margin">
+                {% for icon, link in buttons: %}
+                    {{ cButton(icon, link) }}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    {% if desc %}
+        <div>
+            {{ desc|safe }}
         </div>
-        {% if desc %}{{ desc|safe }}{% endif %}
+    {% endif %}
     </div>
 {% endmacro %}
 {% macro cSubHeader(title, buttons=[]) %}
@@ -101,39 +127,25 @@
         </div>
     </div>
 {% endmacro %}
-{% macro cSubmit(label, icon) %}
-    <div class="w3-right w3-margin">
-        <button type="submit" class="w3-btn w3-theme w3-round-large w3-card-4">
-            <i class="fa fa-{{ icon }}"></i>
-            {{ label }}
-        </button>
-    </div>
-{% endmacro %}
-{% macro cSubmitButton(icon, class='') %}
-    <button type="submit" class="w3-btn w3-theme w3-circle w3-card-4 {{ class }}">
+{% macro cSubmit(label, icon, class='', color='theme', round='round-large') %}
+    <button type="submit" class="w3-btn w3-{{ color }} w3-{{ round }} w3-card-4 {{ class }}">
         <i class="fa fa-{{ icon }}"></i>
+        {{ label }}
     </button>
 {% endmacro %}
-{% macro cSubmitBack(label, icon, back='') %}
+{% macro cSubmitButton(icon, class='', color='theme') %}
+    {{ cSubmit('', icon, class=class, round='w3-circle', color=color, round='circle') }}
+{% endmacro %}
+{% macro cSubmitBack(label, icon, back='', autofocus='') %}
     <div class="w3-right w3-margin">
         {{ cBack(back) }}
-        <button type="submit" class="w3-btn w3-theme w3-round-large w3-card-4">
+        <button type="submit" class="w3-btn w3-theme w3-round-large w3-card-4" {{ 'autofocus="autofocus"' if autofocus }}>
             <i class="fa fa-{{ icon }}"></i>
             {{ label }}
         </button>
     </div>
 {% endmacro %}
 
-{% macro cExperiment(e) %}
-    <div class="w3-card-4 w3-round-large  {% if e.freeze %}{{ (not e.freeze) * 'w3-theme-l2' }} {{ e.freeze * 'w3-grey' }}{% else %} w3-theme-d2{% endif %}  w3-margin-bottom">
-        <div class="w3-padding w3-center">
-            <a class="w3-btn w3-block w3-theme-d2 w3-round-large w3-card w3-xlarge" href="{{ url_for('experiment.single', id=e.id) }}">{{ e.name }}</a>
-        </div>
-        <div class="w3-panel">
-            <p class="w3-margin">{{ e.description }}</p>
-        </div>
-    </div>
-{% endmacro %}
 {% macro cSource(s) %}
     <div class="w3-panel w3-center">
         <b class="w3-margin-right">{{ s.name }} - {{ s.id }}</b>

@@ -1,0 +1,17 @@
+{% from "layout/components.html" import cHeader, cImg with context %}
+{% from 'layout/models.html' import cMountSmall %}
+{% extends 'layout/index.html' %}
+
+{% block title %}Room: {{ room.name }}{% endblock %}
+
+{% block content %}
+    {% if current_user.is_authenticated %}
+        {{ cHeader('Room', desc=doc.index, back=back) }}
+    {% else %}
+        {{ cHeader('Room', desc=doc.index ~ doc.strnager, back=back) }}
+    {% endif %}
+    {{ cImg(room.img, 'rooms') }}
+    {% for mount in room.mounts %}
+        {{ cMountSmall(mount) }}
+    {% endfor %}
+{% endblock %}

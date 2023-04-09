@@ -9,26 +9,35 @@ room = Blueprint('room', __name__)
 
 @room.route('/')
 def index():
-    return render_template('room/index.html', rooms=Room.query.all(), doc=doc.Room)
+    buttons = list()
+    if current_user.is_authenticated and current_user.isAdmin():
+        buttons.append(('plus', url_for('room.new')))
+    return render_template('pages/index.html',
+                            model = 'Room',
+                            buttons = buttons,
+                           items=Room.query.all(), doc=doc.Room)
 
-@room.route('<int:id>/eye')
-def eye(id):
-    return render_template('room/eye.html', room=Room.query.get(id), doc=doc.Room)
+@room.route('<int:id>')
+def single(id):
+    return render_template('room/single.html',
+                           room=Room.query.get(id),
+                           back='room.index',
+                           doc=doc.Room)
 
 @room.route('/new', methods=['GET', 'POST'])
 @login_required
 def new():
+    if not current_user.isAdmin():
+        flash(doc.idNotAdmin, category='red')
+        return redirect(url_for('views.home'))
     form = RoomForm('new', request.form)
     if request.method == 'POST':
         if form.validate():
-            room = Room()
-            room.name = form.data['name']
-            room.description = form.data['description']
-            db.session.add(room)
+            db.session.add(Room(**form.data))
             db.session.commit()
-            flash('New room created', category='green')
+            flash(doc.Room.Action.created, category='green')
             return redirect(url_for('room.index'))
-        flash('Error!', category='red')
+        flash('Error', category='red')
     return render_template('pages/form.html', form=form)
 
 @room.route('<int:id>/edit', methods=['GET', 'POST'])
@@ -38,27 +47,25 @@ def edit(id):
     form = RoomForm('edit', request.form, obj=room)
     if request.method == 'POST':
         if form.validate():
-            room.name = form.data['name']
-            room.description = form.data['description']
-            room.img = form.data['img']
+            room.update(form.data)
             db.session.add(room)
             db.session.commit()
-            flash('Edited Successfully!', category='green') 
+            flash(doc.Room.Action.edited, category='green') 
             return redirect(url_for('room.index'))
-        flash('Error!', category='red')
-    return render_template('pages/form.html', form=form, backName='room.index')
+        flash('Error', category='red')
+    return render_template('pages/form.html', form=form)
 
 @room.route('<int:id>/delete', methods=['GET', 'POST'])
 def delete(id):
     if request.method == 'POST':
         Room.query.filter_by(id=id).delete()
         db.session.commit()
+        flash(doc.Room.Action.deleted, category='red')
         return redirect(url_for('room.index'))
     return render_template('pages/ask.html', title='Deleting room', question='Are you sure?', icon='trash', backName='room.index')
 
 @room.route('<int:id>/platforms', methods=['GET', 'POST'])
 def platforms(id):
-    room = Room.query.get(id)
     if request.method == 'POST':
         if 'platform' in request.form.keys():
             m = Mount(room = room)
@@ -72,8 +79,7 @@ def platforms(id):
             pr.name = newName
             db.session.add(pr)
             db.session.commit()
-    platforms = Platform.query.all()
-    return render_template('room/platforms.html', room=room, platforms=platforms)
+    return render_template('room/platforms.html', room=Room.query.get(id), platforms=Platform.query.all())
 
 @room.route('<int:id>/newExperiment', methods=['GET', 'POST'])
 def experiment(id):
@@ -92,3 +98,22 @@ def experiment(id):
             return redirect(url_for('experiment.single', id=experiment.id))
         flash('Error', category='red')
     return render_template('pages/form.html', form=form)
+
+@room.route('<int:id>/mountEdit', methods=['POST'])  
+def mountEdit(id):
+    mount = Mount.query.get(id)
+    mount.name = request.form.get('name')
+    mount.description = request.form.get('description')
+    db.session.add(mount)
+    db.session.commit()
+    return redirect(url_for('room.platforms', id=mount.room.id))
+
+@room.route('<int:id>/mountDelete', methods=['GET', 'POST'])  
+def mountDelete(id):
+    if request.method == 'POST':
+        room_id = Mount.query.get(id).room.id
+        Mount.query.filter_by(id=id).delete()
+        db.session.commit()
+        # flash(doc.Mount.Action.deleted, category='red')
+        return redirect(url_for('room.platforms', id=room_id))
+    return render_template('pages/ask.html', title='Deleting mount', question='Are you sure?', icon='trash', backName='room.index')

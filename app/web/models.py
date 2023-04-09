@@ -1,7 +1,7 @@
 from . import db
 from flask_login import UserMixin
-import sqlalchemy
-import enum
+from flask import flash
+import sqlalchemy, enum, os
 
 def td(value):
     return "<td>%s</td>" % str(value)
@@ -11,6 +11,13 @@ def tr(*values):
     for value in values:
         txt += td(value)
     return txt + "</tr>"
+
+def existImg(img, folder):
+    if os.path.exists("web/static/%s/%s" %(folder, img)):
+        return img
+    else:
+        flash("image (static/%s/%s) not found. Rplaced my (none.png)" %(folder, img), category='yellow')
+        return 'none.png'
 
 #platformRoom = db.Table('platform_room',
 #    db.Column('id', db.Integer),
@@ -64,8 +71,8 @@ class Experiment(db.Model):
     name = db.Column(db.String(128))
     description = db.Column(db.Text())
     minutes = db.Column(db.Integer())
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"))
+    room_id = db.Column(db.Integer, db.ForeignKey('room.id', ondelete="CASCADE"))
     state = db.Column(sqlalchemy.Enum(ExperimentState), default='UNREADY')
     sources = db.relationship('Source', backref='user')
 
@@ -91,6 +98,17 @@ class Room(db.Model):
     experiments = db.relationship('Experiment', backref='room')
     mounts = db.relationship('Mount', backref='room')
     
+    def __init__(self, *args, **kwargs):
+        db.Model.__init__(self, *args, **kwargs)
+        self.name = kwargs['name']
+        self.description = kwargs['description']
+        self.img = existImg(kwargs['img'], 'rooms')
+
+    def update(self, data):
+        self.name = data['name']
+        self.description = data['description']
+        self.img = existImg(data['img'], 'rooms')
+
     def to_tr(self):
         platforms = list()
         for mount in self.mounts:
@@ -106,6 +124,18 @@ class Platform(db.Model):
     description = db.Column(db.Text(), default='')
     img = db.Column(db.String(128), default='none.png')
     mounts = db.relationship('Mount', backref='platform')
+
+    def __init__(self, *args, **kwargs):
+        db.Model.__init__(self, *args, **kwargs)
+        self.name = kwargs['name']
+        self.description = kwargs['description']
+        self.img = existImg(kwargs['img'], 'platforms')
+
+    def update(self, data):
+        self.name = data['name']
+        self.description = data['description']
+        self.img = existImg(data['img'], 'platforms')
+
 
     def __str__(self):
         return self.name
@@ -132,13 +162,14 @@ class Source(db.Model):
 class Mount(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
-    room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
-    platform_id = db.Column(db.Integer, db.ForeignKey('platform.id'))
+    description = db.Column(db.Text())
+    room_id = db.Column(db.Integer, db.ForeignKey('room.id',  ondelete="CASCADE"))
+    platform_id = db.Column(db.Integer, db.ForeignKey('platform.id', ondelete="CASCADE"))
     sources = db.relationship('Source', backref='mount')
 
     def to_tr(self):
         sources = list()
         for s in self.sources:
-            sources.append(str(s) + " di " + str(s.experiment))
-        return tr(self.platform, self.room, sources)
+            sources.append(str(s))
+        return tr(self.platform, self.room, self.name, sources)
 

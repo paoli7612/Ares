@@ -1,6 +1,7 @@
-{% from 'layout/components.html' import cImg, cLink, cInput, cSelectSource %}
+{% from 'layout/components.html' import cImg, cLink, cInput, cSelectSource, cSubmit, cButton, cTextArea %}
 
-{% macro cExperimentLarge(experiment) %}
+{% macro cExperimentsIndex(experiment) %}
+cExperimentsIndex
 <div class="w3-panel w3-round-large w3-padding w3-display-container {{ experiment.classColor() }}">
     <div class="w3-col m4">
         {{ cImg(experiment.room.img, 'rooms') }}
@@ -18,29 +19,29 @@
 </div>
 {% endmacro %}
 
-{% macro cRoomLarge(room) %}
-<div class="w3-panel w3-round-large w3-padding w3-display-container w3-card-4">
+{% macro cRoomIndex(room) %}
+<div class="w3-panel w3-round-large w3-padding w3-display-container w3-card-4 w3-border w3-border-theme w3-bottombar">
     <div class="w3-col m4" style="min-height: 200px">
         {{ cImg(room.img, 'rooms') }}
     </div> 
     <div class="w3-col m8 w3-center">
         <h1>{{ room.name }}</h1>
         <div class="w3-display-bottommiddle w3-margin w3-block">
-            {% if current_user.isAdmin() %}
-                {{ cLink('Edit', 'edit', url_for('room.edit', id=room.id)) }}
-                {{ cLink('Change platforms', 'deviantart', url_for('room.platforms', id=room.id)) }}
-                {{ cLink('Dekete room', 'trash', url_for('room.delete', id=room.id)) }}
+            {% if current_user.is_authenticated and current_user.isAdmin() %}
+                {{ cLink('Edit', 'edit', url_for('room.edit', id=room.id), color='white') }}
+                {{ cLink('Change platforms', 'deviantart', url_for('room.platforms', id=room.id), color='white') }}
+                {{ cLink('Delete', 'trash', url_for('room.delete', id=room.id), color='white') }}
             {% endif %}
             {{ cLink('New experiment', 'flask', url_for('room.experiment', id=room.id)) }}
-            {{ cLink('View', 'eye', url_for('room.eye', id=room.id)) }}
+            {{ cLink('View', 'eye', url_for('room.single', id=room.id)) }}
         </div>
     </div>
 </div>
 {% endmacro %}
 
 
-{% macro cPlatformLarge(platform) %}
-<div class="w3-panel w3-theme w3-round-large w3-row w3-padding">
+{% macro cPlatformsIndex(platform) %}
+<div class="w3-panel w3-round-large w3-padding w3-display-container w3-card-4 w3-theme-l2">
     <div class="w3-col m4">
         {{ cImg(platform.img, 'platforms') }}
     </div> 
@@ -49,6 +50,13 @@
         <p>
             {{ platform.description }}
         </p>
+        <div class="w3-display-bottommiddle w3-margin w3-block">
+            {% if current_user.is_authenticated and current_user.isAdmin() %}
+                {{ cLink('Edit', 'edit', url_for('platform.edit', id=platform.id)) }}
+                {{ cLink('Dekete platform', 'trash', url_for('platform.delete', id=platform.id)) }}
+            {% endif %}
+            {{ cLink('Info', 'info-circle', 'https://informati') }}
+        </div>
     </div> 
 </div>
 {% endmacro %}
@@ -57,23 +65,47 @@
 <div class="w3-half w3-display-container">
     <div class="w3-panel w3-theme w3-round-large w3-row w3-padding w3-margin w3-display-container">
         <div class="w3-col m4">
-            {{ cImg(mount.platform.img, 'platforms') }}
+            <a href="{{ url_for('platform.edit', id=mount.platform.id) }}">
+                {{ cImg(mount.platform.img, 'platforms') }}
+            </a>
         </div> 
         <div class="w3-col m8 w3-center">
-            <form id="{{ mount.id }}" method="POST" class=" w3-margin">
-                <div class="w3-margin w3-display-right ">
-                    Platform: <b>{{ mount.platform.name }}</b><br>
-                    {{ cInput('id', value=mount.id, class='w3-hide')}}
-                    {{ cInput('name', value=mount.name)}}
-                </div>
-                <script>
-                    $('#{{mount.id}}').on('change', function() {
-                        $(this).submit();
-                    });
-                </script>
-            </form>
+            <div class="w3-margin w3-display-right ">
+                Platform: <b>{{ mount.platform.name }}</b><br>
+                Name: <b>{{ mount.name }}</b><br>
+                Description: <b>{{ mount.description }}</b>
+            </div>
         </div> 
     </div> 
+</div>
+{% endmacro %}
+
+{% macro cMountSmallEdit(mount) %}
+<div class="w3-half">
+    <div class="w3-panel w3-theme w3-round-large w3-margin w3-card-4 w3-padding">
+        <form action="{{ url_for('room.mountEdit', id=mount.id) }}" method="POST">
+            <div>
+                {{ cImg(mount.platform.img, 'platforms', class='w3-third') }}
+                <div class="w3-twothird w3-right w3-padding">
+                    Platform
+                    {{ cInput('platform', mount.platform.name, readonly=1) }}
+                </div>
+                <div class="w3-twothird w3-right w3-padding">
+                    Name
+                    {{ cInput('name', mount.name) }}
+                </div>
+            </div>
+            <div class="w3-padding">
+                Description
+                {{ cTextArea('description', mount.description) }}
+            </div>
+            <div class="w3-">
+                {{ cSubmit('Save', 'save', color='white', class='w3-right')}}
+                {{ cLink('Delete', 'trash', url_for('room.mountDelete', id=mount.id), color='red', class='w3-left')}}
+            </div>
+            
+        </form>
+    </div>
 </div>
 {% endmacro %}
 
@@ -86,10 +118,24 @@
         <div class="w3-col m8 w3-center">
             <div class="w3-margin w3-display-right ">
                 Platform: <b>{{ mount.platform.name }}</b><br>
-                Name: <b>{{ mount.name}}</b>
+                Name: <b>{{ mount.name}}</b><br>
+                Description: <b>{{ mount.name}}</b>
             </div>
             {{ cSelectSource(experiment.sources, mount) }}
         </div> 
     </div> 
 </div>
 {% endmacro %}
+
+{% macro cIndex(model, item) %}
+{% if model == 'Experiment' %}
+    {{ cExperimentsIndex(item) }}
+{% elif model == 'Platform' %}
+    {{ cPlatformsIndex(item) }}
+{% elif model == 'Room' %}
+    {{ cRoomIndex(item) }}
+{% endif %}
+{% endmacro %}
+
+
+

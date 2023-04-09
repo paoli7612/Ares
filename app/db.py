@@ -18,34 +18,42 @@ def reset():
         ))
 
     User.query.delete()
-    register_user('admin@root.com', 'tomaoli', 'qwerty', status=UserStatus.ADMIN)
-    register_user('user@aol.com', 'user', 'qwerty')
-    register_user('hater@gmail.com', 'hater', 'qwerty')
+    register_user('admin@root.com', 'admin', 'qwerty', status=UserStatus.ADMIN)
+    register_user('user@user.com', 'user', 'qwerty')
 
     Room.query.delete()
     new(Room(id=1, img='lab7612.png', name='lab7612', description='My first laboratory'))
-    new(Room(id=2, name='L1.7', description='Laboratory 7 in Physic (F.I.M.)'))
+    new(Room(id=2, img='sada', name='L1.7', description='Laboratory 7 in Physic (F.I.M.)'))
+
+    db.session.commit()
+
+    admin = User.query.get(1)
+    user = User.query.get(2)
+    lab7612 = Room.query.get(1)
 
     Experiment.query.delete()
-    new(Experiment(name='New Experiment', \
-                description='This is my first experiment', \
-                minutes=25, \
-                room_id=1,
-                user_id=1))
-    new(Experiment(name='Second exp', \
-            description='This is my second experiment on the second room', \
-            minutes=125, \
-            room_id=2,
-            user_id=1))
+    e = Experiment(name='My first experiment', description='created my admin')
+    e.user = admin
+    e.room = lab7612
+    new(e)
+    e = Experiment(name='Second experiment', description='created my user')
+    e.user = user
+    e.room = lab7612
+    new(e)
+
+    db.session.commit()
     
 
     Mount.query.delete()
-    m =Mount(platform_id=1, room_id=1, name='Sensore di temperatura')
-    new(m)
-    new(Mount(platform_id=1, room_id=1, name='Controllre'))
 
-    Source.query.delete()
-    s = Source(name='led.cpp', experiment_id=1)
-    new(s)
-
+    esp8266 = Platform.query.filter_by(name='esp8266').first()
+    esp32 = Platform.query.filter_by(name='esp32').first()
+    lab7612 = Room.query.filter_by(name='lab7612').first()
+    new(Mount(platform=esp8266, room=lab7612, name='Sensore di temperatura'))
+    new(Mount(platform=esp8266, room=lab7612, name='Sensore di umidità'))
+    new(Mount(platform=esp8266, room=lab7612, name='Led rosso'))
+    new(Mount(platform=esp8266, room=lab7612, name='Led verde'))
+    new(Mount(platform=esp32, room=lab7612, name='Calcolatore1'))
+    new(Mount(platform=esp32, room=lab7612, name='Calcolatore2'))
     db.session.commit()
+

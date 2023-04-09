@@ -1,6 +1,6 @@
-{% from "layout/components.html" import cHeader, cPlatformRoom %}
-{% from 'layout/models.html' import cMountSmall %}
-{% from "layout/forms.html" import fAddPlatformRoom %}
+{% from "layout/components.html" import cHeader, with context %}
+{% from 'layout/models.html' import cMountSmallEdit %}
+{% from "layout/forms.html" import fMount %}
 {% extends 'layout/index.html' %}
 
 {% block title %}Room: {{ room.name }}{% endblock %}
@@ -9,12 +9,12 @@
 {{ cHeader('Platform of ' + room.name, back='room.index') }}
 <div class="w3-row">
     {% for mount in room.mounts %}
-        {{ cMountSmall(mount) }}
+        {{ cMountSmallEdit(mount) }}
     {% else %}
         nessuno
     {% endfor %}
 </div>
 
-{{ fAddPlatformRoom(platforms) }}
+{{ fMount(platforms) }}
 
 {% endblock %}

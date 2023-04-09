@@ -14,7 +14,7 @@
     {{ cRooms(rooms, ['name', 'description', 'img', 'platforms']) }}
     {{ cExperiments(experiments, ['name', 'description', 'minutes', 'user', 'room', 'state']) }}
     {{ cSources(sources, ['path', 'user']) }}
-    {{ cMounts(mounts, ['platform', 'room', 'source']) }}
+    {{ cMounts(mounts, ['platform', 'room', 'name', 'sources']) }}
 
 {% endblock %}
 

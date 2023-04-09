@@ -1,0 +1,18 @@
+{% from "layout/components.html" import cHeader, cExperiment, cEmpty, cAdvice  with context %}
+{% from 'layout/models.html' import cIndex with context %}
+{% extends 'layout/index.html' %}
+
+{% block title %}{{ model }}s{% endblock %}
+
+{% block content %}
+    {{ cHeader(model~'s', desc=doc.index, buttons=buttons) }}
+    <div class="w3-panel">
+        {% for item in items %}
+            {{ cIndex(model, item) }}
+        {% else %}
+            {{ cEmpty(doc.empty) }}
+            <div style="height: 500px"></div>
+            {{ cAdvice(doc.advice) }}
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,5 +1,5 @@
-{% from "layout/components.html" import cHeader, cSubHeader, cSubmit, cButton, cError, cSource, cSelectSource, cSubmitBack, cInfo %}
-{% from "layout/forms.html" import fSource, fPlatformsSources %}
+{% from "layout/components.html" import cHeader, cSubHeader, cSubmit, cButton, cError, cSource, cSelectSource, cSubmitBack, cInfo with context%}
+{% from "layout/forms.html" import fSource, fPlatformsSources,fTestBed %}
 {% from 'layout/models.html' import cMountMedium %}
 {% extends 'layout/index.html' %}
 
@@ -10,21 +10,13 @@
     ('trash', url_for('experiment.delete', id=experiment.id)),
     ('edit', url_for('experiment.edit', id=experiment.id))
 ], back='experiment.index') }}
-<div class="w3-panel">
-    {{ cInfo(doc.single) }}
-</div>
-{{ cSubHeader('Room: ' + experiment.room.name, [
-    ('eye', url_for('room.eye', id=experiment.room.id))    
-])}}
+<div class="w3-panel">{{ cInfo(doc.single) }}</div>
+{{ cSubHeader('Room: ' + experiment.room.name, [('eye', url_for('room.single', id=experiment.room.id))])}}
 
-{% if experiment.description: %}
-<h4>{{ experiment.description }}</h4>
-{% else: %}
-{{ cError('There is no description') }}</h4>
-{% endif %}
+{% if experiment.description: %}<h4>{{ experiment.description }}</h4>{% else: %}{{ cError('There is no description') }}</h4>{% endif %}
+
 <fieldset class="w3-border-theme w3-card-4 w3-round-large w3-margin">
-    <legend
-        class="w3-center w3-padding w3-white w3-margin-bottom w3-text-theme w3-xlarge w3-card w3-round-large w3-border w3-border-theme">
+    <legend class="w3-center w3-padding w3-white w3-margin-bottom w3-text-theme w3-xlarge w3-card w3-round-large w3-border w3-border-theme">
         <b>Sources</b>
     </legend>
     
@@ -34,7 +26,7 @@
         {{ cError('There are any source loaded hier') }}</h4>
     {% endfor %}
 
-    {{ fSource() }}
+    {{ fSource(experiment) }}
 </fieldset>
 
 <fieldset class="w3-border-theme w3-card-4 w3-round-large w3-margin">
@@ -43,9 +35,9 @@
         <b>Platforms</b>
     </legend>
     <form method="POST" action="{{ url_for('experiment.savePlatforms', id=experiment.id) }}">
-    {% for mount in experiment.room.mounts %}
-        {{ cMountMedium(mount, experiment) }}
-    {% endfor %}
+        {% for mount in experiment.room.mounts %}
+            {{ cMountMedium(mount, experiment) }}
+        {% endfor %}
     <div class="w3-block">
         {{ cSubmitBack('Save', 'save')}}
     </div>
@@ -61,7 +53,7 @@
     {% if experiment.minutes %}
         <b>Minutes</b>: {{ experiment.minutes }}
     {% else %}
-        {{ cError }}
+        {{ fTestBed(experiment) }}
     {% endif %}
 
 </fieldset>
