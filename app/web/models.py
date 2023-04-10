@@ -19,11 +19,18 @@ def existImg(img, folder):
         flash("image (static/%s/%s) not found. Rplaced my (none.png)" %(folder, img), category='yellow')
         return 'none.png'
 
-#platformRoom = db.Table('platform_room',
-#    db.Column('id', db.Integer),
-#    db.Column('platform_id', db.Integer, db.ForeignKey('platform.id')),
-#    db.Column('room_id', db.Integer, db.ForeignKey('room.id'))
-#)
+sourceMount = db.Table('source_mount',
+    db.Column('id', db.Integer),
+    db.Column('source_id', db.Integer, db.ForeignKey('source.id', ondelete="CASCADE")),
+    db.Column('mount_id', db.Integer, db.ForeignKey('mount.id', ondelete="CASCADE"))
+)
+
+class ElementQ(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    experiment_id = db.Column(db.Integer, db.ForeignKey('experiment.id', ondelete="SET NULL"))
+    enqueue_time = db.Column(db.DateTime, nullable=False)
+    testbed_start = db.Column(db.DateTime)
+    testbed_end = db.Column(db.DateTime)
 
 class UserStatus(enum.Enum):
     ADMIN = 'admin'
@@ -42,8 +49,8 @@ class User(db.Model, UserMixin):
 
     def getPicture(self):
         return """
-            <img src="https://i.pravatar.cc/300?img={self.email}" alt="avatar" class="w3-circle w3-margin w3-card-4">
-        """
+            <img src="https://i.pravatar.cc/300?u=%s" alt="avatar" class="w3-circle w3-margin w3-card-4">
+        """ % self.email
 
     def getStatus(self):
         return str(self.status)
@@ -58,8 +65,13 @@ class User(db.Model, UserMixin):
         return tr(self.email, self.username, self.theme, self.status, experiments)
     
     def isAdmin(self):
-        print("ISADMIN", self.status == UserStatus.ADMIN)
         return self.status == UserStatus.ADMIN
+
+    def getStatus(self):
+        if self.status == UserStatus.ADMIN:
+            return "admin"
+        elif self.status == UserStatus.USER:
+            return "user"
 
 class ExperimentState(enum.Enum):
     READY = 'ready'
@@ -74,14 +86,26 @@ class Experiment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"))
     room_id = db.Column(db.Integer, db.ForeignKey('room.id', ondelete="CASCADE"))
     state = db.Column(sqlalchemy.Enum(ExperimentState), default='UNREADY')
-    sources = db.relationship('Source', backref='user')
+    sources = db.relationship('Source', backref='experiment')
+    elementsQ = db.relationship('ElementQ', backref='experiment')
 
     def __str__(self):
         return self.name
 
     def to_tr(self):
-        return tr(self.name, self.description, self.minutes, self.user, self.room, self.state, self.room.mounts)
+        platforms = list()
+        for m in self.room.mounts:
+            platforms.append(str(m.name) + str(m.platform))
+        return tr(self.name, self.description, self.minutes, self.user, self.room, self.state, platforms)
     
+    def update(self, data):
+        self.name = data['name']
+        self.description = data['description']
+        self.minutes = data['minutes']
+
+    def isFreeze(self):
+        return self.state == ExperimentState.FREEZE
+
     def classColor(self):
         if self.state == ExperimentState.FREEZE:
             return 'w3-theme-l4'
@@ -89,14 +113,36 @@ class Experiment(db.Model):
             return 'w3-theme'
         elif self.state == ExperimentState.UNREADY:
             return 'w3-theme-d4'
+    def getDuration(self):
+        if self.minutes:
+            return str(self.minutes) + " minutes"
+        else:
+            return False
+        
+    def countSourceMount(self):
+        count = int()
+        for mount in self.room.mounts:
+            for source in self.sources:
+                if mount in source.mounts:
+                    count += 1
+        return count
+    
+    def getState(self):
+        if self.state == ExperimentState.FREEZE:
+            return "freeze"
+        elif self.state == ExperimentState.READY:
+            return "ready"
+        else:
+            return "unready"
         
 class Room(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), unique=True)
     description = db.Column(db.Text(), default='')
     img = db.Column(db.String(128), default='none.png')
-    experiments = db.relationship('Experiment', backref='room')
-    mounts = db.relationship('Mount', backref='room')
+    experiments = db.relationship('Experiment', backref='room', cascade="all,delete",)
+    mounts = db.relationship('Mount', backref='room', cascade="all,delete")
+    
     
     def __init__(self, *args, **kwargs):
         db.Model.__init__(self, *args, **kwargs)
@@ -124,6 +170,7 @@ class Platform(db.Model):
     description = db.Column(db.Text(), default='')
     img = db.Column(db.String(128), default='none.png')
     mounts = db.relationship('Mount', backref='platform')
+    test = db.Column(db.Boolean, default=False)
 
     def __init__(self, *args, **kwargs):
         db.Model.__init__(self, *args, **kwargs)
@@ -145,19 +192,22 @@ class Platform(db.Model):
         for m in self.mounts:
             rooms.append(str(m.room))
             
-        return tr(self.name, self.description, self.img, rooms)
+        return tr(self.name, self.test, self.description, self.img, rooms)
     
 class Source(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
     experiment_id = db.Column(db.Integer, db.ForeignKey('experiment.id', ondelete="CASCADE"), nullable=False)
-    mount_id = db.Column(db.Integer, db.ForeignKey('mount.id'))
+    mounts = db.relationship('Mount', secondary=sourceMount, backref='sources')
 
     def __str__(self):
-        return self.name
+        return str("%d) %s" % (self.id, self.name))
 
     def to_tr(self):
-        return tr(self.name, self.user)
+        mounts = list()
+        for m in self.mounts:
+            mounts.append(str(m.name) + " " + str(m.room) + " " + str(self.experiment))
+        return tr(self.name, self.experiment.user, self.experiment, mounts)
     
 class Mount(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -165,7 +215,10 @@ class Mount(db.Model):
     description = db.Column(db.Text())
     room_id = db.Column(db.Integer, db.ForeignKey('room.id',  ondelete="CASCADE"))
     platform_id = db.Column(db.Integer, db.ForeignKey('platform.id', ondelete="CASCADE"))
-    sources = db.relationship('Source', backref='mount')
+    #sources = db.relationship('Source', backref='mount')
+
+    def __str__(self):
+        return "[%s] %s" %(self.platform, self.name)
 
     def to_tr(self):
         sources = list()

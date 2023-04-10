@@ -1,3 +1,10 @@
+class Auth:
+    class Signup:
+        email_exist = 'Email adress already registered in this app'
+        password_different = 'Password and condifm of password are not equal'
+        account_created = 'Account created correctly'
+        
+
 class Logged:
     pass
 
@@ -31,11 +38,23 @@ class Room(Doc):
     info = 'A <b>Room</b> is a space where there is platforms and you can test you code on this devices. '
     index = 'In this page you can see all our <b>rooms</b>. In each <b>room</b> there are different <b>platforms</b>. '
     empty = 'Sorry. In this moment there arent <b>rooms</b> registered in our system. '
+    advice = 'Maibe any room are not exists'
     strnager = 'After you login, can select a room to create a new <b>experiment</b>. '
     class Action:
         created = 'New room created!'
         edited = 'Room edited!'
         deleted = 'Room deleted!'
+        class Img:
+            notValid = 'Sorry but we accept only image .png'
+
+class Mount:
+    empty = 'This room have\'t yet platforms'
+
+class ElementQ(Doc):
+    index = 'In this page you can see all your experiment and the times to wait'
+    empty = 'You haven\'t experiment yet in this queue '
+    advice = 'Maibe any room are not exists'
+    strnager = 'After you login, can select a room to create a new <b>experiment</b>. '
 
 class Experiment(Doc, Logged):
     index = """In this pase you can see all your <b>experiments</b>. Each experiment can be
@@ -45,5 +64,32 @@ class Experiment(Doc, Logged):
     empty = 'Oh, geez! You haven\'t created anyhing'
     advice = 'You can go on Rooms\'s page and create a new experiment'
     single = 'In this page you can see this experiment. You can add some sources (.cpp) so decide where load ( in what platform ). Then you can start test. <b>This experiment will be freeze until it end</b>'
+    noDuration = 'You have not select how many minutes is duration of this experiment'
+    noDescription = 'Description of this experiment is not setted'
+    class Action:
+        created = 'New experiment created!'
+        edited = 'Experiment edited!'
+        deleted = 'Experiment deleted!'
+
+    class Testbed:
+        prepare = 'Are you gonna enqueue you experiment.'
 
 idNotAdmin = 'Sorry! You have not permission to stay in this page. '
+
+class User():
+    account = 'This is you account. All your information are reserved'
+    settings = 'In this page you can change you username or the color-theme. Only your account will be changed'
+
+class Test:
+    class Form:
+        page = 'In this page you can compile a source.cpp and try to compile on our platform. Then know if code compile'
+        ok = 'You\re code compile successfull'
+        no = 'Sorry byt you\'re shutty code not worki'
+    class File:
+        page = 'In this page you can upload a zip file and testing it'
+        ok = 'You code compile'
+        no = 'This shit, sucks'
+        nonZip = 'Sorry we accept only .zip files'
+
+    
+    

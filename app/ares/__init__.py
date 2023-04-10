@@ -65,6 +65,7 @@ class Ares:
     
     @staticmethod
     def control(path, esp):
+        esp = esp[3:]
         fname = path.split("/")[-1]
         os.rename(path, os.path.join(Ares.platformio_src_folder, 'main.cpp'))
         os.chdir(Ares.platformio_folder)

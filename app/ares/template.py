@@ -37,7 +37,8 @@ void loop() {
 }
 """
 
-def build(s, l, esp='32'):
+def build(s, l, esp='esp32'):
+    esp = esp[3:]
     s = '\t'.join(s.splitlines(True))
     l = '\t'.join(l.splitlines(True))
     if esp == '32':

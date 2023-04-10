@@ -20,4 +20,8 @@
     {% endif %}
     {{ item('Platforms', 'deviantart', 'platform.index') }}
     {{ item('Rooms', 'building', 'room.index') }}
+    {% if current_user.is_authenticated  and current_user.isAdmin() %}
+        {{ item('Queue', 'long-arrow-right', 'queue.index', class='w3-amber')}}
+        {{ item('DB', 'database', 'views.testDb',  class='w3-amber')}}
+    {% endif %}
 </nav>

@@ -1,0 +1,28 @@
+{% from 'layout/components.html' import cImg, cSubmitBack %}
+{% extends 'layout/index.html' %}
+
+{% block title %}Testbed{% endblock %}
+
+{% block content %}
+
+<div class="w3-panel">
+    {{ cImg(experiment.room.img, 'rooms') }}
+</div>
+
+<div class="w3-panel">
+    {% for source in experiment.sources %}
+        Il file <b>{{ source }}</b> verrà caricato su:
+        <ul>
+            {% for mount in experiment.room.mounts %}
+                {% if mount in source.mounts %}
+                <li>{{ mount }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endfor %}
+    <form method="POST">
+        {{ cSubmitBack('Confirm', 'play-circle') }}
+    </form>
+</div>
+ 
+{% endblock %}

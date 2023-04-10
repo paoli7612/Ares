@@ -1,11 +1,11 @@
-{% from "layout/components.html" import cHeader %}
+{% from "layout/panels.html" import pHeader %}
 {% extends 'layout/index.html' %}
 
 {% block title %} Source ({{ source.id }}){% endblock %}
 
 {% block content %}
 
-{{ cHeader(source.name, [('arrow-left', url_for('experiment.single', id=experiment_id)), ('trash', url_for('source.delete', id=source.id))]) }}
+{{ pHeader(source.name, backref=url_for('experiment.single', id=source.experiment_id) ) }}
 
 <pre>
     {{ text }}

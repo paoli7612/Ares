@@ -1,0 +1,21 @@
+{% from 'layout/components.html' import cImg %}
+{% macro cPlatformsIndex(platform) %}
+<div class="w3-panel w3-round-large w3-padding w3-display-container w3-card-4 w3-theme-l2">
+    <div class="w3-col m4">
+        {{ cImg(platform.img, 'platforms') }}
+    </div> 
+    <div class="w3-col m8 w3-center">
+        <h1>{{ platform.name }}</h1>
+        <p>
+            {{ platform.description }}
+        </p>
+        <div class="w3-display-bottommiddle w3-margin w3-block">
+            {% if current_user.is_authenticated and current_user.isAdmin() %}
+                {{ cLink(label='Edit', icon='edit', href=url_for('platform.edit', id=platform.id), color='amber') }}
+                {{ cLink(label='Delete', icon='trash', href=url_for('platform.delete', id=platform.id), color='amber') }}
+            {% endif %}
+            {{ cLink('Info', 'info-circle', 'https://informati') }}
+        </div>
+    </div> 
+</div>
+{% endmacro %}

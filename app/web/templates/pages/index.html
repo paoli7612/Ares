@@ -1,18 +1,17 @@
-{% from "layout/components.html" import cHeader, cExperiment, cEmpty, cAdvice  with context %}
 {% from 'layout/models.html' import cIndex with context %}
+{% from 'layout/panels.html' import pHeader, pDoc, pEmpty %}
 {% extends 'layout/index.html' %}
 
 {% block title %}{{ model }}s{% endblock %}
 
 {% block content %}
-    {{ cHeader(model~'s', desc=doc.index, buttons=buttons) }}
+    {{ pDoc(doc.index) }}
+    {{ pHeader(label=model~'s', buttons=buttons) }}
     <div class="w3-panel">
         {% for item in items %}
             {{ cIndex(model, item) }}
         {% else %}
-            {{ cEmpty(doc.empty) }}
-            <div style="height: 500px"></div>
-            {{ cAdvice(doc.advice) }}
+            {{ pEmpty(label=doc.empty, advice=doc.advice) }}
         {% endfor %}
     </div>
 {% endblock %}

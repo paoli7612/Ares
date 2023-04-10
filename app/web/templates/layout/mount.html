@@ -1,0 +1,45 @@
+{% from 'layout/components.html' import cImg, cInput, cTextArea, cSubmit, cLink %}
+{% from 'layout/panels.html' import pInput %}
+
+{% macro cMountSmall(mount) %}
+<div class="w3-half w3-display-container">
+    <div class="w3-panel w3-theme w3-round-large w3-row w3-padding w3-margin w3-display-container">
+        <div class="w3-col m4">
+            <a href="{{ url_for('platform.edit', id=mount.platform.id) }}">
+                {{ cImg(mount.platform.img, 'platforms') }}
+            </a>
+        </div> 
+        <div class="w3-col m8 w3-center">
+            <div class="w3-margin w3-display-right ">
+                Platform: <b>{{ mount.platform.name }}</b><br>
+                Name: <b>{{ mount.name }}</b><br>
+                Description: <b>{{ mount.description }}</b>
+            </div>
+        </div> 
+    </div> 
+</div>
+{% endmacro %}
+
+{% macro cMountEdit(mount) %}
+<div class="w3-half">
+    <div class="w3-panel w3-theme w3-round-large w3-margin w3-card-4 w3-padding">
+        <form method="post" action="{{ url_for('room.mountEdit', id=mount.id) }}">
+            <div class="w3-container">
+                {{ cImg(mount.platform.img, 'platforms', class='w3-third') }}
+                <span class="w3-twothird w3-right"> 
+                    Platform: <b>{{ mount.platform.name }}</b>
+                </span>
+                {{ pInput(label='Name', name='name', value=mount.name, class="w3-twothird w3-right") }}
+            </div>
+            <div class="w3-panel">
+                Description
+                {{ cTextArea(name='description', value=mount.description) }}
+            </div>
+            <div class="w3-container w3-center">
+                {{ cLink(label='Delete', icon='trash', href=url_for('room.mountDelete', id=mount.id), color='red') }}
+                {{ cSubmit(label='Save', icon='save', color='white') }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endmacro %}

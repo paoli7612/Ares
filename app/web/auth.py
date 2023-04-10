@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User, UserStatus
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
+import doc
 
 auth = Blueprint('auth', __name__)
 
@@ -10,29 +11,29 @@ def register_user(email, username, password, status=UserStatus.USER):
     user = User(email=email, username=username, password=generate_password_hash(password, method='sha256'), status=status)
     db.session.add(user)
     db.session.commit()
-
+    return user
 
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        email = request.form.get('email')
-        username = request.form.get('username')
-        password1 = request.form.get('password1')
-        password2 = request.form.get('password2')
-        user = User.query.filter_by(email=email).first()
-        if user:
-            flash('email used', category='red')
+        data = request.form
+        # if exist a user this email
+        if User.query.filter_by(email=data['email']).first():
+            flash(doc.Auth.Signup.email_exist, category='red')
             return redirect(url_for('auth.signup'))
 
-        if password1 != password2:
-            flash('control password wrong', category='yellow')
+        # if password1 and password 2 are not equal
+        if  data['password1'] != data['password2']:
+            flash('control password wrong', category='red')
             return redirect(url_for('auth.signup'))
 
-        register_user(email, username, password1)
+        # register user
+        user = register_user(data['email'], data['username'], data['password1'])
+        # login user
         login_user(user, remember=True)
+
         flash('Account created', category='green')
         return redirect(url_for('auth.account'))
-
     return render_template('auth/signup.html')
 
 
@@ -44,7 +45,7 @@ def settings():
         current_user.username = request.form['username']
         db.session.add(current_user)
         db.session.commit()
-    return render_template('auth/settings.html')
+    return render_template('auth/settings.html', doc=doc.User.settings)
 
 @auth.route('/logout', methods=['GET', 'POST'])
 @login_required
@@ -78,5 +79,5 @@ def signin():
 @auth.route('/account')
 @login_required
 def account():
-    return render_template('auth/account.html')
+    return render_template('auth/account.html', doc=doc.User.account)
 

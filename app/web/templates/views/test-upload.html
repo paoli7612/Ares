@@ -1,17 +1,22 @@
-{% from "layout/components.html" import cHeader, cSubmitBack, cSelectPlatform %}
+{% from "layout/panels.html" import pHeader, pSubmitBack, pDoc %}
 {% extends 'layout/index.html' %}
 
 {% block title %}Test{% endblock %}
 
 {% block content %}
-{{ cHeader('Test upload file',[ ('edit', url_for('views.test'))]) }}
-<form method="post" id="input" enctype="multipart/form-data">
-    <div class="w3-row">
-    <div class="w3-third w3-right">
-        {{ cSelectPlatform(platforms) }}
+{{ pHeader('Test upload file',[ ('edit', 'views.test')], back='views.test') }}
+{{ pDoc(doc) }}
+<form method="post" enctype="multipart/form-data">
+    <div class="w3-panel w3-margin ">
+        <select class="w3-select w3-round-large w3-third w3-card-4" name="esp">
+            {% for platform in platforms %}
+                <option value="{{ platform.id }}">{{ platform.name }}</option>
+            {% endfor %}
+        </select>
+        <label class="w3-margin-top w3-padding">
+            Select the platform you want
+        </label>
     </div>
-        <input type="file" class="w3-input w3-round-circle w3-third w3-center w3-margin-right" name="source">
-    </div>
-    {{ cSubmitBack('test', 'try') }}
+    {{ pSubmitBack(label='Test', icon='try') }}
 </form>
 {% endblock %}

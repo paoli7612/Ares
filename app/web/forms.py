@@ -11,7 +11,7 @@ class MyModelForm(ModelForm):
             self.icon = 'edit'
     
     def get_title(self):
-        return self.action + " " + self._name 
+        return self.action.capitalize() + " " + self._name.lower() 
 
     title = property(get_title)
 
@@ -19,6 +19,7 @@ class PlatformForm(MyModelForm):
     _name = 'Platform'
     class Meta:
         model = Platform
+        exclude = ('test', )
 
 class RoomForm(MyModelForm):
     _name = 'Room'

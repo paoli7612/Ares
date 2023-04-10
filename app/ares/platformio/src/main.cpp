@@ -8,7 +8,7 @@ void setup() {
     WiFi.mode(WIFI_STA);
     WiFi.begin("FASTWEB7612", "modena7612");
     ArduinoOTA.begin();
-    dnas kdasnjskdn al;
+    fffffffffffffffff
 }
 
 void loop() {

@@ -1,60 +1,21 @@
-{% from "layout/components.html" import cHeader, cSubHeader, cSubmit, cButton, cError, cSource, cSelectSource, cSubmitBack, cInfo with context%}
+{% from "layout/components.html" import cBack, cError, cSource, cSubmitBack, cLink with context%}
 {% from "layout/forms.html" import fSource, fPlatformsSources,fTestBed %}
-{% from 'layout/models.html' import cMountMedium %}
+{% from 'layout/panels.html' import pSubHeader, pDoc, pFreeze %}
+{% from 'layout/experiment.html' import pHeader, pSources, pMounts, pTestbed %}
 {% extends 'layout/index.html' %}
 
 {% block title %} Experiment ({{ experiment.id }}){% endblock %}
 
 {% block content %}
-{{ cHeader(experiment.name, [
-    ('trash', url_for('experiment.delete', id=experiment.id)),
-    ('edit', url_for('experiment.edit', id=experiment.id))
-], back='experiment.index') }}
-<div class="w3-panel">{{ cInfo(doc.single) }}</div>
-{{ cSubHeader('Room: ' + experiment.room.name, [('eye', url_for('room.single', id=experiment.room.id))])}}
+{{ pHeader(experiment, doc) }}
 
-{% if experiment.description: %}<h4>{{ experiment.description }}</h4>{% else: %}{{ cError('There is no description') }}</h4>{% endif %}
+<!-- SOURCES -->
+{{ pSources(experiment) }}
 
-<fieldset class="w3-border-theme w3-card-4 w3-round-large w3-margin">
-    <legend class="w3-center w3-padding w3-white w3-margin-bottom w3-text-theme w3-xlarge w3-card w3-round-large w3-border w3-border-theme">
-        <b>Sources</b>
-    </legend>
-    
-    {% for s in experiment.sources: %}
-        {{ cSource(s) }}
-    {% else %}
-        {{ cError('There are any source loaded hier') }}</h4>
-    {% endfor %}
+<!-- MOUNTS -->
+{{ pMounts(experiment) }}
+ 
+<!-- TESTBED -->
+{{ pTestbed(experiment, doc) }}
 
-    {{ fSource(experiment) }}
-</fieldset>
-
-<fieldset class="w3-border-theme w3-card-4 w3-round-large w3-margin">
-    <legend
-        class="w3-center w3-padding w3-white w3-margin-bottom w3-text-theme w3-xlarge w3-card w3-round-large w3-border w3-border-theme">
-        <b>Platforms</b>
-    </legend>
-    <form method="POST" action="{{ url_for('experiment.savePlatforms', id=experiment.id) }}">
-        {% for mount in experiment.room.mounts %}
-            {{ cMountMedium(mount, experiment) }}
-        {% endfor %}
-    <div class="w3-block">
-        {{ cSubmitBack('Save', 'save')}}
-    </div>
-    </form>
-</fieldset>
-
-<fieldset class="w3-border-theme w3-card-4 w3-round-large w3-margin">
-    <legend
-        class="w3-center w3-padding w3-white w3-margin-bottom w3-text-theme w3-xlarge w3-card w3-round-large w3-border w3-border-theme">
-        <b>Testbed</b>
-    </legend>
-
-    {% if experiment.minutes %}
-        <b>Minutes</b>: {{ experiment.minutes }}
-    {% else %}
-        {{ fTestBed(experiment) }}
-    {% endif %}
-
-</fieldset>
 <br>{% endblock %}

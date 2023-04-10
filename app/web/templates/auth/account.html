@@ -1,15 +1,12 @@
-{% from 'layout/components.html' import cIcon %}
+{% from 'layout/components.html' import cIcon, cButton %}
+{% from 'layout/panels.html' import pDoc %}
 {% extends 'layout/index.html' %}
 
 {% block title %}Account{% endblock %}
 
-{% macro button(icon, name, title) %}
-<a href="{{ url_for(name) }}" class="w3-btn w3-xlarge w3-theme w3-circle" title="{{ title }}">
-    {{ cIcon(icon) }}
-</a>
-{% endmacro %}
-
 {% block content %}
+{{ pDoc(doc)}}
+
 <div class="w3-display-container w3-center">
     <div class="w3-display-topleft w3-card w3-theme w3-round-large">
         <div class="w3-margin-left w3-margin-right">
@@ -21,16 +18,17 @@
             <h3>{{ current_user.username }}</h3>
         </div>
     </div>
+
     <div class="w3-panel">
         {{ current_user.getPicture()|safe }}
     </div>
 </div>
 
 <div class="w3-panel w3-card-4 w3-center w3-round-large w3-padding-large">
-    {{ button('info-circle', 'views.info', 'info') }}
-    {{ button('cog', 'auth.settings', 'settings') }}
-    {{ button('flask', 'experiment.index', 'my experiments') }}
-    {{ button('sign-out', 'auth.logout', 'logout') }}
+    {{ cButton(icon='question-circle', view='views.help', title='info', class='w3-xlarge') }}
+    {{ cButton(icon='cog', view='auth.settings', title='settings', class='w3-xlarge') }}
+    {{ cButton(icon='flask', view='experiment.index', title='my experiments', class='w3-xlarge') }}
+    {{ cButton(icon='sign-out', view='auth.logout', title='logout', class='w3-xlarge') }}
 </div>
 
 {% endblock %}

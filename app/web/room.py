@@ -3,7 +3,7 @@ from flask_login import current_user, login_required
 from .models import Room, Platform, Experiment, Mount
 from . import db
 from .forms import RoomForm, ExperimentForm
-import doc
+import doc, os
 
 room = Blueprint('room', __name__)
 
@@ -11,11 +11,12 @@ room = Blueprint('room', __name__)
 def index():
     buttons = list()
     if current_user.is_authenticated and current_user.isAdmin():
-        buttons.append(('plus', url_for('room.new')))
+        buttons.append(('plus', 'room.new'))
     return render_template('pages/index.html',
                             model = 'Room',
                             buttons = buttons,
-                           items=Room.query.all(), doc=doc.Room)
+                            items=Room.query.all(),
+                            doc=doc.Room)
 
 @room.route('<int:id>')
 def single(id):
@@ -60,26 +61,16 @@ def delete(id):
     if request.method == 'POST':
         Room.query.filter_by(id=id).delete()
         db.session.commit()
-        flash(doc.Room.Action.deleted, category='red')
+        flash(doc.Room.Action.deleted, category='yellow')
         return redirect(url_for('room.index'))
     return render_template('pages/ask.html', title='Deleting room', question='Are you sure?', icon='trash', backName='room.index')
 
 @room.route('<int:id>/platforms', methods=['GET', 'POST'])
 def platforms(id):
-    if request.method == 'POST':
-        if 'platform' in request.form.keys():
-            m = Mount(room = room)
-            m.platform = Platform.query.get(request.form['platform'])
-            db.session.add(m)
-            db.session.commit()
-        else:
-            id = request.form['id']
-            newName = request.form['name']
-            pr = Mount.query.get(int(id))
-            pr.name = newName
-            db.session.add(pr)
-            db.session.commit()
-    return render_template('room/platforms.html', room=Room.query.get(id), platforms=Platform.query.all())
+    return render_template('room/platforms.html',
+                           room=Room.query.get(id),
+                           platforms=Platform.query.all(),
+                           doc = doc.Mount)
 
 @room.route('<int:id>/newExperiment', methods=['GET', 'POST'])
 def experiment(id):
@@ -99,8 +90,18 @@ def experiment(id):
         flash('Error', category='red')
     return render_template('pages/form.html', form=form)
 
+@room.route('<int:id>/addMount', methods=['POST'])  
+def addMount(id):
+    room = Room.query.get(id)
+    mount = Mount(room=room)
+    mount.platform_id = request.form.get('platform_id')
+    db.session.add(mount)
+    db.session.commit()
+    return redirect(url_for('room.platforms', id=mount.room.id))
+
 @room.route('<int:id>/mountEdit', methods=['POST'])  
 def mountEdit(id):
+    print(id, request.form)
     mount = Mount.query.get(id)
     mount.name = request.form.get('name')
     mount.description = request.form.get('description')
@@ -117,3 +118,21 @@ def mountDelete(id):
         # flash(doc.Mount.Action.deleted, category='red')
         return redirect(url_for('room.platforms', id=room_id))
     return render_template('pages/ask.html', title='Deleting mount', question='Are you sure?', icon='trash', backName='room.index')
+
+@room.route('<int:id>/changeImg', methods=['GET', 'POST'])  
+def changeImg(id):
+    file = request.files['img']
+    if file:
+        if file.filename.split('.')[-1] == 'png':
+            ## DA METTERE APOSTo
+            room = Room.query.get(id)
+            path = 'web/static/rooms/' + room.name + '.png'
+            room.img = room.name + ".png"
+            db.session.add(room)
+            db.session.commit()
+            file.save(path)
+        else:
+            flash(doc.Room.Action.Img.notValid, category='red')
+    else:
+        flash('file not selected', category='red')
+    return redirect(url_for('room.platforms', id=id))

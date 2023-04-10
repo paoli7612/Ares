@@ -19,12 +19,14 @@ def create_app():
     from .experiment import experiment
     from .source import source
     from .room import room
+    from .queue import queue
     app.register_blueprint(views, url_prexif='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(platform, url_prefix='/platform')
     app.register_blueprint(experiment, url_prefix='/experiment')
     app.register_blueprint(source, url_prefix='/source')
     app.register_blueprint(room, url_prefix='/room')
+    app.register_blueprint(queue, url_prefix='/queue')
 
     create_database(app)
 

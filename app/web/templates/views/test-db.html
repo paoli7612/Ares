@@ -1,19 +1,22 @@
 {% from 'layout/test-db.html' import cUsers, cPlatforms, cExperiments, cRooms, cSources, cMounts %}
+{% from 'layout/panels.html' import pHeader, pSubmit %}
 {% extends 'layout/index.html' %}
 
 {% block title %}Home{% endblock %}
 
 {% block content %}
 
+    {{ pHeader(label='Database', back='views.home') }}
+
     <form method="POST">
-        <input type="submit" value="reset">
+        {{ pSubmit(icon='database', label='Reset database from db.py', class='w3-xlarge') }}
     </form>
 
     {{ cUsers(users, ['email', 'username', 'theme', 'status', 'experiments']) }}
-    {{ cPlatforms(platforms, ['name', 'description', 'img', 'rooms']) }}
+    {{ cPlatforms(platforms, ['name', 'test', 'description', 'img', 'rooms']) }}
     {{ cRooms(rooms, ['name', 'description', 'img', 'platforms']) }}
     {{ cExperiments(experiments, ['name', 'description', 'minutes', 'user', 'room', 'state']) }}
-    {{ cSources(sources, ['path', 'user']) }}
+    {{ cSources(sources, ['path', 'user', 'experiment', 'mounts']) }}
     {{ cMounts(mounts, ['platform', 'room', 'name', 'sources']) }}
 
 {% endblock %}

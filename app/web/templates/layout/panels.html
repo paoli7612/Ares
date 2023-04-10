@@ -1,0 +1,60 @@
+{% from 'layout/components.html' import cBack, cIcon, cSubmitBack, cInput, cDoc, cHeader, cSubmit, cError, cAdvice %}
+
+{% macro pInput(label='', name='', value='', required='', type='text', class='', readonly='') %}
+<label class="w3-panel {{ class }}">
+    {{ label }}
+    {{ cInput(name=name, value=value, required=required, type=type, readonly=readonly) }}
+</label>
+{% endmacro %}
+
+{% macro pSubmitBack(label='', icon='', back='', autofocus='') %}
+    <div class="w3-panel">
+        <div class="w3-right">
+            {{ cSubmitBack(label=label, icon=icon, back=back, autofocus=autofocus)}}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro pSubmit(label='', icon='', class='') %}
+    <div class="w3-panel">
+        <div class="w3-right">
+            {{ cSubmit(label=label, icon=icon, class=class) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro pDoc(doc='', class='') %}
+    <div class="w3-panel w3-border w3-display-container w3-round-large w3-row">
+        <div class="w3-col m2">
+            {{ cIcon('info-circle', class='w3-display-right w3-xxlarge w3-margin-right')}}
+        </div>
+        <div class="w3-col m10">
+            {{ cDoc(doc=doc, class=class) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro pHeader(label='', buttons=[], back='', backref='') %}
+    <div class="w3-panel">
+        {{ cHeader(label=label, buttons=buttons, back=back, backref=backref)}}
+    </div>
+{% endmacro %}
+
+{% macro pSubHeader(label='', buttons=[], back='') %}
+    {{ label }} {{ back }}
+{% endmacro %}
+
+{% macro pEmpty(label='', advice='') %}
+<div class="w3-panel">
+    {{ cError(label) }}
+    {{ cAdvice(advice) }}
+</div>
+{% endmacro %}
+{% macro pFreeze() %}
+<div class="w3-modal w3-show">
+    <div class="w3-theme-d5 w3-padding w3-display-container">
+        {{ cError('Experiment freezed', class="w3-xxlarge") }}
+        {{ cBack(class="w3-display-bottommiddle") }}
+    </div>
+</div>
+{% endmacro %}

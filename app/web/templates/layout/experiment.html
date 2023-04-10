@@ -1,0 +1,139 @@
+{% from 'layout/components.html' import cError, cWarning, cLink, cButton, cImg, cFile %}
+{% from 'layout/panels.html' import pFreeze, pSubmitBack, pDoc %}
+
+{% macro cExperimentsIndex(experiment) %}
+<div class="w3-panel w3-round-large w3-padding w3-display-container w3-card {{ experiment.classColor() }}">
+    <div class="w3-col m4">
+        {{ cImg(experiment.room.img, 'rooms', class='w3-round-large w3-margin') }}
+    </div> 
+    <div class="w3-col m8 w3-center">
+        <h1>{{ experiment.name }}</h1>
+        <div>
+            State: {{ experiment.getState() }} <br>
+            Platform: {{ experiment.room.mounts|length  }}<br> 
+            Sources: {{ experiment.sources|length }}<br>
+            Platform with Sources: {{ experiment.countSourceMount() }}
+        </div>
+        <div class="w3-display-bottomright w3-margin">
+            {{ cLink(label='Show', icon='flask', color='white', href=url_for('experiment.single', id=experiment.id)) }}
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro pHeader(experiment, doc) %}
+<div class="w3-display-container">
+    {% if experiment.isFreeze() %}
+        {{ pFreeze() }}
+    {% endif %}
+    <!-- TOOLS -->
+    <div class="w3-display-topright w3-margin-right">
+        {{ cLink(label='Edit', href=url_for('experiment.edit', id=experiment.id), icon='edit', class='w3-xxlarge') }}
+        {{ cLink(label='Delete', href=url_for('experiment.delete', id=experiment.id), icon='trash', class='w3-xxlarge') }}
+        {{ cLink(icon='link', color='grey', class='w3-xxlarge') }}
+    </div>
+
+    <div class="w3-panel">
+        <!-- NAME -->
+        <h1>{{ experiment.name }}</h1>
+        <!-- DESCRIPTION -->
+        <div>
+            {% if experiment.description %}
+                <b>Description</b>:
+                {{ experiment.description }}    
+            {% else %}
+                {{ cError(doc.noDescription) }}
+            {% endif %}
+        </div>
+        <!-- MINUTES -->
+        <div>
+            {% if experiment.minutes %}
+                <b>Duration</b>:
+                {{ experiment.getDuration() }}    
+            {% else %}
+                {{ cError(doc.noDuration) }}
+            {% endif %}
+        </div>
+        <!-- ROOM -->
+        <div>
+            <b>Room</b>:
+            {{ experiment.room.name }}
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro pSources(experiment) %}
+<fieldset class="w3-border-theme w3-card-4 w3-round-large w3-margin">
+    <legend class="w3-center w3-padding w3-white w3-margin-bottom w3-text-theme w3-xlarge w3-card w3-round-large w3-border w3-border-theme">
+        <b>Sources</b>
+    </legend>
+    
+    {% for s in experiment.sources: %}
+        <div class="w3-panel w3-center">
+            <b class="w3-margin-right">{{ s.name }} - {{ s.id }}</b>
+            {{ cButton(icon='eye', href=url_for('source.single', id=s.id)) }}
+        </div>
+    {% else %}
+        {{ cError('There are any source loaded hier') }}</h4>
+    {% endfor %}
+
+    <form class="w3-panel w3-center" action="{{ url_for('experiment.addSource', id=experiment.id) }}" method="post" enctype="multipart/form-data">
+        {{ cFile(icon='file', label='Add source', name='source', onchange='submit') }}
+    </form>
+    
+</fieldset>
+{% endmacro %}
+
+{% macro cMountMedium(mount, experiment) %}
+<div class="w3-half w3-display-container">
+    <div class="w3-panel w3-theme w3-round-large w3-row w3-padding w3-margin w3-display-container">
+        <div class="w3-col m4">
+            {{ cImg(mount.platform.img, 'platforms') }}
+        </div> 
+        <div class="w3-col m8 w3-center">
+            <div class="w3-margin w3-display-right ">
+                Platform: <b>{{ mount.platform.name }}</b><br>
+                Name: <b>{{ mount.name}}</b><br>
+                Description: <b>{{ mount.name}}</b>
+            </div>
+            <select class="w3-select w3-round-large w3-card-4" name="{{ mount.id }}">
+                <option value="">---</option>
+                    {% for source in experiment.sources %}
+                        <option value="{{ source.id }}"
+                            {% if mount in source.mounts %}
+                                selected="selected"
+                            {% endif %}
+                        >{{ source.name }}</name>
+                    {% endfor %}
+                </select>
+        </div> 
+    </div> 
+</div>
+{% endmacro %}
+
+{% macro pMounts(experiment) %}
+<fieldset class="w3-border-theme w3-card-4 w3-round-large w3-margin">
+    <legend
+        class="w3-center w3-padding w3-white w3-margin-bottom w3-text-theme w3-xlarge w3-card w3-round-large w3-border w3-border-theme">
+        <b>Platforms</b>
+    </legend>
+    <form method="POST" action="{{ url_for('experiment.savePlatforms', id=experiment.id) }}">
+        {% for mount in experiment.room.mounts %}
+            {{ cMountMedium(mount, experiment) }}
+        {% endfor %}
+        {{ pSubmitBack(label='Save', icon='save')}}
+    </form>
+</fieldset>
+{% endmacro %}
+
+{% macro pTestbed(experiment, doc) %}
+<fieldset class="w3-border-theme w3-card-4 w3-round-large w3-margin">
+    <legend
+        class="w3-center w3-padding w3-white w3-margin-bottom w3-text-theme w3-xlarge w3-card w3-round-large w3-border w3-border-theme">
+        <b>Testbed</b>
+    </legend>
+    {{ pDoc(doc.Testbed.prepare) }}
+    {{ cLink(icon='play-circle', label='Prepare', class='w3-right', href=url_for('experiment.testbed', id=experiment.id)) }}
+</fieldset>
+{% endmacro %}

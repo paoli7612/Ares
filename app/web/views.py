@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, flash, url_for
 from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
 from . import db
+import db, doc
 
 from .models import Experiment, User, Source, Platform, Room, Mount
 from ares import Ares
@@ -10,8 +11,8 @@ views = Blueprint('views', __name__)
 
 @views.route('/test-db', methods=['GET', 'POST'])
 def testDb():
+    """ Show in a page all data stored in database. Reserved for admin"""
     if request.method == 'POST':
-        import db
         db.reset()
     return render_template('views/test-db.html',
                         users = User.query.all(),
@@ -23,6 +24,7 @@ def testDb():
 
 @views.route('/')
 def index():
+    """ Redirect on home or welcome. Depend if user is logged in """
     if current_user.is_authenticated:
         return redirect(url_for('views.home'))
     return redirect(url_for('views.welcome'))
@@ -30,15 +32,18 @@ def index():
 @views.route('/home')
 @login_required
 def home():
+    """ Show homepage for logged user """
     return render_template('views/home.html')
 
-@views.route('/info')
-def info():
-    return render_template('views/info.html')
+@views.route('/help')
+def help():
+    """ Show all information about this app """
+    return render_template('views/help.html')
 
 
 @views.route('/welcome')
 def welcome():
+    """ Show homepage if user is not authenticated"""
     if current_user.is_authenticated:
         return redirect(url_for('views.home'))
     return render_template('views/welcome.html')
@@ -47,16 +52,18 @@ def welcome():
 @views.route('/test', methods=['GET', 'POST'])
 @login_required
 def test():
+    """ try compile the request.form and return id test ok or not """
     if request.method == 'POST':
         if Ares.test(request.form):
-            flash('test ok', 'green')
+            flash(doc.Test.Form.ok, 'green')
         else:
-            flash('test failed', 'red')
-    return render_template('views/test.html')
+            flash(doc.Test.Form.ok, 'red')
+    return render_template('views/test.html', platforms=Platform.query.filter_by(test=True), doc=doc.Test.Form.page)
     
 @views.route('/test-upload', methods=['GET', 'POST'])
 @login_required
 def test_upload():
+    """ try compile the code in zip loaded and return id test ok or not """
     if request.method == 'POST':
         file = request.files['source']
         if file and file.filename.split('.')[-1] == 'cpp':
@@ -70,8 +77,8 @@ def test_upload():
             file.save(path)
             flash('Test loaded')
         else:
-            flash('extension is not permitted', category='red')
-    return render_template('views/test-upload.html', platforms=Platform.query.all())
+            flash(doc.Test.File.nonZip, category='red')
+    return render_template('views/test-upload.html', platforms=Platform.query.all(), doc=doc.Test.File.page)
     
 
 

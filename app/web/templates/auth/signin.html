@@ -1,3 +1,4 @@
+{% from 'layout/panels.html' import pInput, pSubmitBack %}
 {% extends 'layout/index.html' %}
 
 {% block title %}Login{% endblock %}
@@ -5,12 +6,8 @@
 {% block content %}
 <form method="post">
     <h3 align="center">Login</h3>
-    <label class="w3-panel"> Email
-        <input type="email" name="email" class="w3-input">
-    </label>
-    <label class="w3-panel"> Password
-        <input type="password" name="password" class="w3-input">
-    </label>
-    <input type="submit" class="w3-btn w3-theme w3-right w3-margin">
+    {{ pInput(label='Email', name='email', required=1, type='email') }}
+    {{ pInput(label='Password', name='password', required=1, type='password') }}
+    {{ pSubmitBack(label='Signin', icon='sign-in', back='views.welcome')}}
 </form>
 {% endblock %}

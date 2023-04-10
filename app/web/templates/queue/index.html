@@ -1,0 +1,15 @@
+{% from "layout/components.html" import cHeader, cPlatform, cEmpty, cAdvice %}
+{% from 'layout/models.html' import cPlatformLarge %}
+{% extends 'layout/index.html' %}
+
+{% block title %}Queue{% endblock title %}
+
+{% block content %}
+    <div class="w3-panel">
+
+        {% for elementQ in queue %}
+            {{ elementQ.experiment }}
+        {% endfor %}
+
+    </div>
+{% endblock %}
