@@ -1,9 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, flash, url_for
 from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
-from . import db
-import db, doc
-
+from . import db, doc
+from . import database
 from .models import Experiment, User, Source, Platform, Room, Mount, ElementQ
 from ares import Ares
 
@@ -11,15 +10,14 @@ views = Blueprint('views', __name__)
 
 @views.route('/reset')
 def reset():
-    db.empty()
-    return redirect(url_for('views.home'))
+    database.empty()
+    return redirect(url_for('views.welcome'))
 
 @views.route('/test-db', methods=['GET', 'POST'])
 def testDatabase():
     """ Show in a page all data stored in database. Reserved for admin"""
     if request.method == 'POST':
-        db.reset()
-    print(Source.query.all())
+        database.reset()
     return render_template('views/test-db.html',
                         users = User.query.all(),
                         platforms = Platform.query.all(),

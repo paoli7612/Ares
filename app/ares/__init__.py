@@ -62,6 +62,12 @@ class Ares:
             content = template.build(form['setup'], form['loop'], form['platform'])
             Ares.Source.build(id, content)
 
+    @staticmethod
+    def test(form):
+        id = Ares.randomId()
+        Ares.Source.buildByForm(id, form)
+        Ares.Source.use(id)
+
     def read(path):
         return open(path, 'r').read()
     
@@ -87,7 +93,7 @@ class Ares:
     @staticmethod
     def randomId():
         used = list()
-        for fname in os.listdir(Ares.source_folder):
+        for fname in os.listdir(Ares.pathSources):
             n = re.findall(r'\d+', fname)
             if n:
                 used.append(int(n[0]))
@@ -96,12 +102,7 @@ class Ares:
             id += 1
         return id
 
-    @staticmethod
-    def test(form):
-        source = Ares.parse(form, form['esp'])
-        id = Ares.randomId()
-        path = Ares.newFile(source, id)
-        return Ares.control(path, form['esp'])
+
     
     @staticmethod
     def control(path, esp):

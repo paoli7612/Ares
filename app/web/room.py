@@ -1,8 +1,8 @@
+import os
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import current_user, login_required
-import doc, os
 from .models import Room, Platform, Experiment, Mount
-from . import db
+from . import db, doc
 from .forms import RoomForm, ExperimentForm
 
 room = Blueprint('room', __name__)

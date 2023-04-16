@@ -1,12 +1,12 @@
+import  datetime
 from flask import Blueprint, render_template, request, redirect, flash, url_for
 from flask_login import current_user
 from werkzeug.utils import secure_filename
 import sqlalchemy
 from .models import Experiment, Source, Mount, ExperimentState, ElementQ
-from . import db
+from . import db, doc
 from .forms import ExperimentForm
 from ares import Ares
-import doc, datetime
 
 experiment = Blueprint('experiment', __name__)
 

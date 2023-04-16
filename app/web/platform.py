@@ -1,9 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, flash, url_for
 from flask_login import current_user, login_required
-from . import db
+from . import db, doc
 from .models import Platform
 from .forms import PlatformForm
-import doc
 
 platform = Blueprint('platform', __name__)
 
