@@ -93,7 +93,7 @@ def addSource(id):
             f.experiment_id = id
             db.session.add(f)
             db.session.commit()
-            path = Ares.path(f.id)
+            path = Ares.Source.path(f.id)
             file.save(path)
         else:
             flash('extension is not permitted', category='red')

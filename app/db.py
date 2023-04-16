@@ -10,6 +10,7 @@ def empty():
     Platform.query.delete()
     User.query.delete()
     Experiment.query.delete()
+    ElementQ.query.delete()
     Room.query.delete()
     Source.query.delete()
     Mount.query.delete()

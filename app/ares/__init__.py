@@ -1,4 +1,4 @@
-import template
+from . import template
 import os, re, subprocess, shutil
 
 class MyPIO:
