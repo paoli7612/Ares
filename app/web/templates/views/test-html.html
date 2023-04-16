@@ -1,0 +1,60 @@
+{% from 'layout/components.html' import cLink %}
+{% from 'layout/panels.html' import pHeader, pSubHeader with context %}
+{% from 'layout/panels.html' import pMessage, pError, pWarning, pInfo, pSuccess %}
+{% from 'layout/panels.html' import pInput, pSubmitBack %}
+{% extends 'layout/index.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="w3-panel w3-paddin w3-card-4">
+    <div class="w3-panel w3-border">
+        {{ cLink("Home", icon='home', view='views.home') }}
+        {{ cLink(icon='home', view='views.home') }}
+    </div>
+<pre class="w3-panel">
+cLink(label="Home", icon='home', view='views.home')
+cLink(icon='home', view='views.home')
+</pre></div>
+
+<div class="w3-panel w3-paddin w3-card-4">
+    <div class="w3-panel w3-border">
+        {{ pHeader("Titolone") }}
+        {{ pSubHeader("Sottotitolino") }}
+    </div>
+<pre class="w3-panel">
+    pHeader("Titolone")
+    pSubHeader("Sottotitolino")
+</pre></div>
+
+<div class="w3-panel w3-border">
+    <div class="w3-panel w3-paddin w3-card-4">
+        {{ pMessage("message") }}
+        {{ pError("error") }}
+        {{ pWarning("warning") }}
+        {{ pInfo("info") }}
+        {{ pSuccess("success") }}
+    </div>
+<pre class="w3-panel">
+pMessage("message")
+pError("error")
+pWarning("warning")
+pInfo("info")
+pSuccess("success")
+</pre></div>
+
+<div class="w3-panel w3-paddin w3-card-4">
+    <div class="w3-panel w3-border">
+        {{ pInput(label='Username', name='username', value='tomaoli', placeholder='Usernasme') }}
+        {{ pInput(label='Email', name='email', value='tomaoli7612@gmail.com', placeholder='Email') }}
+        {{ pInput(label='Password', name='password1', placeholder='*********', class='w3-half') }}
+        {{ pInput(label='Confirm password', name='password1', placeholder='*********', class='w3-half') }}
+    </div>
+<pre class="w3-panel">
+pInput(type='text', label='Username', name='uername', value='tomaoli', required=1, placeholder='text')
+pInput(type='email', label='Email', name='email', value='tomaoli@gmail.com', required=1, placeholder='email')
+pInput(type='password', label='Password', name='password', required=1, class="w3-half", placeholder='password')
+pInput(type='password', label='Password', name='password', required=1, class="w3-half", placeholder='password')
+</pre></div>
+
+{% endblock %}

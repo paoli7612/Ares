@@ -1,4 +1,4 @@
-{% from 'layout/components.html' import cSubmitBack, cSubmit, cImage, cInput %}
+{% from 'layout/components.html' import cSubmitBack, cSubmit, cImage, cInput, cIcon %}
 
 {% macro fExperiment(action, e, icon) %}
     <h1>{{ action.capitalize() }} Experiment</h1>
@@ -56,5 +56,24 @@
     {{ cInput('minutes', experiment.minutes) }}
     {{ cSubmit('Enqueue', 'play-circle') }}
 </form>
+{% endmacro %}
+
+{% macro fFile(label, action, class, icon='file') %}
+    <form id='form_file' action="{{ action }}" method="post" enctype="multipart/form-data">
+        <label class="{{ class }}">
+            <span class="w3-btn w3-padding w3-card-4 w3-{{ color }} w3-round-large">
+                {{ cIcon(icon) }}
+                {{ label }}
+            </span>
+            {{ cInput(class='w3-hide', type='file', name='file', id='file') }}
+            {{ cSubmit(class='w3-hide', id='submit')}}
+        </label>
+    </form>
+    <script>
+        $('#file').change(function() {       
+            console.log('click')
+            $('#submit').click();
+        });
+    </script>
 {% endmacro %}
 

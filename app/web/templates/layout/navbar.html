@@ -20,8 +20,14 @@
     {% endif %}
     {{ item('Platforms', 'deviantart', 'platform.index') }}
     {{ item('Rooms', 'building', 'room.index') }}
-    {% if current_user.is_authenticated  and current_user.isAdmin() %}
-        {{ item('Queue', 'long-arrow-right', 'queue.index', class='w3-amber')}}
-        {{ item('DB', 'database', 'views.testDb',  class='w3-amber')}}
+    {% if current_user.is_authenticated %}
+        {% if current_user.inQueue %}
+            {{ item('Queue', 'long-arrow-right', 'queue.index') }}
+        {% endif %}
+        {% if current_user.isAdmin() %}
+            {{ item('DB', 'database', 'views.testDatabase',  class='w3-amber')}}
+            {{ item('HTML', 'html5', 'views.testHtml',  class='w3-amber')}}
+        {% endif %}
     {% endif %}
+
 </nav>

@@ -49,6 +49,8 @@ class Room(Doc):
 
 class Mount:
     empty = 'This room have\'t yet platforms'
+    advice = 'Maybe insert a new platform in this room'
+
 
 class ElementQ(Doc):
     index = 'In this page you can see all your experiment and the times to wait'
@@ -57,7 +59,7 @@ class ElementQ(Doc):
     strnager = 'After you login, can select a room to create a new <b>experiment</b>. '
 
 class Experiment(Doc, Logged):
-    index = """In this pase you can see all your <b>experiments</b>. Each experiment can be
+    index = """In this page you can see all your <b>experiments</b>. Each experiment can be
         <i style="padding: 4px" class="w3-round w3-theme-d4">unready</i> (There are more thing to do before testing it),
         <i style="padding: 4px" class="w3-round w3-theme">ready</i> when you want, we can add this experiment to our queue, so test it, 
         <i style="padding: 4px" class="w3-round w3-theme-l4">freeze</i>: you cannot apport modified until test is not finished"""
@@ -73,6 +75,9 @@ class Experiment(Doc, Logged):
 
     class Testbed:
         prepare = 'Are you gonna enqueue you experiment.'
+        unready = 'Sorry but this experiment is not ready to test'
+        notime = 'I don\'t know how many minutes do that'
+        ready = 'Compliment! Now we are able to do that experiment'
 
 idNotAdmin = 'Sorry! You have not permission to stay in this page. '
 

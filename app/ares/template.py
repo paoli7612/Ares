@@ -1,4 +1,5 @@
-source32 = """
+platforms = {
+'esp32':"""
 #include <WiFi.h>
 #include <ESPmDNS.h>
 #include <WiFiUdp.h>
@@ -15,9 +16,8 @@ void loop() {
     ArduinoOTA.handle();
     %s
 }
-"""
-
-source8266 = """
+""",
+'esp8266':"""
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
@@ -36,12 +36,9 @@ void loop() {
     %s
 }
 """
+}
 
-def build(s, l, esp='esp32'):
-    esp = esp[3:]
+def build(s, l, platform='esp32'):
     s = '\t'.join(s.splitlines(True))
     l = '\t'.join(l.splitlines(True))
-    if esp == '32':
-        return source32 % (s, l)
-    elif esp == '8266':
-        return source8266 % (s, l)
+    return platforms[platform] % (s, l)

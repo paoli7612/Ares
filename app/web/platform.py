@@ -9,12 +9,8 @@ platform = Blueprint('platform', __name__)
 
 @platform.route('/')
 def index():
-    buttons = list()
-    if current_user.is_authenticated and current_user.isAdmin():
-        buttons.append(('plus', 'platform.new'))
     return render_template('pages/index.html',
                            model = 'Platform',
-                           buttons = buttons,
                            items=Platform.query.all(),
                            doc=doc.Platform)
 

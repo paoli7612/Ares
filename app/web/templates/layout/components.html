@@ -1,55 +1,45 @@
-{% macro cImg(src, folder='', class='') %}
-    <img src="/static/{{ folder }}{{ '/' if folder }}{{ src }}" class="w3-block {{ class }}"/>
+<!-- BASIC -->
+{% macro cImg(src, folder, class) %}
+    <img src="/static/{{ folder~'/' if folder }}{{ src }}" class="w3-block {{ class }}"/>
 {% endmacro %}
 
-{% macro cIcon(icon, class="") %}
+{% macro cIcon(icon, class) %}
     <i class="fa fa-{{ icon }} {{ class }}"></i>
 {% endmacro %}
 
-{% macro cError(label, class='') %}
-    <span class="w3-text-red {{class}}">
-        {{ cIcon('warning') }}
-        {{ label|safe }}
-    </span>
+<!-- INPUT -->
+{% macro cInput(name, value, id, class, placeholder, required=True, type='text', disabled=False) %}
+        <input
+        class="w3-input w3-round-large w3-card {{ class }}"
+        type="{{ type }}"
+        name="{{ name }}"
+        {% if value %} value="{{ value }}" {% endif %}
+        {% if id %} id="{{ id }}" {% endif %}
+        {% if placeholder %} placeholder="{{ placeholder }}" {% endif %}
+        {% if disabled %} disabled="disabled" {% endif %}
+        {% if required %} required="required" {% endif %}
+    /> 
 {% endmacro %}
 
-{% macro cWarning(label) %}
-    <span class="w3-text-yellow {{class}}">
-        {{ cIcon('info-circle') }}
-        {{ label|safe }}
-    </span>
+{% macro cTextarea(name, value, class, readonly, required) %}
+    <textarea
+        class="w3-input w3-round-large w3-card {{ class }}"
+        value="{{ value }}"
+        name="{{ name }}"
+        {{ 'readonly="readonly"' if readonly }}
+        {{ 'required="required"' if required }}
+    >{{ value }}</textarea>
 {% endmacro %}
 
-{% macro cAdvice(label='') %}
-    <p class="w3-text-theme w3-right w3-border w3-padding w3-border-theme w3-round-large">
-        {{ cIcon('info-circle', 'w3-xxlarge w3-margin-right') }}
-        {{ label|safe }}
-    </p>
-{% endmacro %}
-
-{% macro cInfo(text) %}
-    <span class="w3-text-theme {{class}}">
-        {{ cIcon('info-circle') }}
-        {{ label|safe }}
-    </span>
-{% endmacro %}
-
-{% macro cEmpty(label) %}
-    <p class="w3-text-red w3-center">
-        {{ cIcon('warning', 'w3-xlarge w3-margin-right') }}
-        {{ label }}
-        {{ cIcon('warning', 'w3-xlarge w3-margin-left') }}
-    </p>
-{% endmacro %}
-
-{% macro cButton(icon='', name='', view='', color='theme', class='', title='', href='') %}
-<a href="{{ href or url_for(view or 'views.home') }}" class="w3-btn w3-{{ color }} w3-circle {{ class }}" title="{{ title }}">
-    {{ cIcon(icon) }}
-</a>
-{% endmacro %}
-
-{% macro cLink(label='', icon='', href='', url='', color='theme', class='') %}
-    <a href="{{ href }}" class="w3-btn w3-round-large w3-card-4 {{ class }} {{ 'w3-'~color if color }}">
+<!-- Buttons -->
+{% macro cLink(label, icon, view, url, onclick, class, title, color='theme') %}
+    <a {% if url or view %}
+            href="{{ url or url_for(view) }}"
+        {% else %}
+            onclick="{{ onclick }}"
+        {% endif %}
+        title="{{ title }}"
+        class="w3-large w3-btn w3-round-large w3-card-4 {{ class }} {{ 'w3-'~color if color }}">
         {{ cIcon(icon)}}
         <span class="w3-hide-small w3-hide-medium">
             {{ label }}
@@ -57,175 +47,46 @@
     </a>
 {% endmacro %}
 
-{% macro cBack(name = '', color='white', class='') %}
-    {% if name %}
-        {{ cLink('Back', 'arrow-left', url_for(name), color=color, class=class) }}
+{% macro cBack(view, url, class, label='Back', color='white') %}
+    {% if view or url %}
+        {{ cLink(label, 'arrow-left', view=view, url=url, color=color, class=class) }}
     {% else %}
-        {{ cLink('Back', 'arrow-left', request.referrer, color=color, class=class) }}
+        {{ cLink(label, 'arrow-left', onclick='window.history.back()') }}
     {% endif %}
 {% endmacro %}
 
-{% macro cBackButton(view='', href='', color='theme-l4') %}
-    {% if view %}
-        {{ cButton('arrow-left', href=url_for(view), color=color) }}
-    {% else %}
-        {{ cButton('arrow-left', href=href, color=color) }}
-    {% endif %}
-{% endmacro %}
-
-{% macro cImage(name, width='128px') %}
-    <img src="/static/{{name}}" class="w3-cicrcle" style="width: {{ width }}">
-{% endmacro %}
-
-{% macro cInput(name, value='', class='', readonly='', required='', type='text', id='') %}
-    <input
-        class="w3-input w3-round-large w3-card {{ class }}"
-        value="{{ value }}"
-        name="{{ name }}"
-        type="{{ type }}"
+{% macro cSubmit(label, icon, id, class, title, name='submit', color='theme') %}
+    <button type="submit"
         id="{{ id }}"
-        {{ 'disabled="disabled"' if readonly }}
-        {{ 'required="required"' if required }}
-    />
-{% endmacro %}
-
-{% macro cTextArea(name='', value='', class='', readonly='', required='') %}
-    <textarea
-        class="w3-input w3-round-large w3-card {{ class }}"
-        value="{{ value }}"
         name="{{ name }}"
-        {{ 'readonly="readonly"' if readonly }}
-        {{ 'required="required"' if required }}
-    ></textarea>
-{% endmacro %}
-
-{% macro cHeader(label='', buttons=[], new='', back='', backref='') %}
-<span>
-    <h1 class="w3-left">
-        {% if back %}
-            {{ cBackButton(view=back) }}
-        {% else %}
-            {{ cBackButton(href=backref) if backref}}
-        {% endif %}
-        {{ label }}
-    </h1>
-    {% if buttons %}
-        <div class="w3-right w3-margin">
-            {% for icon, link in buttons: %}
-                {{ cButton(icon=icon, view=link, class='w3-xlarge') }}
-            {% endfor %}
-        </div>
-    {% endif %}
-</span>
-{% endmacro %}
-
-{% macro cSubHeader(title, buttons=[]) %}
-    <div class="w3-theme-l2 w3-padding w3-border w3-border-theme"> 
-        <div class="w3-row" style="width: 60%; margin: auto">
-            <h3 class="w3-left">{{ title }}</h3>
-            {% if buttons %}
-            <div class="w3-right">
-                {% for icon, link in buttons: %}
-                    {{ cButton(icon, link) }}
-                {% endfor %}
-            </div>
-            {% endif %}
-        </div>
-    </div>
-{% endmacro %}
-
-{% macro cSubmit(label='', icon='', class='', color='theme', round='round-large', id='') %}
-    <button type="submit" class="w3-btn w3-{{ color }} w3-{{ round }} w3-card {{ class }}" id="">
-        {{ cIcon(icon=icon) }}
+        class="w3-large w3-btn w3-round-large w3-{{ color }} w3-{{ round }} w3-card {{ class }}">
+        {{ cIcon(icon) }}
         {{ label }}
     </button>
 {% endmacro %}
 
-{% macro cSubmitButton(icon='', class='', color='theme') %}
-    {{ cSubmit('', icon, class=class, round='w3-circle', color=color, round='circle') }}
-{% endmacro %}
-
-{% macro cSubmitBack(label, icon, back='', autofocus='') %}
+{% macro cSubmitBack(label, icon, view, url, autofocus) %}
     <div class="w3-right w3-margin">
-        {{ cBack(back) }}
+        {{ cBack(view=view, url=url) }}
         {{ cSubmit(label=label, icon=icon)}}
     </div>
 {% endmacro %}
 
-{% macro cPlatform(p) %}
-    <div class="w3-panel w3-center w3-margin w3-padding w3-theme-l2 w3-round-large">
-        <b class="w3-margin-right w3-large">{{ p.name }}</b>
-        {{ cImage(p.img) }}
-        <div class="w3-right w3-margin">
-            {{ cButton('trash', url_for('platform.delete', id=p.id)) }}
-            {{ cButton('edit', url_for('platform.edit', id=p.id)) }}
-        </div>
-    </div>
+<!-- Messages -->
+{% macro cMessage(label, class, color='theme')  %}
+<p class="w3-text-{{ color }} w3-center {{ class }}">
+    {{ label|safe }}
+</p>
 {% endmacro %}
-
-{% macro cSelectPlatform(pp) %}
-    <select class="w3-select w3-round-large w3-card-4" name="platform">
-        {% for platform in pp %}
-            <option value="{{ platform.id }}">{{ platform.name }}</name>
-        {% endfor %}
-    </select>
+{% macro cError(label)   %}
+    {{ cMessage(label, color='red') }}
 {% endmacro %}
-
-{% macro cRoom(r) %}
-    <div class="w3-panel w3-center w3-theme-d2 w3-round-large">
-        {{ cIcon('building', 'w3-xxlarge w3-margin') }}
-        <b class="w3-margin-right w3-large">{{ r.name }}</b>
-        <div class="w3-right w3-margin">
-            {{ cButton('eye', url_for('room.eye', id=r.id)) }}
-            {{ cButton('flask', url_for('room.experiment', id=r.id)) }}
-            {{ cButton('trash', url_for('room.delete', id=r.id)) }}
-            {{ cButton('deviantart', url_for('room.platforms', id=r.id)) }}
-            {{ cButton('edit', url_for('room.edit', id=r.id)) }}
-        </div>
-    </div>
+{% macro cWarning(label)  %}
+    {{ cMessage(label, color='yellow') }}
 {% endmacro %}
-
-{% macro cPlatformRoom(pr) %}
-    <div class="w3-round-large w3-col m6">
-        <div class="w3-margin w3-card-4 w3-padding w3-display-container w3-round-large">
-            {{ cImage(pr.platform.n) }}<br>
-            <form id="{{ pr.id }}" method="POST" class="w3-display-bottomright w3-margin">
-                <p class="w3-right">
-                    Platform: <b>{{ pr.platform.name }}</b>
-                </p>
-                {{ cInput('id', value=pr.id, class='w3-hide')}}
-                {{ cInput('name', value=pr.name)}}
-                <script>
-                    $('#{{pr.id}}').on('change', function() {
-                        $(this).submit();
-                    });
-                </script>
-            </form>
-        </div>
-    </div>
+{% macro cInfo(label)  %}
+    {{ cMessage(label, color='blue') }}
 {% endmacro %}
-
-{% macro cDoc(doc='', class='') %}
-    <p class="w3-cursive w3-center {{ class }}">
-        {{ doc|safe }}
-    </p>
-{% endmacro %}
-
-{% macro cFile(label='', icon='', name='', class='', color='theme', onchange='') %}
-<!-- enctype="multipart/form-data" -->
-    <label class="{{ class }}">
-        <span class="w3-btn w3-padding w3-card-4 w3-{{ color }} w3-round-large">
-            {{ cIcon(icon) }}
-            {{ label }}
-        </span>
-        {{ cInput(class='w3-hide', type='file', name=name, id=name)}}
-        {{ cSubmit(class='w3-hide', id='submit')}}
-    </label>
-    {% if onchange == 'submit' %}
-        <script>
-            $('#{{ name }}').on('change', function() {              
-                $(this).parent().parent().submit();
-            });
-        </script>
-    {% endif %}
+{% macro cSuccess(label)  %}
+    {{ cMessage(label, color='green') }}
 {% endmacro %}

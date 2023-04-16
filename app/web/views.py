@@ -4,23 +4,41 @@ from flask_login import login_required, current_user
 from . import db
 import db, doc
 
-from .models import Experiment, User, Source, Platform, Room, Mount
+from .models import Experiment, User, Source, Platform, Room, Mount, ElementQ
 from ares import Ares
 
 views = Blueprint('views', __name__)
 
+@views.route('/reset')
+def reset():
+    db.empty()
+    return redirect(url_for('views.home'))
+
 @views.route('/test-db', methods=['GET', 'POST'])
-def testDb():
+def testDatabase():
     """ Show in a page all data stored in database. Reserved for admin"""
     if request.method == 'POST':
         db.reset()
+    print(Source.query.all())
     return render_template('views/test-db.html',
                         users = User.query.all(),
                         platforms = Platform.query.all(),
                         experiments = Experiment.query.all(),
                         rooms = Room.query.all(),
                         sources = Source.query.all(),
-                        mounts = Mount.query.all())
+                        mounts = Mount.query.all(),
+                        elementsQ = ElementQ.query.all())
+
+@views.route('/test-db-reset')
+def testDatabaseReset():
+    """ Show in a page all data stored in database. Reserved for admin"""
+    db.reset()
+    return redirect(url_for('views.testDatabase'))
+
+@views.route('/test-html')
+def testHtml():
+    """ Show all components of my layout"""
+    return render_template('views/test-html.html')
 
 @views.route('/')
 def index():

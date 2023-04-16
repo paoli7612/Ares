@@ -9,14 +9,12 @@ room = Blueprint('room', __name__)
 
 @room.route('/')
 def index():
-    buttons = list()
-    if current_user.is_authenticated and current_user.isAdmin():
-        buttons.append(('plus', 'room.new'))
+    """ See all my rooms """
     return render_template('pages/index.html',
                             model = 'Room',
-                            buttons = buttons,
-                            items=Room.query.all(),
-                            doc=doc.Room)
+                            items = Room.query.all(),
+                            buttons = [('plus', url_for('room.new'))],
+                            doc = doc.Room)
 
 @room.route('<int:id>')
 def single(id):
@@ -95,6 +93,8 @@ def addMount(id):
     room = Room.query.get(id)
     mount = Mount(room=room)
     mount.platform_id = request.form.get('platform_id')
+    mount.name = request.form.get('name')
+    mount.description = ''
     db.session.add(mount)
     db.session.commit()
     return redirect(url_for('room.platforms', id=mount.room.id))
@@ -121,7 +121,7 @@ def mountDelete(id):
 
 @room.route('<int:id>/changeImg', methods=['GET', 'POST'])  
 def changeImg(id):
-    file = request.files['img']
+    file = request.files['file']
     if file:
         if file.filename.split('.')[-1] == 'png':
             ## DA METTERE APOSTo

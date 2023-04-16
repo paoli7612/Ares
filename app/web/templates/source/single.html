@@ -1,11 +1,14 @@
 {% from "layout/panels.html" import pHeader %}
+{% from "layout/components.html" import cBack, cLink %}
 {% extends 'layout/index.html' %}
 
 {% block title %} Source ({{ source.id }}){% endblock %}
 
 {% block content %}
 
-{{ pHeader(source.name, backref=url_for('experiment.single', id=source.experiment_id) ) }}
+{{ cBack() }}
+{{ cLink(icon='trash', url=url_for('experiment.deleteSource', id=source.id)) }}
+{{ pHeader(source.name) }}
 
 <pre>
     {{ text }}

@@ -1,4 +1,4 @@
-{% from 'layout/components.html' import cImg, cLink, cInput, cSubmit, cButton, cTextArea %}
+{% from 'layout/components.html' import cImg, cLink, cInput, cSubmit, cButton, cTextarea %}
 {% from 'layout/platform.html' import cPlatformsIndex with context %}
 {% from 'layout/experiment.html' import cExperimentsIndex, cExperimentsIndex with context %}
 
@@ -11,12 +11,12 @@
         <h1>{{ room.name }}</h1>
         <div class="w3-display-bottommiddle w3-margin w3-block">
             {% if current_user.is_authenticated and current_user.isAdmin() %}
-                {{ cLink('Edit', 'edit', url_for('room.edit', id=room.id), color='amber') }}
-                {{ cLink('Change platforms', 'deviantart', url_for('room.platforms', id=room.id), color='amber') }}
-                {{ cLink('Delete', 'trash', url_for('room.delete', id=room.id), color='amber') }}
+                {{ cLink('Edit', 'edit', url=url_for('room.edit', id=room.id), color='amber') }}
+                {{ cLink('Change platforms', 'deviantart', url=url_for('room.platforms', id=room.id), color='amber') }}
+                {{ cLink('Delete', 'trash', url=url_for('room.delete', id=room.id), color='amber') }}
             {% endif %}
-            {{ cLink('New experiment', 'flask', url_for('room.experiment', id=room.id)) }}
-            {{ cLink('View', 'eye', url_for('room.single', id=room.id)) }}
+            {{ cLink('New experiment', 'flask', url=url_for('room.experiment', id=room.id)) }}
+            {{ cLink('View', 'eye', url=url_for('room.single', id=room.id)) }}
         </div>
     </div>
 </div>
@@ -24,7 +24,18 @@
 
 {% macro cElementQIndex(elementQ) %}
 <div class="w3-panel w3-round-large w3-padding w3-display-container w3-card-4 w3-theme-l2">
-    {{ elementQ.experiment.name }}
+    {{ elementQ.experiment }}<br>
+    duration {{ elementQ.experiment.minutes }} minutes <br>
+    {% if elementQ.finished() %}
+        Experiment ended at {{ elementQ.endedTime()}} <br>
+    {% else %}
+        {% if elementQ.started() %}
+            Experiment started at {{ elementQ.startedTime()}} <br>
+            execution now <br>
+        {% else %}
+            Experiment just enqueued at {{ elementQ.enqueueTime()}}<br>
+        {% endif %}
+    {% endif %}
 </div>
 {% endmacro %}
 
@@ -36,7 +47,9 @@
     {% elif model == 'Room' %}
         {{ cRoomIndex(item) }}
     {% elif model == 'Queue' %}
-        {{ cElementQIndex(item) }}
+        {% for testbed in item %}
+            {{ cElementQIndex(testbed) }}
+        {% endfor %}
     {% endif %}
 {% endmacro %}
 

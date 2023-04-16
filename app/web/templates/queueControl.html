@@ -1,0 +1,14 @@
+{% from "layout/panels.html" import pHeader, pSubmit %}
+
+{% extends 'layout/index.html' %}
+
+{% block title %}Queue control{% endblock %}
+
+{% block content %}
+{{ pHeader('Queue control page') }}
+
+<form method='POST' action={{ url_for('queue.next') }}>
+    {{ pSubmit('Next experiment', 'next')}}
+</form>
+
+{% endblock %}

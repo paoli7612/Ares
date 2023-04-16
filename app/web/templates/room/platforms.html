@@ -1,17 +1,16 @@
 {% from "layout/components.html" import cHeader, cImg, cFile with context %}
 {% from 'layout/mount.html' import cMountEdit %}
-{% from "layout/panels.html" import pHeader, pEmpty, pSubmit %}
+{% from "layout/panels.html" import pHeader, pEmpty, pSubmit, pInput %}
+{% from "layout/forms.html" import fFile%}
 {% extends 'layout/index.html' %}
 
 {% block title %}Room: {{ room.name }}{% endblock %}
 
 {% block content %}
-{{ pHeader('Platform in ' + room.name, back='room.index') }}
+{{ pHeader('Platform in ' + room.name) }}
 <div class="w3-panel w3-display-container">
     {{ cImg(room.img, 'rooms', class="w3-block w3-round-large w3-card-4") }}
-    <form  action="{{ url_for('room.changeImg', id=room.id) }}" method="post" enctype="multipart/form-data">
-        {{ cFile(label='Change image', name='img', class='w3-display-bottommiddle', onchange='submit') }}
-    </form>
+    {{ fFile(label='Change image', action=url_for('room.changeImg', id=room.id), class='w3-display-bottommiddle') }}
 </div>
 
 <div class="w3-row">
@@ -23,12 +22,15 @@
 </div>
 
 <form action="{{ url_for('room.addMount', id=room.id) }}" method="POST" class="w3-right w3-third w3-panel w3-theme-d4 w3-padding w3-round-large">
-    <h3 class="w3-center">Add platform</h3>
-    <select class="w3-select w3-round-large w3-card-4" name="platform_id">
-        {% for platform in platforms %}
+    <div class="w3-panel">
+        <h3 class="w3-center">Add platform</h3>
+        <select class="w3-select w3-round-large w3-card-4" name="platform_id">
+            {% for platform in platforms %}
             <option value="{{ platform.id }}">{{ platform.name }}</name>
-        {% endfor %}
-    </select>
+                {% endfor %}
+            </select>
+    </div>
+    {{ pInput('Name', required=False, name='name') }}
     {{ pSubmit('Add device', 'plus')}}
 </form>
 

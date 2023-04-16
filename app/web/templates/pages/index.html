@@ -1,12 +1,18 @@
+{% from 'layout/components.html' import cLink  %}
 {% from 'layout/models.html' import cIndex with context %}
-{% from 'layout/panels.html' import pHeader, pDoc, pEmpty %}
+{% from 'layout/panels.html' import pHeader, pInfo, pEmpty with context %}
 {% extends 'layout/index.html' %}
 
 {% block title %}{{ model }}s{% endblock %}
 
 {% block content %}
-    {{ pDoc(doc.index) }}
-    {{ pHeader(label=model~'s', buttons=buttons) }}
+    <div class="w3-panel">
+        {% for icon, url in buttons %}
+        {{ cLink(icon=icon, url=url) }}
+        {% endfor %}
+    </div>
+    {{ pInfo(doc.index) }}
+    {{ pHeader(title=model~'s') }} 
     <div class="w3-panel">
         {% for item in items %}
             {{ cIndex(model, item) }}

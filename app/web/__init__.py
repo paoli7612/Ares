@@ -3,11 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from os import path
 
+
 db = SQLAlchemy()
 DB_NAME = 'database.db'
 
 def create_app():
     app = Flask(__name__)
+
     app.config['SECRET_KEY'] = 'asd asd asd'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ares.db'
     db.init_app(app)

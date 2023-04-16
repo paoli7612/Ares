@@ -1,11 +1,11 @@
-{% from 'layout/components.html' import cIcon, cButton %}
-{% from 'layout/panels.html' import pDoc %}
+{% from 'layout/components.html' import cIcon, cLink %}
+{% from 'layout/panels.html' import pInfo %}
 {% extends 'layout/index.html' %}
 
 {% block title %}Account{% endblock %}
 
 {% block content %}
-{{ pDoc(doc)}}
+{{ pInfo(doc)}}
 
 <div class="w3-display-container w3-center">
     <div class="w3-display-topleft w3-card w3-theme w3-round-large">
@@ -25,10 +25,10 @@
 </div>
 
 <div class="w3-panel w3-card-4 w3-center w3-round-large w3-padding-large">
-    {{ cButton(icon='question-circle', view='views.help', title='info', class='w3-xlarge') }}
-    {{ cButton(icon='cog', view='auth.settings', title='settings', class='w3-xlarge') }}
-    {{ cButton(icon='flask', view='experiment.index', title='my experiments', class='w3-xlarge') }}
-    {{ cButton(icon='sign-out', view='auth.logout', title='logout', class='w3-xlarge') }}
+    {{ cLink(icon='question-circle', view='views.help', title='info', class='w3-xlarge') }}
+    {{ cLink(icon='cog', view='auth.settings', title='settings', class='w3-xlarge') }}
+    {{ cLink(icon='flask', view='experiment.index', title='my experiments', class='w3-xlarge') }}
+    {{ cLink(icon='sign-out', view='auth.logout', title='logout', class='w3-xlarge') }}
 </div>
 
 {% endblock %}

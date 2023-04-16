@@ -3,13 +3,10 @@ from flask_login import UserMixin
 from flask import flash
 import sqlalchemy, enum, os
 
-def td(value):
-    return "<td>%s</td>" % str(value)
-
 def tr(*values):
     txt = "<tr>"
     for value in values:
-        txt += td(value)
+        txt += "<td>%s</td>" % str(value)
     return txt + "</tr>"
 
 def existImg(img, folder):
@@ -32,6 +29,29 @@ class ElementQ(db.Model):
     testbed_start = db.Column(db.DateTime)
     testbed_end = db.Column(db.DateTime)
 
+    def to_tr(self):
+        return tr(self.experiment, self.enqueue_time.strftime('%H:%M:%S %Y-%m-%d'), self.testbed_start, self.testbed_end)
+
+    def enqueueTime(self):
+        return self.enqueue_time.strftime('%H:%M:%S %Y-%m-%d')
+    def startedTime(self):
+        if self.started():
+            return self.testbed_start.strftime('%H:%M:%S %Y-%m-%d')
+    def endedTime(self):
+        if self.ended():
+            return self.testbed_end.strftime('%H:%M:%S %Y-%m-%d')
+
+    def finished(self):
+        return bool(self.testbed_end)
+
+    def started(self):
+        return bool(self.testbed_start)
+    
+    def ended(self):
+        return bool(self.testbed_end)
+    
+        
+
 class UserStatus(enum.Enum):
     ADMIN = 'admin'
     EDITOR = 'editor'
@@ -47,14 +67,6 @@ class User(db.Model, UserMixin):
     status = db.Column(sqlalchemy.Enum(UserStatus), default='user')
     experiments = db.relationship('Experiment', backref='user')
 
-    def getPicture(self):
-        return """
-            <img src="https://i.pravatar.cc/300?u=%s" alt="avatar" class="w3-circle w3-margin w3-card-4">
-        """ % self.email
-
-    def getStatus(self):
-        return str(self.status)
-
     def __str__(self):
         return self.username
     
@@ -64,6 +76,14 @@ class User(db.Model, UserMixin):
             experiments.append(str(experiment))
         return tr(self.email, self.username, self.theme, self.status, experiments)
     
+    def getPicture(self):
+        return """
+            <img src="https://i.pravatar.cc/300?u=%s" alt="avatar" class="w3-circle w3-margin w3-card-4">
+        """ % self.email
+
+    def getStatus(self):
+        return str(self.status)
+        
     def isAdmin(self):
         return self.status == UserStatus.ADMIN
 
@@ -72,6 +92,10 @@ class User(db.Model, UserMixin):
             return "admin"
         elif self.status == UserStatus.USER:
             return "user"
+        
+    def inQueue(self):
+        return True
+
 
 class ExperimentState(enum.Enum):
     READY = 'ready'
@@ -105,6 +129,18 @@ class Experiment(db.Model):
 
     def isFreeze(self):
         return self.state == ExperimentState.FREEZE
+
+    def isReady(self):
+        return self.state == ExperimentState.READY
+    
+    def setReady(self):
+        self.state = ExperimentState.READY
+
+    def setUnready(self):
+        self.state = ExperimentState.UNREADY
+
+    def hasTime(self):
+        return bool(self.minutes)
 
     def classColor(self):
         if self.state == ExperimentState.FREEZE:
@@ -225,4 +261,3 @@ class Mount(db.Model):
         for s in self.sources:
             sources.append(str(s))
         return tr(self.platform, self.room, self.name, sources)
-

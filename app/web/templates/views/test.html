@@ -1,12 +1,11 @@
-{% from "layout/components.html" import cHeader, cSubmitBack %}
-{% from "layout/panels.html" import pSubmitBack, pHeader, pDoc %}
+{% from "layout/panels.html" import pSubmitBack, pHeader, pInfo with context %}
 {% extends 'layout/index.html' %}
 
 {% block title %}Home{% endblock %}
 
 {% block content %}
-{{ pDoc(doc) }}
-{{ pHeader(label='Test build file', buttons=[('upload', 'views.test_upload')]) }}
+{{ pInfo(doc) }}
+{{ pHeader(title='Test build file') }}
 
 <form method="post" id="input">
     <div class="w3-panel w3-margin ">

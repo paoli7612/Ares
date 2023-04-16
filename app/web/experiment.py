@@ -5,8 +5,7 @@ from .models import Experiment, Source, Mount, ExperimentState, ElementQ
 from . import db
 from .forms import ExperimentForm
 from ares import Ares
-import doc,datetime
-
+import doc, datetime
 
 experiment = Blueprint('experiment', __name__)
 
@@ -56,17 +55,27 @@ def delete(id):
 def savePlatforms(id):
     """ edit what souce load on what platform/mount """
     experiment = Experiment.query.get(id)
+    # Remove mounts from all sources
     for s in experiment.sources:
-        s.mounts = []
+        s.mounts = list()
         db.session.add(s)
     db.session.commit()
+    ready = False
     for mount_id, source_id in request.form.items():
-        mount = Mount.query.get(int(mount_id))
-        if source_id:
-            source = Source.query.get(int(source_id))
-            source.mounts.append(mount)
-            db.session.add(source)
-            print(mount.name, "->", source.name)
+        try:
+            mount = Mount.query.get(int(mount_id))
+            if source_id:
+                source = Source.query.get(int(source_id))
+                source.mounts.append(mount)
+                ready = True
+                db.session.add(source)
+        except: pass
+
+    if ready:
+        experiment.setReady()
+    else:
+        experiment.setUnready()
+    db.session.add(experiment)
 
     db.session.commit()
     return redirect(url_for('experiment.single', id=id))
@@ -76,7 +85,7 @@ def savePlatforms(id):
 @experiment.route('<int:id>/addSource', methods=['POST'])
 def addSource(id):
     """ action of loading a new source in this experiment """
-    file = request.files['source']
+    file = request.files['file']
     if file:
         if file.filename.split('.')[-1] == 'cpp':
             f = Source()
@@ -92,6 +101,16 @@ def addSource(id):
         flash('file not selected', category='red')
     return redirect(url_for('experiment.single', id=id))
 
+@experiment.route('<int:id>/deleteSource', methods=['GET', 'POST'])
+def deleteSource(id):
+    if request.method == 'POST':
+        Source.query.filter_by(id=id).delete()
+        db.session.commit()
+        return redirect(url_for('experiment.index'))
+    return render_template('pages/ask.html',
+                           title='Deleting source',
+                           question='Are you sure? Do you want delete this source?',
+                           icon='trash')
 
 @experiment.route('<int:id>/testbed', methods=['GET', 'POST'])
 def testbed(id):
@@ -99,7 +118,7 @@ def testbed(id):
     e = Experiment.query.get(id)
     if request.method == 'POST':
         e.state = ExperimentState.FREEZE
-        testbed = ElementQ(experiment_id=id)
+        testbed = ElementQ(experiment=e)
         testbed.enqueue_time = datetime.datetime.now()
         e.elementsQ.append(testbed)
         db.session.add(e)

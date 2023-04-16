@@ -1,23 +1,43 @@
-{% from 'layout/test-db.html' import cUsers, cPlatforms, cExperiments, cRooms, cSources, cMounts %}
-{% from 'layout/panels.html' import pHeader, pSubmit %}
+{% from 'layout/panels.html' import pHeader, pSubmit, with context %}
+{% from 'layout/components.html' import cBack, cLink %}
+
 {% extends 'layout/index.html' %}
 
 {% block title %}Home{% endblock %}
 
-{% block content %}
+{% macro section(title, items, fields) %}
+    <h3 class="w3-margin w3-center">{{ title }}</h3>
+    <table class="w3-table-all">
+        <tr>
+            {% for field in fields %}
+                <th>{{ field }}</th>
+            {% endfor %}
+        </tr>
+        {% for item in items %}
+            {{ item.to_tr()|safe }}
+        {% endfor %}
+    </table>
+{% endmacro %}
 
-    {{ pHeader(label='Database', back='views.home') }}
+{% block content %}
+<div class="w3-panel">
+    {{ cLink(icon='clear', url=url_for('views.reset')) }}
+    {{ cBack() }}
+</div>
+
+    {{ pHeader('Database') }}
 
     <form method="POST">
         {{ pSubmit(icon='database', label='Reset database from db.py', class='w3-xlarge') }}
     </form>
 
-    {{ cUsers(users, ['email', 'username', 'theme', 'status', 'experiments']) }}
-    {{ cPlatforms(platforms, ['name', 'test', 'description', 'img', 'rooms']) }}
-    {{ cRooms(rooms, ['name', 'description', 'img', 'platforms']) }}
-    {{ cExperiments(experiments, ['name', 'description', 'minutes', 'user', 'room', 'state']) }}
-    {{ cSources(sources, ['path', 'user', 'experiment', 'mounts']) }}
-    {{ cMounts(mounts, ['platform', 'room', 'name', 'sources']) }}
+    {{ section('users', users, ['email', 'username', 'theme', 'status', 'experiments']) }}
+    {{ section('platforms', platforms, ['name', 'test', 'description', 'img', 'rooms']) }}
+    {{ section('rooms', rooms, ['name', 'description', 'img', 'platforms']) }}
+    {{ section('experiments', experiments, ['name', 'description', 'minutes', 'user', 'room', 'state']) }}
+    {{ section('sources', sources, ['path', 'user', 'experiment', 'mounts']) }}
+    {{ section('mounts', mounts, ['platform', 'room', 'name', 'sources']) }}
+    {{ section('queue', elementsQ, ['experiment', 'enqueue', 'start', 'end']) }}
 
 {% endblock %}
 

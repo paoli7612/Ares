@@ -1,5 +1,5 @@
-from . import template
-import os, re, subprocess
+import template
+import os, re, subprocess, shutil
 
 class MyPIO:
     def test(esp, control_file):
@@ -12,30 +12,70 @@ class MyPIO:
         MyPIO.test('8266', control_file)
 
 class Ares:
-    source_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sources')
-    platformio_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'platformio')
-    platformio_src_folder = os.path.join(platformio_folder, 'src')
-    control_file = 'asd.control'
-    
-    @staticmethod
-    def path(id):
-        return os.path.join(Ares.source_folder, "%d.source" % id)
-    
-    @staticmethod
+    """
+        -- ares
+            -- inis
+                files ini delle rooms
+            -- sources
+                sorgenti caricati dagli utenti chiamati per id.source
+            -- platormio
+                cartella dove mettiamo i file da lavorare con platformio
+                -- platformio.ini
+                    file di configurazione dei mount della room
+            -- src
+                cartella contenente i file da caricare sulle platform
+                -- main.cpp
+                    file principale da caricare
+    """
+    pathAres = os.path.dirname(__file__)
+    pathInis = os.path.join(pathAres, 'inis')
+    pathSources = os.path.join(pathAres, 'sources')
+    pathPlatformio = os.path.join(pathAres, 'platformio')
+    pathPlatformioFile = os.path.join(pathPlatformio, 'platformio.ini')
+    pathPlatformioMain = os.path.join(pathPlatformio, 'src/main.cpp')
+
+    class Ini:
+        def path(id):
+            return os.path.join(Ares.pathInis, '%d.ini'%id)
+        def use(id):
+            path = Ares.Ini.path(id)
+            shutil.copy(path, Ares.pathPlatformioFile)
+        def build(id, content):
+            with open(Ares.Ini.path(id), 'w') as f:
+                f.write(content)
+
+    class Source:
+        def path(id):
+            return os.path.join(Ares.pathSources, "%d.source"%id)
+        def use(id):
+            path = Ares.Source.path(id)
+            shutil.copy(path, Ares.pathPlatformioMain)
+
+        def load(sourceId, mountName):
+            print("Carico il file ", sourceId, " sul mountName ", mountName)
+
+        def build(id, content):
+            with open(Ares.Source.path(id), 'w') as f:
+                f.write(content)
+
+        def buildByForm(id, form):
+            content = template.build(form['setup'], form['loop'], form['platform'])
+            Ares.Source.build(id, content)
+
     def read(path):
         return open(path, 'r').read()
-
+    
     @staticmethod
-    def newFile(source, id):
-        path = Ares.path(id)
-        with open(path, 'w') as file:
-            file.write(source)
-        return path
-
+    def testbed(room, mounts):
+        Ares.Ini.use(room)
+    
     @staticmethod
     def parse(form, esp):
         print("BUILD " , esp)
-        return template.build(form['setup'], form['loop'], esp)
+        return template.build(form['setup'], form['loop'], form['esp'])
+    
+    #########################################
+
 
     @staticmethod
     def newProject(source):
@@ -75,3 +115,13 @@ class Ares:
             print("amen")
         MyPIO.test(esp, Ares.control_file)
         return os.path.exists(Ares.control_file)
+    
+if __name__ == '__main__':
+    Ares.Ini.build()
+    Ares.Source.buildByForm(1, {
+        'setup': "int a = 10;",
+        'loop': "int b = 20;",
+        'platform': 'esp8266'
+    })
+
+    Ares.testbed(room=1, mounts=[1, 1, None, 1])

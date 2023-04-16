@@ -11,10 +11,10 @@
         </p>
         <div class="w3-display-bottommiddle w3-margin w3-block">
             {% if current_user.is_authenticated and current_user.isAdmin() %}
-                {{ cLink(label='Edit', icon='edit', href=url_for('platform.edit', id=platform.id), color='amber') }}
-                {{ cLink(label='Delete', icon='trash', href=url_for('platform.delete', id=platform.id), color='amber') }}
+                {{ cLink(label='Edit', icon='edit', url=url_for('platform.edit', id=platform.id), color='amber') }}
+                {{ cLink(label='Delete', icon='trash', url=url_for('platform.delete', id=platform.id), color='amber') }}
             {% endif %}
-            {{ cLink('Info', 'info-circle', 'https://informati') }}
+            {{ cLink('Info', 'info-circle', url='https://informati') }}
         </div>
     </div> 
 </div>
