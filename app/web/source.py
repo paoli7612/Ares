@@ -11,7 +11,9 @@ source = Blueprint('source', __name__)
 @source.route('/<int:id>')
 def single(id):
     s = Source.query.get(id)
-    return render_template('source/single.html', source=s, text=Ares.read(Ares.path(s.id)), experiment_id=s.experiment_id)
+    return render_template('source/single.html',
+                           source=s,
+                           text=Ares.read(Ares.Source.path(s.id)), experiment_id=s.experiment_id)
 
 @source.route("/delete/<int:id>", methods=['GET', 'POST'])
 def delete(id):

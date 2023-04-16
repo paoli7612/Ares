@@ -51,7 +51,7 @@ def index():
 @login_required
 def home():
     """ Show homepage for logged user """
-    return render_template('views/home.html')
+    return render_template('views/home.html', doc=doc)
 
 @views.route('/help')
 def help():

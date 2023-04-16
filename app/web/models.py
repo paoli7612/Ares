@@ -26,36 +26,32 @@ class ElementQ(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     experiment_id = db.Column(db.Integer, db.ForeignKey('experiment.id', ondelete="SET NULL"))
     enqueue_time = db.Column(db.DateTime, nullable=False)
-    testbed_start = db.Column(db.DateTime)
-    testbed_end = db.Column(db.DateTime)
+    start_time = db.Column(db.DateTime)
+    end_time = db.Column(db.DateTime)
 
     def to_tr(self):
-        return tr(self.experiment, self.enqueue_time.strftime('%H:%M:%S %Y-%m-%d'), self.testbed_start, self.testbed_end)
+        return tr(self.experiment, self.enqueue_time.strftime('%H:%M:%S %Y-%m-%d'), self.start_time, self.end_time)
 
     def enqueueTime(self):
         return self.enqueue_time.strftime('%H:%M:%S %Y-%m-%d')
     def startedTime(self):
         if self.started():
-            return self.testbed_start.strftime('%H:%M:%S %Y-%m-%d')
+            return self.start_time.strftime('%H:%M:%S %Y-%m-%d')
     def endedTime(self):
         if self.ended():
-            return self.testbed_end.strftime('%H:%M:%S %Y-%m-%d')
+            return self.end_time.strftime('%H:%M:%S %Y-%m-%d')
 
     def finished(self):
-        return bool(self.testbed_end)
+        return bool(self.end_time)
 
     def started(self):
-        return bool(self.testbed_start)
+        return bool(self.start_time)
     
     def ended(self):
-        return bool(self.testbed_end)
+        return bool(self.end_time)
     
-        
-
 class UserStatus(enum.Enum):
     ADMIN = 'admin'
-    EDITOR = 'editor'
-    CONTRIBUTOR = 'contributor'
     USER = 'user'
 
 class User(db.Model, UserMixin):
@@ -92,11 +88,7 @@ class User(db.Model, UserMixin):
             return "admin"
         elif self.status == UserStatus.USER:
             return "user"
-        
-    def inQueue(self):
-        return True
-
-
+    
 class ExperimentState(enum.Enum):
     READY = 'ready'
     FREEZE = 'freeze'

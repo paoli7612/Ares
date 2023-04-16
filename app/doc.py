@@ -3,7 +3,6 @@ class Auth:
         email_exist = 'Email adress already registered in this app'
         password_different = 'Password and condifm of password are not equal'
         account_created = 'Account created correctly'
-        
 
 class Logged:
     pass
@@ -35,6 +34,7 @@ class Platform(Doc):
         deleted = 'platform deleted!'
 
 class Room(Doc):
+    home = 'In the room\'s page there are all room that you can use to create an experiment'
     info = 'A <b>Room</b> is a space where there is platforms and you can test you code on this devices. '
     index = 'In this page you can see all our <b>rooms</b>. In each <b>room</b> there are different <b>platforms</b>. '
     empty = 'Sorry. In this moment there arent <b>rooms</b> registered in our system. '
@@ -48,6 +48,9 @@ class Room(Doc):
             notValid = 'Sorry but we accept only image .png'
 
 class Mount:
+    class Action:
+        deleted = 'Platform removed from room'
+
     empty = 'This room have\'t yet platforms'
     advice = 'Maybe insert a new platform in this room'
 
@@ -59,6 +62,7 @@ class ElementQ(Doc):
     strnager = 'After you login, can select a room to create a new <b>experiment</b>. '
 
 class Experiment(Doc, Logged):
+    home = "In this page you can see all your <b>experiments</b>"
     index = """In this page you can see all your <b>experiments</b>. Each experiment can be
         <i style="padding: 4px" class="w3-round w3-theme-d4">unready</i> (There are more thing to do before testing it),
         <i style="padding: 4px" class="w3-round w3-theme">ready</i> when you want, we can add this experiment to our queue, so test it, 
@@ -86,6 +90,7 @@ class User():
     settings = 'In this page you can change you username or the color-theme. Only your account will be changed'
 
 class Test:
+    index = "From hier you can test if your code is ok for our site"
     class Form:
         page = 'In this page you can compile a source.cpp and try to compile on our platform. Then know if code compile'
         ok = 'You\re code compile successfull'

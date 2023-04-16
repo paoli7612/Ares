@@ -5,12 +5,12 @@
     <form method="post">
         <label class="w3-margin ">
             What is the title of your <b>experiment</b>?
-            <input type="text" name="title" class="w3-input w3-margin-bottom w3-card w3-round-large" placeholder="Title"
+            <input type="text" name="title" class="w3-input w3-margin-bottom w3-card w3-round" placeholder="Title"
                 required="required" value="{{ e.title or '' }}">
         </label>
         <label class="w3-margin">
             Write a description for this <b>experiment</b>
-            <textarea name="description" class="w3-input w3-card w3-round-large"
+            <textarea name="description" class="w3-input w3-card w3-round"
                 placeholder="description">{{ e.description or '' }}</textarea>
         </label>
 
@@ -22,7 +22,7 @@
 
 {% macro fAddPlatformSource(ss, name='', value='') %}
 <div class="w3-margin">
-    <select class="w3-select w3-quarter w3-card w3-round-large" name="{{ name }}" value="{{ value }}">
+    <select class="w3-select w3-quarter w3-card w3-round" name="{{ name }}" value="{{ value }}">
         {% for s in ss %}
             <option value="{{s.id}}">{{ s.name }}</option>
         {% endfor %}
@@ -33,7 +33,7 @@
 {% macro fPlatformsSources(pp, ss) %}
 <form method="POST">
     <input type="hidden" name='action' value='setPlatformSource'>
-    <table class="w3-table-all w3-card-4 w3-round-large w3-white">
+    <table class="w3-table-all w3-card-4 w3-round w3-white">
         <tr>
             <th colspan="2">Platform</th><th>Source</th>
         </tr>
@@ -61,7 +61,7 @@
 {% macro fFile(label, action, class, icon='file') %}
     <form id='form_file' action="{{ action }}" method="post" enctype="multipart/form-data">
         <label class="{{ class }}">
-            <span class="w3-btn w3-padding w3-card-4 w3-{{ color }} w3-round-large">
+            <span class="w3-btn w3-padding w3-card-4 w3-{{ color }} w3-round">
                 {{ cIcon(icon) }}
                 {{ label }}
             </span>

@@ -1,0 +1,25 @@
+{% macro cRoomIndex(room) %}
+<div class="w3-panel w3-round w3-padding w3-display-container w3-card-4 w3-border w3-border-theme w3-bottombar">
+    <div class="w3-col m4" style="min-height: 200px">
+        {{ cImg(room.img, 'rooms') }}
+    </div> 
+    <div class="w3-col m8 w3-center">
+        <h1>{{ room.name }}</h1>
+        <div class="w3-display-bottommiddle w3-margin w3-block">
+            {% if current_user.is_authenticated and current_user.isAdmin() %}
+                {{ cLink('Edit', 'edit', url=url_for('room.edit', id=room.id), color='amber') }}
+                {{ cLink('Change platforms', 'deviantart', url=url_for('room.platforms', id=room.id), color='amber') }}
+                {{ cLink('Delete', 'trash', url=url_for('room.delete', id=room.id), color='amber') }}
+            {% endif %}
+            {{ cLink('New experiment', 'flask', url=url_for('room.experiment', id=room.id)) }}
+            {{ cLink('View', 'eye', url=url_for('room.single', id=room.id)) }}
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro cRoomHome(room) %}
+    <div>
+        {{ room.name }}        
+    </div>
+{% endmacro %}

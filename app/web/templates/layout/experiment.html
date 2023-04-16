@@ -1,11 +1,12 @@
 {% from 'layout/components.html' import cError, cWarning, cLink, cButton, cImg, cFile %}
 {% from 'layout/panels.html' import pFreeze, pSubmit, pInfo, pError, pSuccess %}
 {% from 'layout/forms.html' import fFile %}
+{% from 'layout/mount.html' import cMountMedium %}
 
 {% macro cExperimentsIndex(experiment) %}
-<div class="w3-panel w3-round-large w3-padding w3-display-container w3-card {{ experiment.classColor() }}">
+<div class="w3-panel w3-round w3-padding w3-display-container w3-card {{ experiment.classColor() }}">
     <div class="w3-col m4">
-        {{ cImg(experiment.room.img, 'rooms', class='w3-round-large w3-margin') }}
+        {{ cImg(experiment.room.img, 'rooms', class='w3-round w3-margin') }}
     </div> 
     <div class="w3-col m8 w3-center">
         <h1>{{ experiment.name }}</h1>
@@ -19,6 +20,12 @@
             {{ cLink('Show', 'flask', url=url_for('experiment.single', id=experiment.id), color='white') }}
         </div>
     </div>
+</div>
+{% endmacro %}
+
+{% macro cExperimentHome(experiment) %}
+<div class="w3-panel w3-round w3-card {{ experiment.classColor() }}">
+    <p>{{ experiment.name }}</p>
 </div>
 {% endmacro %}
 
@@ -64,8 +71,8 @@
 {% endmacro %}
 
 {% macro pSources(experiment) %}
-<fieldset class="w3-border-theme w3-card-4 w3-round-large w3-margin">
-    <legend class="w3-center w3-padding w3-white w3-margin-bottom w3-text-theme w3-xlarge w3-card w3-round-large w3-border w3-border-theme">
+<fieldset class="w3-border-theme w3-card-4 w3-round w3-margin">
+    <legend class="w3-center w3-padding w3-white w3-margin-bottom w3-text-theme w3-xlarge w3-card w3-round w3-border w3-border-theme">
         <b>Sources</b>
     </legend>
     
@@ -82,37 +89,12 @@
 </fieldset>
 {% endmacro %}
 
-{% macro cMountMedium(mount, experiment) %}
-<div class="w3-half w3-display-container">
-    <div class="w3-panel w3-theme w3-round-large w3-row w3-padding w3-margin w3-display-container">
-        <div class="w3-col m4">
-            {{ cImg(mount.platform.img, 'platforms') }}
-        </div> 
-        <div class="w3-col m8 w3-center">
-            <div class="w3-margin w3-display-right ">
-                Platform: <b>{{ mount.platform.name }}</b><br>
-                Name: <b>{{ mount.name}}</b><br>
-                Description: <b>{{ mount.description }}</b>
-            </div>
-            <select class="w3-select w3-round-large w3-card-4" name="{{ mount.id }}">
-                <option value="">---</option>
-                    {% for source in experiment.sources %}
-                        <option value="{{ source.id }}"
-                            {% if mount in source.mounts %}
-                                selected="selected"
-                            {% endif %}
-                        >{{ source.name }}</name>
-                    {% endfor %}
-                </select>
-        </div> 
-    </div> 
-</div>
-{% endmacro %}
+
 
 {% macro pMounts(experiment) %}
-<fieldset class="w3-border-theme w3-card-4 w3-round-large w3-margin">
+<fieldset class="w3-border-theme w3-card-4 w3-round w3-margin">
     <legend
-        class="w3-center w3-padding w3-white w3-margin-bottom w3-text-theme w3-xlarge w3-card w3-round-large w3-border w3-border-theme">
+        class="w3-center w3-padding w3-white w3-margin-bottom w3-text-theme w3-xlarge w3-card w3-round w3-border w3-border-theme">
         <b>Platforms</b>
     </legend>
     <form method="POST" action="{{ url_for('experiment.savePlatforms', id=experiment.id) }}">
@@ -125,9 +107,9 @@
 {% endmacro %}
 
 {% macro pTestbed(experiment, doc) %}
-<fieldset class="w3-border-theme w3-card-4 w3-round-large w3-margin">
+<fieldset class="w3-border-theme w3-card-4 w3-round w3-margin">
     <legend
-        class="w3-center w3-padding w3-white w3-margin-bottom w3-text-theme w3-xlarge w3-card w3-round-large w3-border w3-border-theme">
+        class="w3-center w3-padding w3-white w3-margin-bottom w3-text-theme w3-xlarge w3-card w3-round w3-border w3-border-theme">
         <b>Testbed</b>
     </legend>
     {{ pInfo(doc.Testbed.prepare) }}

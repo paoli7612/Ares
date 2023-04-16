@@ -12,9 +12,9 @@
     {% include 'layout/flash.html' %}
 
     {% if current_user.is_authenticated %}
-        <div class="w3-panel w3-margin-top w3-card-4 w3-round-large w3-white w3-display-container w3-padding" style="max-width: 1200px; margin:auto">
+        <div class="w3-panel w3-margin-top w3-card-4 w3-round w3-white w3-display-container w3-padding" style="max-width: 1200px; margin:auto">
     {% else %}
-        <div class="w3-panel w3-margin-top w3-card-4 w3-round-large w3-white" style="max-width: 800px; margin:auto">
+        <div class="w3-panel w3-margin-top w3-card-4 w3-round w3-white" style="max-width: 800px; margin:auto">
     {% endif %}
 
         {% block content %}

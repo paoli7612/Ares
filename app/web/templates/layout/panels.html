@@ -32,14 +32,14 @@
         <h1 class="w3-text-red">
             Freezed
         </h1>
-        {{ cBack(class="w3-display-bottommiddle") }}
+        {{ cBack(view='experiment.index') }}
     </div>
 </div>
 {% endmacro %}
 
 {% macro pMessage(label, icon='info', color='black')  %}
 </p>
-<div class="w3-text-{{ color }} w3-panel w3-card w3-border w3-display-container w3-bottombar w3-round-large w3-row w3-border-3 w3-border-{{ color }}">
+<div class="w3-text-{{ color }} w3-panel w3-card w3-border w3-display-container w3-bottombar w3-round w3-row w3-border-3 w3-border-{{ color }}">
     <div class="w3-col m2">
         {{ cIcon(icon, class='w3-display-right w3-xxlarge w3-margin-right')}}
     </div>

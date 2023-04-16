@@ -1,8 +1,24 @@
+{% from 'layout/room.html' import cRoomHome %}
+{% from 'layout/platform.html' import cPlatformHome %}
+{% from 'layout/experiment.html' import cExperimentHome %}
+{% from 'layout/components.html' import cIcon %}
 {% extends 'layout/index.html' %}
 
-{% block title %}Home{% endblock %}
+{% macro section(title, icon, url, desc) %}
+<a class="w3-panel w3-card w3-round w3-btn w3-theme-l4 w3-block"  href="{{ url }}">
+    <h2 class="w3-center">{{ cIcon(icon)}}{{ title }}</h2>
+    <div class="w3-container">{{ desc|safe }}</div>
+</a>
+{% endmacro %}
 
+{% block title %}Home{% endblock %}
 {% block content %}
-<h1 class="w3-center">Welcome back to Ares</h1>
-<h5 class="w3-center">...where you can conduct <b>experiments</b> using different devices!</h5>
+    <h1 class="w3-center">Welcome back to Ares</h1>
+    <h5 class="w3-center">...where you can conduct <b>experiments</b> using different devices!</h5>
+    {{ section('Rooms', 'building', url_for('room.index'), doc.Room.index)}}
+    {{ section('Platforms', 'deviantart', url_for('platform.index'), doc.Platform.index)}}
+    {{ section('My experiments', 'flask', url_for('experiment.index'), doc.Experiment.home)}}
+    {{ section('Testing page', 'try', url_for('views.test'), doc.Test.index)}}
+    {{ section('View queue', 'long-arrow-right', url_for('queue.index'), doc.ElementQ.index)}}
+
 {% endblock %}

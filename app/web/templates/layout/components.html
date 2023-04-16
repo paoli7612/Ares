@@ -10,7 +10,7 @@
 <!-- INPUT -->
 {% macro cInput(name, value, id, class, placeholder, required=True, type='text', disabled=False) %}
         <input
-        class="w3-input w3-round-large w3-card {{ class }}"
+        class="w3-input w3-round w3-card {{ class }}"
         type="{{ type }}"
         name="{{ name }}"
         {% if value %} value="{{ value }}" {% endif %}
@@ -23,7 +23,7 @@
 
 {% macro cTextarea(name, value, class, readonly, required) %}
     <textarea
-        class="w3-input w3-round-large w3-card {{ class }}"
+        class="w3-input w3-round w3-card {{ class }}"
         value="{{ value }}"
         name="{{ name }}"
         {{ 'readonly="readonly"' if readonly }}
@@ -39,7 +39,7 @@
             onclick="{{ onclick }}"
         {% endif %}
         title="{{ title }}"
-        class="w3-large w3-btn w3-round-large w3-card-4 {{ class }} {{ 'w3-'~color if color }}">
+        class="w3-large w3-btn w3-round w3-card-4 {{ class }} {{ 'w3-'~color if color }}">
         {{ cIcon(icon)}}
         <span class="w3-hide-small w3-hide-medium">
             {{ label }}
@@ -59,7 +59,7 @@
     <button type="submit"
         id="{{ id }}"
         name="{{ name }}"
-        class="w3-large w3-btn w3-round-large w3-{{ color }} w3-{{ round }} w3-card {{ class }}">
+        class="w3-large w3-btn w3-round w3-{{ color }} w3-{{ round }} w3-card {{ class }}">
         {{ cIcon(icon) }}
         {{ label }}
     </button>

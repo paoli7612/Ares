@@ -9,7 +9,7 @@
     {% for field in form %}
         <div class="w3-panel">
             {{ field.label(class="w3-margin") }}
-            {{ field(class='w3-input w3-card w3-round-large') }}
+            {{ field(class='w3-input w3-card w3-round') }}
         </div>
     {% endfor %}
     {{ cSubmitBack(form.title, form.icon, backName) }}

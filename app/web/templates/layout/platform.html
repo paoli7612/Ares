@@ -1,6 +1,6 @@
 {% from 'layout/components.html' import cImg %}
 {% macro cPlatformsIndex(platform) %}
-<div class="w3-panel w3-round-large w3-padding w3-display-container w3-card-4 w3-theme-l2">
+<div class="w3-panel w3-round w3-padding w3-display-container w3-card-4 w3-theme-l2">
     <div class="w3-col m4">
         {{ cImg(platform.img, 'platforms') }}
     </div> 
@@ -17,5 +17,11 @@
             {{ cLink('Info', 'info-circle', url='https://informati') }}
         </div>
     </div> 
+</div>
+{% endmacro %}
+
+{% macro cPlatformHome(platform) %}
+<div class="w3-quarter">
+    {{ cImg(platform.img, 'platforms') }}
 </div>
 {% endmacro %}

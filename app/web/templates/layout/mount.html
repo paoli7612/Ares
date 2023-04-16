@@ -2,44 +2,71 @@
 {% from 'layout/panels.html' import pInput %}
 
 {% macro cMountSmall(mount) %}
-<div class="w3-half w3-display-container">
-    <div class="w3-panel w3-theme w3-round-large w3-row w3-padding w3-margin w3-display-container">
-        <div class="w3-col m4">
-            <a href="{{ url_for('platform.edit', id=mount.platform.id) }}">
-                {{ cImg(mount.platform.img, 'platforms') }}
-            </a>
-        </div> 
-        <div class="w3-col m8 w3-center">
-            <div class="w3-margin w3-display-right ">
-                Platform: <b>{{ mount.platform.name }}</b><br>
-                Name: <b>{{ mount.name }}</b><br>
-                Description: <b>{{ mount.description }}</b>
-            </div>
-        </div> 
-    </div> 
+<div class="w3-panel w3-xlarge w3-theme w3-round w3-row w3-padding w3-margin">
+    <div class="w3-quarter">
+        <a href="{{ url_for('platform.edit', id=mount.platform.id) }}">
+            {{ cImg(mount.platform.img, 'platforms') }}
+        </a>
+    </div>
+    <div class="w3-threequarter">
+        <p class="w3-margin-left">
+            Platform: <b>{{ mount.platform.name }}</b><br>
+            Name: <b>{{ mount.name }}</b><br>
+            Description: <b>{{ mount.description }}</b>
+        </p>
+    </div>
 </div>
 {% endmacro %}
 
 {% macro cMountEdit(mount) %}
-<div class="w3-col m6">
-    <div class="w3-panel w3-theme w3-round-large w3-margin w3-card-4 w3-padding">
+<div class="w3-half">
+    <div class="w3-theme w3-panel w3-round w3-margin w3-card-4">
         <form method="post" action="{{ url_for('room.mountEdit', id=mount.id) }}">
-            <div class="w3-container">
-                {{ cImg(mount.platform.img, 'platforms', class='w3-third') }}
-                <span class="w3-twothird w3-right"> 
-                    Platform: <b>{{ mount.platform.name }}</b>
-                </span>
-                {{ pInput(label='Name', name='name', value=mount.name, required=False, class="w3-twothird w3-right") }}
+            <div class="w3-panel">
+                <div class="w3-third">
+                    {{ cImg(mount.platform.img, 'platforms') }}
+                </div>
+                <div class="w3-twothird">
+                    <b class="w3-center w3-white w3-padding w3-round w3-block w3-large">
+                        {{ mount.platform.name }}
+                    </b>
+                    {{ pInput(label='Name', name='name', value=mount.name, required=False) }}
+                </div>
             </div>
             <div class="w3-panel">
                 Description
                 {{ cTextarea(name='description', value=mount.description) }}
             </div>
-            <div class="w3-container w3-center">
+            <div class="w3-center w3-margin-bottom">
                 {{ cLink(label='Delete', icon='trash', url=url_for('room.mountDelete', id=mount.id), color='red') }}
                 {{ cSubmit(label='Save', icon='save', color='white') }}
             </div>
         </form>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro cMountMedium(mount, experiment) %}
+<div class="w3-half">
+    <div class="w3-panel w3-theme w3-round w3-margin w3-card-4" style="height: 200px">
+        <div class="w3-half w3-padding">
+            {{ cImg(mount.platform.img, 'platforms') }}
+        </div>
+        <div class="w3-half">
+            <select class="w3-select w3-round w3-card w3-margin-right w3-margin-top" name="{{ mount.id }}">
+                <option value="">---</option>
+                {% for source in experiment.sources %}
+                    <option value="{{ source.id }}"
+                        {% if mount in source.mounts %} selected="selected" {% endif %}
+                    >{{source.name }}</option>
+                {% endfor %}
+            </select>
+            <div class="w3-panel">
+                <b>Platform</b>: {{ mount.platform.name }}<br>
+                <b>Name</b>: {{ mount.name}}<br>
+                <b>Description</b>: {{ mount.description }}
+            </div>
+        </div>
     </div>
 </div>
 {% endmacro %}

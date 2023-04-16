@@ -1,15 +1,15 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import current_user, login_required
+import doc, os
 from .models import Room, Platform, Experiment, Mount
 from . import db
 from .forms import RoomForm, ExperimentForm
-import doc, os
 
 room = Blueprint('room', __name__)
 
 @room.route('/')
 def index():
-    """ See all my rooms """
+    """ See all rooms """
     return render_template('pages/index.html',
                             model = 'Room',
                             items = Room.query.all(),
@@ -27,7 +27,7 @@ def single(id):
 @login_required
 def new():
     if not current_user.isAdmin():
-        flash(doc.idNotAdmin, category='red')
+        flash(doc.isNotAdmin, category='red')
         return redirect(url_for('views.home'))
     form = RoomForm('new', request.form)
     if request.method == 'POST':
@@ -76,9 +76,7 @@ def experiment(id):
     form = ExperimentForm('new', request.form)
     if request.method == 'POST':
         if form.validate():
-            experiment = Experiment()
-            experiment.name = form.data['name']
-            experiment.description = form.data['description']
+            experiment = Experiment(**form.data)
             experiment.room = Room.query.get(id)
             experiment.user = current_user
             db.session.add(experiment)
@@ -115,24 +113,21 @@ def mountDelete(id):
         room_id = Mount.query.get(id).room.id
         Mount.query.filter_by(id=id).delete()
         db.session.commit()
-        # flash(doc.Mount.Action.deleted, category='red')
+        flash(doc.Mount.Action.deleted, category='yellow')
         return redirect(url_for('room.platforms', id=room_id))
     return render_template('pages/ask.html', title='Deleting mount', question='Are you sure?', icon='trash', backName='room.index')
 
 @room.route('<int:id>/changeImg', methods=['GET', 'POST'])  
 def changeImg(id):
     file = request.files['file']
-    if file:
-        if file.filename.split('.')[-1] == 'png':
-            ## DA METTERE APOSTo
-            room = Room.query.get(id)
-            path = 'web/static/rooms/' + room.name + '.png'
-            room.img = room.name + ".png"
-            db.session.add(room)
-            db.session.commit()
-            file.save(path)
-        else:
-            flash(doc.Room.Action.Img.notValid, category='red')
+    if file.filename.split('.')[-1] == 'png':
+        room = Room.query.get(id)
+        fname =  room.name + ".png"
+        room.img = fname
+        path = os.path.join('web/static/rooms', fname)
+        db.session.add(room)
+        db.session.commit()
+        file.save(path)
     else:
-        flash('file not selected', category='red')
+        flash(doc.Room.Action.Img.notValid, category='red')
     return redirect(url_for('room.platforms', id=id))

@@ -12,6 +12,7 @@ def index():
     return render_template('pages/index.html',
                            model = 'Platform',
                            items=Platform.query.all(),
+                           buttons = [('plus', url_for('room.new'))],
                            doc=doc.Platform)
 
 @platform.route('/new', methods=['GET', 'POST'])

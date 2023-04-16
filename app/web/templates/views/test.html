@@ -9,7 +9,7 @@
 
 <form method="post" id="input">
     <div class="w3-panel w3-margin ">
-        <select class="w3-select w3-round-large w3-third w3-card-4" name="esp">
+        <select class="w3-select w3-round w3-third w3-card-4" name="esp">
             {% for platform in platforms %}
                 <option value="{{ platform.name }}">{{ platform.name }}</option>
             {% endfor %}
@@ -18,14 +18,14 @@
             Select the platform you want
         </label>
     </div>
-    <pre class="w3-panel w3-card-4 w3-round-large w3-margin w3-padding w3-theme-l4">
+    <pre class="w3-panel w3-card-4 w3-round w3-margin w3-padding w3-theme-l4">
 <span class="w3-text-theme">void</span> setup() {
     <span class="w3-text-theme">ArduinoOTA</span>.begin();
-<textarea name="setup" rows="10" class="w3-card-4 w3-round-large" style="width: 90%; margin-left: 32px;" placeholder="setup"></textarea>
+<textarea name="setup" rows="10" class="w3-card-4 w3-round" style="width: 90%; margin-left: 32px;" placeholder="setup"></textarea>
 }
 <span class="w3-text-theme">void</span>  loop() {
     <span class="w3-text-theme">ArduinoOTA</span>.handle();
-<textarea name="loop" rows="10" class="w3-card-4 w3-round-large" style="width: 90%; margin-left: 32px;" placeholder="loop"></textarea>
+<textarea name="loop" rows="10" class="w3-card-4 w3-round" style="width: 90%; margin-left: 32px;" placeholder="loop"></textarea>
 }</pre>
     {{ pSubmitBack(label='test', icon='try') }}
 </form>

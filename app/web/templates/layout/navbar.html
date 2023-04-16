@@ -10,24 +10,20 @@
 <nav class="w3-bar w3-theme w3-xlarge">
     {% if current_user.is_authenticated %}
         {{ item('Home', 'home', 'views.home') }}
-        {{ item('Experiments', 'flask', 'experiment.index') }}
+        {{ item('Rooms', 'building', 'room.index') }}
+        {{ item('Platforms', 'deviantart', 'platform.index') }}
+        {{ item('My experiments', 'flask', 'experiment.index') }}
         {{ item('Account', 'user', 'auth.account', 'w3-right') }}
         {{ item('Test', 'try', 'views.test', 'w3-right') }}
-    {% else %}
-        {{ item('Welcome', 'home', 'views.welcome') }}
-        {{ item('Signin', 'sign-in', 'auth.signin', 'w3-right') }}
-        {{ item('Signup', 'user-plus', 'auth.signup', 'w3-right') }}
-    {% endif %}
-    {{ item('Platforms', 'deviantart', 'platform.index') }}
-    {{ item('Rooms', 'building', 'room.index') }}
-    {% if current_user.is_authenticated %}
-        {% if current_user.inQueue %}
-            {{ item('Queue', 'long-arrow-right', 'queue.index') }}
-        {% endif %}
+        {{ item('Queue', 'long-arrow-right', 'queue.index') }}
         {% if current_user.isAdmin() %}
             {{ item('DB', 'database', 'views.testDatabase',  class='w3-amber')}}
             {{ item('HTML', 'html5', 'views.testHtml',  class='w3-amber')}}
         {% endif %}
+    {% else %}
+        {{ item('Welcome', 'home', 'views.welcome') }}
+        {{ item('Signin', 'sign-in', 'auth.signin', 'w3-right') }}
+        {{ item('Signup', 'user-plus', 'auth.signup', 'w3-right') }}
     {% endif %}
 
 </nav>

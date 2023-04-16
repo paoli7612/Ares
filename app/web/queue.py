@@ -12,11 +12,10 @@ def index():
     for experiment in current_user.experiments:
         items.append(ElementQ.query.filter_by(experiment=experiment).all())
     return render_template('pages/index.html',
-                            model='Queue',
-               
+                           model='Queue',
                            buttons=[('sliders', url_for('queue.control'))],
-                            items=items,
-                            doc=doc.ElementQ)
+                           items=items,
+                           doc=doc.ElementQ)
 
 @queue.route('control')
 def control():
@@ -24,4 +23,9 @@ def control():
 
 @queue.route('next', methods=['POST'])
 def next():
+    e = ElementQ.query. \
+                filter_by(start_time=None) \
+                .order_by('enqueue_time') \
+                .first()
+    print(e)
     return redirect(url_for('queue.index'))
