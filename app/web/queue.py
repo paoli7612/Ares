@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, url_for, redirect
 from flask_login import current_user
+import datetime
 from .models import ElementQ
 from . import db, doc
 
@@ -22,9 +23,29 @@ def control():
 
 @queue.route('next', methods=['POST'])
 def next():
-    e = ElementQ.query. \
-                filter_by(start_time=None) \
+    e = ElementQ.query \
+                .filter_by(start_time=None) \
                 .order_by('enqueue_time') \
                 .first()
-    print(e)
+    if e:
+        e.start_time = datetime.datetime.now()
+        db.session.add(e)
+        db.session.commit()
+
+    return redirect(url_for('queue.index'))
+
+@queue.route('finish', methods=['POST'])
+def finish():
+    e = ElementQ.query \
+                .filter_by(end_time=None) \
+                .order_by('enqueue_time') \
+                .first()
+    if e:
+        print("finish ", e)
+        e.end_time = datetime.datetime.now()
+        e.experiment.setReady()
+        db.session.add(e)
+        db.session.commit()
+
+
     return redirect(url_for('queue.index'))

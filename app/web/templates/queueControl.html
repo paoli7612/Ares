@@ -11,4 +11,8 @@
     {{ pSubmit('Next experiment', 'next')}}
 </form>
 
+<form method='POST' action={{ url_for('queue.finish') }}>
+    {{ pSubmit('Finish execution', 'end')}}
+</form>
+
 {% endblock %}
