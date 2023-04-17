@@ -1,4 +1,4 @@
-{% from 'layout/components.html' import cBack, cIcon, cSubmitBack, cInput, cSubmit, cError %}
+{% from 'layout/components.html' import cBack, cIcon, cSubmitBack, cInput, cTextarea, cSubmit, cError %}
 {% from 'layout/components.html' import cMessage, cLinkIcon %}
 
 {% macro pInput(label, name, value, id, class, placeholder, required=True, type='text', disabled=False) %}
@@ -6,6 +6,15 @@
         <label>
             {{ label }}
             {{ cInput(name, value, id, '', placeholder, required, type, disabled) }}
+        </label>
+    </div>
+{% endmacro %}
+
+{% macro pTextarea(label, name, value, id, class, placeholder, required=True, type='text', disabled=False) %}
+    <div class="w3-panel {{ class }}">
+        <label>
+            {{ label }}
+            {{ cTextarea(name, value, required=True, disabled=False) }}
         </label>
     </div>
 {% endmacro %}
@@ -26,20 +35,9 @@
     </div>
 {% endmacro %}
 
-{% macro pFreeze() %}
-<div class="w3-modal w3-show">
-    <div class="w3-theme-d5 w3-padding w3-display-container">
-        <h1 class="w3-text-red">
-            Freezed
-        </h1>
-        {{ cBack(view='experiment.index') }}
-    </div>
-</div>
-{% endmacro %}
-
-{% macro pMessage(label, icon='info', color='black')  %}
+{% macro pMessage(label, icon='info', color='black', bgcolor='white')  %}
 </p>
-<div class="w3-text-{{ color }} w3-panel w3-card w3-border w3-display-container w3-bottombar w3-round w3-row w3-border-3 w3-border-{{ color }}">
+<div class="w3-{{ bgcolor }} w3-text-{{ color }} w3-panel w3-card w3-border w3-display-container w3-bottombar w3-round w3-row w3-border-3 w3-border-{{ color }}">
     <div class="w3-col m2">
         {{ cIcon(icon, class='w3-display-right w3-xxlarge w3-margin-right')}}
     </div>
@@ -52,7 +50,7 @@
     {{ pMessage(label, icon='close', color='red')  }}
 {% endmacro %}
 {% macro pWarning(label)  %}
-    {{ pMessage(label, icon='warning', color='yellow') }}
+    {{ pMessage(label, icon='warning', color='yellow', bgcolor='grey') }}
 {% endmacro %}
 {% macro pInfo(label)  %}
     {{ pMessage(label, icon='info-circle', color='blue')  }}
@@ -68,7 +66,6 @@
 {% endmacro %}
 
 
-
 {% macro pHeader(title) %}
 <div class="w3-panel">
     <h1 class="w3-left">
@@ -82,5 +79,16 @@
     <h3 class="w3-left">
         {{ title }}
     </h3>
+</div>
+{% endmacro %}
+
+{% macro pFreeze() %}
+<div class="w3-modal w3-show">
+    <div class="w3-theme-d5 w3-padding w3-display-container">
+        <h1 class="w3-text-red">
+            Freezed
+        </h1>
+        {{ cBack(view='experiment.index') }}
+    </div>
 </div>
 {% endmacro %}

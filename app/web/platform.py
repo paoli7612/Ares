@@ -8,10 +8,14 @@ platform = Blueprint('platform', __name__)
 
 @platform.route('/')
 def index():
+    buttons = list()
+    if current_user.is_authenticated and current_user.isAdmin():
+        buttons.append(('plus', url_for('platform.new')))
+
     return render_template('pages/index.html',
                            model = 'Platform',
                            items=Platform.query.all(),
-                           buttons = [('plus', url_for('room.new'))],
+                           buttons = buttons,
                            doc=doc.Platform)
 
 @platform.route('/new', methods=['GET', 'POST'])

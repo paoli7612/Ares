@@ -1,3 +1,5 @@
+{% from 'layout/components.html' import cImg, cIcon %}
+
 {% extends 'layout/index.html' %}
 
 {% block title %}Welcome{% endblock %}
@@ -5,26 +7,11 @@
 {% block content %}
 <h1 class="w3-center">Welcome to Ares</h1>
 <h5 class="w3-center">Welcome to our website where you can conduct <b>experiments</b> using different devices!</h5>
-<!-- Queue -->
-<div class="w3-container w3-row w3-text-red w3-margin w3-right-align">
-    <div class="w3-col s10">
-        <p>
-            Due to the high number of customers, we have organized a queue to manage the high volume of requests. We
-            apologize
-            for any inconvenience this may cause
-        </p>
-    </div>
-    <div class="w3-col s2">
-        <h1 class="w3-center">
-            <i class="fa fa-warning"></i>
-        </h1>
-    </div>
-</div>
-<!-- Sing in Sing up -->
+<!-- sign in sign up -->
 <div class="w3-container w3-row" >
     <div class="w3-col s1">
         <h1>
-            <i class="fa fa-user"></i>
+            {{ cIcon('user') }}
         </h1>
     </div>
     <div class="w3-col s11">
@@ -43,21 +30,20 @@
     </div>
     <div class="w3-col s1">
         <h1>
-            <i class="fa fa-book"></i>
+            {{ cIcon('book') }}
         </h1>
     </div>
 </div>
-<!-- Forum -->
-<div class="w3-container w3-row">
+<div class="w3-container w3-row" >
     <div class="w3-col s1">
         <h1>
-            <i class="fa fa-users"></i>
+            {{ cIcon('long-arrow-right') }}
         </h1>
     </div>
     <div class="w3-col s11">
-        <p>Join our <a href="/comunity">community of makers and innovators</a> and start experimenting today! We have a
-            large <a href="/comunity/forum">forum area</a> where you can ask for advice from other users</p>
-
+        <p> Due to the high number of customers, we have organized a queue to manage the high volume of requests. We
+            apologize
+            for any inconvenience this may cause</p>
     </div>
 </div>
 <hr>
@@ -65,16 +51,16 @@
     <b>different platforms</b>
 </p>
 <div class="w3-row">
-    <div class="w3-col s4 w3-center">
-        <img src="{{ url_for('static', filename='images/esp8266.png') }}" style="width: 65%">
+    <div class="w3-col s4 w3-center w3-padding">
+        {{ cImg('esp8266.png', 'platforms') }}
         <h4>ESP8266</h4>
     </div>
-    <div class="w3-col s4 w3-center">
-        <img src="{{ url_for('static', filename='images/esp32.png') }}" style="width: 65%">
+    <div class="w3-col s4 w3-center w3-padding">
+        {{ cImg('esp32.png', 'platforms') }}
         <h4>ESP832</h4>
     </div>
-    <div class="w3-col s4 w3-center">
-        <img src="{{ url_for('static', filename='images/docker.png') }}" style="width: 65%">
+    <div class="w3-col s4 w3-center w3-padding">
+        {{ cImg('docker.png', 'images') }}
         <h4>Emulated devices</h4>
     </div>
 </div>

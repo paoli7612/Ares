@@ -9,7 +9,7 @@
 
 <!-- INPUT -->
 {% macro cInput(name, value, id, class, placeholder, required=True, type='text', disabled=False) %}
-        <input
+    <input
         class="w3-input w3-round w3-card {{ class }}"
         type="{{ type }}"
         name="{{ name }}"
@@ -21,13 +21,14 @@
     /> 
 {% endmacro %}
 
-{% macro cTextarea(name, value, class, readonly, required) %}
+{% macro cTextarea(name, value, id, class, placeholder, required=True, disabled=False) %}
     <textarea
         class="w3-input w3-round w3-card {{ class }}"
-        value="{{ value }}"
         name="{{ name }}"
-        {{ 'readonly="readonly"' if readonly }}
-        {{ 'required="required"' if required }}
+        {% if id %} id="{{ id }}" {% endif %}
+        {% if placeholder %} placeholder="{{ placeholder }}" {% endif %}
+        {% if disabled %} disabled="disabled" {% endif %}
+        {% if required %} required="required" {% endif %}
     >{{ value }}</textarea>
 {% endmacro %}
 
@@ -73,7 +74,7 @@
 {% endmacro %}
 
 <!-- Messages -->
-{% macro cMessage(label, class, color='theme')  %}
+{% macro cMessage(label, class, color='black')  %}
 <p class="w3-text-{{ color }} w3-center {{ class }}">
     {{ label|safe }}
 </p>

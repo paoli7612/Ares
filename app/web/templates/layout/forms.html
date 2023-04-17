@@ -1,4 +1,5 @@
-{% from 'layout/components.html' import cSubmitBack, cSubmit, cImage, cInput, cIcon %}
+{% from 'layout/panels.html' import pSubmitBack, pSubmit %}
+{% from 'layout/components.html' import cIcon, cInput, cSubmit %}
 
 {% macro fExperiment(action, e, icon) %}
     <h1>{{ action.capitalize() }} Experiment</h1>
@@ -13,8 +14,7 @@
             <textarea name="description" class="w3-input w3-card w3-round"
                 placeholder="description">{{ e.description or '' }}</textarea>
         </label>
-
-        {{ cSubmitBack('Edit', icon) }}
+        {{ pSubmitBack(action.capitalize(), icon) }}
     </form>
 {% endmacro %}
 
@@ -47,14 +47,7 @@
         </tr>
         {% endfor %}
     </table>
-    {{ cSubmit('Save', 'save') }}
-</form>
-{% endmacro %}
-
-{% macro fTestBed(experiment) %}
-<form method="POST" action="{{ url_for ('experiment.testbed', id=experiment.id)}}">
-    {{ cInput('minutes', experiment.minutes) }}
-    {{ cSubmit('Enqueue', 'play-circle') }}
+    {{ pSubmit('Save', 'save') }}
 </form>
 {% endmacro %}
 

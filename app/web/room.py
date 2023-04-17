@@ -10,10 +10,13 @@ room = Blueprint('room', __name__)
 @room.route('/')
 def index():
     """ See all rooms """
+    buttons = list()
+    if current_user.is_authenticated and current_user.isAdmin():
+        buttons.append(('plus', url_for('room.new')))
     return render_template('pages/index.html',
                             model = 'Room',
                             items = Room.query.all(),
-                            buttons = [('plus', url_for('room.new'))],
+                            buttons = buttons,
                             doc = doc.Room)
 
 @room.route('<int:id>')

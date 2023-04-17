@@ -1,5 +1,5 @@
 {% from 'layout/components.html' import cImg, cInput, cTextarea, cSubmit, cLink %}
-{% from 'layout/panels.html' import pInput %}
+{% from 'layout/panels.html' import pInput, pTextarea %}
 
 {% macro cMountSmall(mount) %}
 <div class="w3-panel w3-xlarge w3-theme w3-round w3-row w3-padding w3-margin">
@@ -18,7 +18,7 @@
 </div>
 {% endmacro %}
 
-{% macro cMountEdit(mount) %}
+{% macro cMountChange(mount) %}
 <div class="w3-half">
     <div class="w3-theme w3-panel w3-round w3-margin w3-card-4">
         <form method="post" action="{{ url_for('room.mountEdit', id=mount.id) }}">
@@ -33,10 +33,7 @@
                     {{ pInput(label='Name', name='name', value=mount.name, required=False) }}
                 </div>
             </div>
-            <div class="w3-panel">
-                Description
-                {{ cTextarea(name='description', value=mount.description) }}
-            </div>
+            {{ pTextarea(name='description', value=mount.description) }}
             <div class="w3-center w3-margin-bottom">
                 {{ cLink(label='Delete', icon='trash', url=url_for('room.mountDelete', id=mount.id), color='red') }}
                 {{ cSubmit(label='Save', icon='save', color='white') }}

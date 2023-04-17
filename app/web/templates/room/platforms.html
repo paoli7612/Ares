@@ -1,5 +1,5 @@
 {% from "layout/components.html" import cHeader, cImg, cFile with context %}
-{% from 'layout/mount.html' import cMountEdit %}
+{% from 'layout/mount.html' import cMountChange %}
 {% from "layout/panels.html" import pHeader, pEmpty, pSubmit, pInput %}
 {% from "layout/forms.html" import fFile%}
 {% extends 'layout/index.html' %}
@@ -15,7 +15,7 @@
 
 <div class="w3-row">
     {% for mount in room.mounts %}
-        {{ cMountEdit(mount) }}
+        {{ cMountChange(mount) }}
     {% else %}
         {{ pEmpty(doc.empty) }}
     {% endfor %}

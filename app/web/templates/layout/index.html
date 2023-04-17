@@ -1,15 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    {% include 'layout/head.html' %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+    {% if current_user.is_authenticated  %}
+        <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-{{ current_user.theme }}.css">
+    {% else %}
+        <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-indigo.css">
+    {% endif %}
+    <style>
+        body {
+            background-color: rgb(88, 88, 88);
+            background-image: url("{{ url_for('static', filename='images/wpaper.png') }}");
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 50% ! important;
+            border-radius: 20px 20px 00px 0px;
+        }
+    </style>
     <title>{% block title %}{% endblock %}</title>
 </head>
 
 <body>
 
     {% include 'layout/navbar.html' %}
-    {% include 'layout/flash.html' %}
+    <div class="w3-panel">
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="w3-panel w3-{{ category }} w3-margin w3-card-4 w3-round w3-display-container" id="{{ i }}">
+                    <span class="w3-xlarge w3-display-middle">
+                        {{ message }}
+                    </span>
+                    <button class="w3-right w3-btn w3-circle  w3-xlarge" onclick="this.parentNode.remove()">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
 
     {% if current_user.is_authenticated %}
         <div class="w3-panel w3-margin-top w3-card-4 w3-round w3-white w3-display-container w3-padding" style="max-width: 1200px; margin:auto">

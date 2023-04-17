@@ -8,7 +8,7 @@
 {% block content %}
     <div class="w3-panel">
         {% for icon, url in buttons %}
-        {{ cLink(icon=icon, url=url) }}
+            {{ cLink(icon=icon, url=url) }}
         {% endfor %}
     </div>
     {{ pInfo(doc.index) }}
