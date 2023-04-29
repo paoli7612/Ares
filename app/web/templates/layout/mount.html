@@ -33,7 +33,7 @@
                     {{ pInput(label='Name', name='name', value=mount.name, required=False) }}
                 </div>
             </div>
-            {{ pTextarea(name='description', value=mount.description) }}
+            {{ pTextarea(name='description', value=mount.description, required=False) }}
             <div class="w3-center w3-margin-bottom">
                 {{ cLink(label='Delete', icon='trash', url=url_for('room.mountDelete', id=mount.id), color='red') }}
                 {{ cSubmit(label='Save', icon='save', color='white') }}

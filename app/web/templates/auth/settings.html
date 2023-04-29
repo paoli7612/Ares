@@ -1,5 +1,6 @@
 {% from "layout/components.html" import cSubmitBack, cInput %}
-{% from "layout/panels.html" import pSubmitBack, pInput, pDoc %}
+{% from "layout/panels.html" import pSubmitBack, pInput, pInfo %}
+
 {% extends 'layout/index.html' %}
 
 {% block title %}Settings{% endblock %}
@@ -7,10 +8,11 @@
 {% block content %}
 
 <form class="w3-panel" method="post">
+    {{ pInfo(doc) }}
     <h3 class="w3-center">Settings</h3>
-    {{ pInput(label='Email', value=current_user.email, type='email', class='w3-half', readonly=1) }}
-    {{ pInput(label='Username', name='username', value=current_user.username, class='w3-half', required=1) }}
-    {{ pInput(label='Status', value=current_user.getStatus(), class='w3-half', readonly=1) }}
+    {{ pInput(label='Email', value=current_user.email, type='email', class='w3-half', disabled=True) }}
+    {{ pInput(label='Username', name='username', value=current_user.username, class='w3-half', disabled=True) }}
+    {{ pInput(label='Status', value=current_user.getStatus(), class='w3-half', disabled=True) }}
     <label class="w3-panel w3-half"> Theme
         <select name="theme" class="w3-select w3-round" name="theme">
             <option value="{{ current_user.theme }}">{{ current_user.theme.capitalize() }}</option>
@@ -26,8 +28,7 @@
             <option value="black">Black</option>
         </select>
     </label>
-    {{ pSubmitBack(label='Save', icon='save', back='views.welcome')}}
+    {{ pSubmitBack(label='Save', icon='save')}}
 </form>
-{{ pDoc(doc)}}
 
 {% endblock %}

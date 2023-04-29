@@ -4,12 +4,6 @@ import os, re, subprocess, shutil
 class MyPIO:
     def test(esp, control_file):
         os.system('platformio run -e test' + esp + ' && echo "OK" > ' + control_file)
-        
-    def test32(control_file):
-        MyPIO.test('32', control_file)
-
-    def test8266(control_file):
-        MyPIO.test('8266', control_file)
 
 class Ares:
     """
@@ -27,19 +21,27 @@ class Ares:
                 -- main.cpp
                     file principale da caricare
     """
-    pathAres = os.path.dirname(__file__)
-    pathInis = os.path.join(pathAres, 'inis')
-    pathSources = os.path.join(pathAres, 'sources')
-    pathPlatformio = os.path.join(pathAres, 'platformio')
-    pathPlatformioFile = os.path.join(pathPlatformio, 'platformio.ini')
-    pathPlatformioMain = os.path.join(pathPlatformio, 'src/main.cpp')
+    class Path:
+        """
+            Contain all stati path required from this app
+            - platformio.ini file
+            - src folder
+            - sources folder
+            - init folder
+        """
+        ares = os.path.dirname(__file__)
+        inis = os.path.join(ares, 'inis')
+        sources = os.path.join(ares, 'sources')
+        platformio = os.path.join(ares, 'platformio')
+        platformioFile = os.path.join(platformio, 'platformio.ini')
+        platformioMain = os.path.join(platformio, 'src/main.cpp')
 
     class Ini:
         def path(id):
-            return os.path.join(Ares.pathInis, '%d.ini'%id)
+            return os.path.join(Ares.Path.inis, '%d.ini'%id)
         def use(id):
             path = Ares.Ini.path(id)
-            shutil.copy(path, Ares.pathPlatformioFile)
+            shutil.copy(path, Ares.Path.platformioFile)
         def build(id, content):
             with open(Ares.Ini.path(id), 'w') as f:
                 f.write(content)
@@ -101,8 +103,6 @@ class Ares:
         while id in used:
             id += 1
         return id
-
-
     
     @staticmethod
     def control(path, esp):
@@ -110,10 +110,8 @@ class Ares:
         fname = path.split("/")[-1]
         os.rename(path, os.path.join(Ares.platformio_src_folder, 'main.cpp'))
         os.chdir(Ares.platformio_folder)
-        try:
+        if os.path.exists(Ares.control_file)
             os.remove(Ares.control_file)
-        except:
-            print("amen")
         MyPIO.test(esp, Ares.control_file)
         return os.path.exists(Ares.control_file)
     

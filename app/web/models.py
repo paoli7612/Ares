@@ -119,6 +119,9 @@ class Experiment(db.Model):
         self.description = data['description']
         self.minutes = data['minutes']
 
+    def url(self):
+        return '/experiment/%d' % self.id
+
     def isFreeze(self):
         return self.state == ExperimentState.FREEZE
 

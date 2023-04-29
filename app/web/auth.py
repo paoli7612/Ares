@@ -41,7 +41,7 @@ def signup():
 def settings():
     if request.method == 'POST':
         current_user.theme = request.form['theme']
-        current_user.username = request.form['username']
+        #current_user.username = request.form['username']
         db.session.add(current_user)
         db.session.commit()
     return render_template('auth/settings.html', doc=doc.User.settings)

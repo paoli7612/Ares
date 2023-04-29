@@ -8,10 +8,12 @@
 {{ pHeader('Queue control page') }}
 
 <form method='POST' action={{ url_for('queue.next') }}>
+    Click if you want start nex experiment in queue
     {{ pSubmit('Next experiment', 'next')}}
 </form>
 
 <form method='POST' action={{ url_for('queue.finish') }}>
+    Click if you want finish current experiment in queue
     {{ pSubmit('Finish execution', 'end')}}
 </form>
 

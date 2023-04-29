@@ -36,7 +36,7 @@ def edit(id):
             db.session.add(experiment)
             db.session.commit()
             flash(doc.Experiment.Action.edited, category='green') 
-            return redirect(url_for('experiment.index'))
+            return redirect(url_for('experiment.single', id=experiment.id))
         flash('Error', category='red')
     return render_template('pages/form.html', form=form)
 

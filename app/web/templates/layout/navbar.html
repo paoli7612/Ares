@@ -12,13 +12,14 @@
         {{ item('Home', 'home', 'views.home') }}
         {{ item('Rooms', 'building', 'room.index') }}
         {{ item('Platforms', 'deviantart', 'platform.index') }}
-        {{ item('My experiments', 'flask', 'experiment.index') }}
         {{ item('Queue', 'long-arrow-right', 'queue.index') }}
         {{ item('Account', 'user', 'auth.account', 'w3-right') }}
         {{ item('Test', 'try', 'views.test', 'w3-right') }}
         {% if current_user.isAdmin() %}
             {{ item('DB', 'database', 'views.testDatabase',  class='w3-amber')}}
             {{ item('HTML', 'html5', 'views.testHtml',  class='w3-amber')}}
+        {% else %}
+            {{ item('My experiments', 'flask', 'experiment.index') }}
         {% endif %}
     {% else %}
         {{ item('Welcome', 'home', 'views.welcome') }}

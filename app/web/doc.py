@@ -38,7 +38,7 @@ class Room(Doc):
     info = 'A <b>Room</b> is a space where there is platforms and you can test you code on this devices. '
     index = 'In this page you can see all our <b>rooms</b>. In each <b>room</b> there are different <b>platforms</b>. '
     empty = 'Sorry. In this moment there arent <b>rooms</b> registered in our system. '
-    advice = 'Maibe any room are not exists'
+    advice = 'Maybe any room are not exists'
     strnager = 'After you login, can select a room to create a new <b>experiment</b>. '
     class Action:
         created = 'New room created!'
@@ -58,7 +58,7 @@ class Mount:
 class ElementQ(Doc):
     index = 'In this page you can see all your experiment and the times to wait'
     empty = 'You haven\'t experiment yet in this queue '
-    advice = 'Maibe any room are not exists'
+    advice = 'Maybe any room are not exists'
     strnager = 'After you login, can select a room to create a new <b>experiment</b>. '
 
 class Experiment(Doc, Logged):

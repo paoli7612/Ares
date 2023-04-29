@@ -56,7 +56,6 @@ def help():
     """ Show all information about this app """
     return render_template('views/help.html')
 
-
 @views.route('/welcome')
 def welcome():
     """ Show homepage if user is not authenticated"""
@@ -73,7 +72,7 @@ def test():
         if Ares.test(request.form):
             flash(doc.Test.Form.ok, 'green')
         else:
-            flash(doc.Test.Form.ok, 'red')
+            flash(doc.Test.Form.no, 'red')
     return render_template('views/test.html', platforms=Platform.query.filter_by(test=True), doc=doc.Test.Form.page)
     
 @views.route('/test-upload', methods=['GET', 'POST'])
