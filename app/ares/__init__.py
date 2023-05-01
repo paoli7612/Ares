@@ -110,7 +110,7 @@ class Ares:
         fname = path.split("/")[-1]
         os.rename(path, os.path.join(Ares.platformio_src_folder, 'main.cpp'))
         os.chdir(Ares.platformio_folder)
-        if os.path.exists(Ares.control_file)
+        if os.path.exists(Ares.control_file):
             os.remove(Ares.control_file)
         MyPIO.test(esp, Ares.control_file)
         return os.path.exists(Ares.control_file)
