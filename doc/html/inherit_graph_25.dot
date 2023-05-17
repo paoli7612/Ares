@@ -1,0 +1,12 @@
+digraph "Graphical Class Hierarchy"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node13 [label="enum.Enum",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node13 -> Node0 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node0 [label="web.models.ExperimentState",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classweb_1_1models_1_1ExperimentState.html",tooltip=" "];
+  Node13 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="web.models.UserStatus",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classweb_1_1models_1_1UserStatus.html",tooltip=" "];
+}

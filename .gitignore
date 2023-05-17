@@ -1,7 +1,1 @@
-__pycache__*
-.pio*
-.vscode*
-data*
-*.source
-*.db
-/doc/html*
+app/instance/ares.db

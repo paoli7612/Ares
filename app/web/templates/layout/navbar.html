@@ -18,9 +18,8 @@
         {% if current_user.isAdmin() %}
             {{ item('DB', 'database', 'views.testDatabase',  class='w3-amber')}}
             {{ item('HTML', 'html5', 'views.testHtml',  class='w3-amber')}}
-        {% else %}
-            {{ item('My experiments', 'flask', 'experiment.index') }}
         {% endif %}
+        {{ item('My experiments', 'flask', 'experiment.index') }}
     {% else %}
         {{ item('Welcome', 'home', 'views.welcome') }}
         {{ item('Rooms', 'building', 'room.index') }}
