@@ -17,11 +17,7 @@ def create_app():
     # blueprint
     from .views import views
     from .auth import auth
-    from .platform import platform
-    from .experiment import experiment
-    from .source import source
-    from .room import room
-    from .queue import queue
+    from .routes import platform, experiment, source, room, queue
     app.register_blueprint(views, url_prexif='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(platform, url_prefix='/platform')

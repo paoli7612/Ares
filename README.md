@@ -37,12 +37,25 @@ deleteAll:
 
 ### website
 
+#### installation
+app/requirements.txt
+```
+	flask==2.2.3
+	flask-sqlalchemy==3.0.3
+	flask-login==0.6.2
+	wtforms==3.0.1
+	wtforms_alchemy==0.18.0
+```
+
 This Docker image allows you to create Flask web applications in Python that run in a single container.
 
 - **auth**: With this `flask.BluePrint` we can create a new user and login
-- **comunity**: With this, every user can public experiments and see other experiments
 - **experiment**: We can create a new experiment, we can add a source, and then we can select how many devices load that code. Next, we can run a testbet: this experiment will be frozen, and we will receive an email when the experiment ends.
 - **source**: After loading the cpp files we can also view or delete them
+- **room**: Container for platforms. You can start a experiment in a room
+- **views**: Contain the main view and the admin-view
+- **platform**: A platform is single device like esp32 that can be contained in a room
+- **queue**: Hier we manage our elementsQ and our QUEUE
 
 #### Test page
 In the test page, we can test our source code: loading it or compiling the main functions. The webapp will compile the code in preparation for the selected device (esp32 or esp8266)

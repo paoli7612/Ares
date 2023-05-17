@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, url_for, redirect
 from flask_login import current_user
 import datetime
-from .models import ElementQ
-from . import db, doc
+from web.models import ElementQ
+from web import db, doc
 
 queue = Blueprint('queue', __name__)
 

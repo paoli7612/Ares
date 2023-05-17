@@ -2,8 +2,8 @@ import os
 from flask import Blueprint, render_template, request, redirect, flash, url_for
 from flask_login import current_user
 from werkzeug.utils import secure_filename
-from .models import Source
-from . import db
+from web.models import Source
+from web import db
 from ares import Ares
 
 source = Blueprint('source', __name__)
