@@ -1,5 +1,7 @@
 from wtforms_alchemy import ModelForm
-from .models import *
+from .models.Platform import Platform
+from .models.Room import Room
+from .models.Experiment import Experiment
 
 class MyModelForm(ModelForm):
     def __init__(self, action, *args, **kwargs):

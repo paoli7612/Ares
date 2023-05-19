@@ -3,3 +3,4 @@ flask-sqlalchemy==3.0.3
 flask-login==0.6.2
 wtforms==3.0.1
 wtforms_alchemy==0.18.0
+requests==2.30.0

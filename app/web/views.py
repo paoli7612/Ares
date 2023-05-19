@@ -3,7 +3,15 @@ from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
 from . import db, doc
 from . import database
-from .models import Experiment, User, Source, Platform, Room, Mount, ElementQ
+from web.models.Source import Source
+from web.models.Mount import Mount
+from web.models.Platform import Platform
+from web.models.User import User
+from web.models.Experiment import Experiment
+from web.models.ElementQ import ElementQ
+from web.models.Room import Room
+from web.models.Source import Source
+from web.models.Mount import Mount
 from ares import Ares
 
 views = Blueprint('views', __name__)

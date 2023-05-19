@@ -1,4 +1,5 @@
 from web.models import *
+
 from web.auth import register_user
 from web import db, doc
 
@@ -77,22 +78,3 @@ def reset():
 
 
     db.session.commit()
-
-
-"""
-register_user('user@user.com', 'user', 'qwerty')
-    db.session.commit()
-  
-  
-    lab7612 = Room.query.get(1)
-    exp = Experiment.query.get(1)
-
-    
-    new(Mount(platform=esp8266, room=lab7612, name='Sensore di umidità'))
-    new(Mount(platform=esp8266, room=lab7612, name='Led rosso'))
-    new(Mount(platform=esp8266, room=lab7612, name='Led verde'))
-    new(Mount(platform=esp32, room=lab7612, name='Calcolatore1'))
-    new(Mount(platform=esp32, room=lab7612, name='Calcolatore2'))
-
-    s = Source(id=1, name='main.cpp', experiment=exp)
-    new(s)"""

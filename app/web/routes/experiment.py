@@ -2,8 +2,12 @@ import  datetime
 from flask import Blueprint, render_template, request, redirect, flash, url_for
 from flask_login import current_user
 from werkzeug.utils import secure_filename
-import sqlalchemy
-from web.models import Experiment, Source, Mount, ExperimentState, ElementQ
+
+from web.models.Experiment import Experiment, ExperimentState
+from web.models.Source import Source
+from web.models.Mount import Mount
+from web.models.ElementQ import ElementQ
+
 from web import db, doc
 from web.forms import ExperimentForm
 from ares import Ares
@@ -89,7 +93,6 @@ def savePlatforms(id):
     for s in experiment.sources:
         s.mounts[:] = list()
         db.session.add(s)
-    db.session.commit()
     
     # set files in mounts as the user want
     ready = False
@@ -103,8 +106,7 @@ def savePlatforms(id):
                 db.session.add(mount)
                 db.session.add(source)
         except: pass
-    for source in experiment.sources:
-        print(source, source.mounts)
+    # for source in experiment.sources: print(source, source.mounts)
     # set state of experiment
     if ready:
         experiment.setReady()
