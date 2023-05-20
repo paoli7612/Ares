@@ -18,7 +18,7 @@ experiment = Blueprint('experiment', __name__)
 def index():
     """ See all my experiments """
     return render_template('pages/index.html',
-                           model = 'Experiment',
+                           model='Experiment',
                            items=Experiment.query.filter_by(user_id=current_user.id),
                            doc=doc.Experiment)
 

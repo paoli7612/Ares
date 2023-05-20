@@ -57,6 +57,7 @@ class Experiment(db.Model):
             return 'w3-theme'
         elif self.state == ExperimentState.UNREADY:
             return 'w3-theme-d4'
+        
     def getDuration(self):
         if self.minutes:
             return str(self.minutes) + " minutes"
@@ -79,3 +80,7 @@ class Experiment(db.Model):
         else:
             return "unready"
    
+    def end(self):
+        print("Eseimento readi", ExperimentState.READY)
+        self.state = ExperimentState.READY
+        db.session.add(self)

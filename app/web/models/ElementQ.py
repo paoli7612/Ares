@@ -44,6 +44,6 @@ class ElementQ(db.Model):
     def end(self):
         """ Set now end of experiment """
         self.end_time = datetime.datetime.utcnow()
+        self.experiment.end()
         db.session.add(self)
-        db.session.commit()
     

@@ -26,8 +26,10 @@ def next():
         e['status'] = 'wait'   
     return jsonify(e)
 
-@engine.route('/finish')
+@engine.route('/finish/<int:id>')
 def end(id):
     e = ElementQ.query.get(id)
     e.end()
+    print("COMMIT")
+    db.session.commit()
     return jsonify('ottimo lavoro')
