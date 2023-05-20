@@ -1,4 +1,6 @@
 from web import db
+from ares import Ares
+
 from . import sourceMount, tr
 
 class Source(db.Model):
@@ -16,3 +18,9 @@ class Source(db.Model):
             mounts.append(str(m.name) + " " + str(m.room) + " " + str(self.experiment))
         return tr(self.name, self.experiment.user, self.experiment, mounts)
     
+    def content(self):
+        """
+            Ritorna il contenuto del file sorgente
+        """
+        path = Ares.Source.path(self.id)
+        return Ares.read(path)

@@ -5,15 +5,29 @@ from web import db, doc
 engine = Blueprint('engine', __name__)
 
 @engine.route('/next')
-def index():
+def next():
     element = ElementQ.query.filter_by(start_time=None).order_by('enqueue_time').first()
     e = dict()
-    if element:    
+    if element:
+        # costruisco il json da dare all'engine
+        e['status'] = 'experiment'   
         e['email'] = element.experiment.user.email
         e['mounts'] = list()
+        e['minutes'] = element.experiment.minutes
         for source in element.experiment.sources:
             s = dict()
             s['name'] = source.name
-            s['content'] = 'contenuto'
+            s['content'] = source.content()
             e['mounts'].append(s)
+
+        # L'esperimento è cominciato ora
+        element.start()
+    else:
+        e['status'] = 'wait'   
     return jsonify(e)
+
+@engine.route('/finish')
+def end(id):
+    e = ElementQ.query.get(id)
+    e.end()
+    return jsonify('ottimo lavoro')

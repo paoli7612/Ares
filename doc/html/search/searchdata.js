@@ -1,21 +1,24 @@
 var indexSectionsWithContent =
 {
-  0: "adefilmprstu",
+  0: "acdefilmprstu",
   1: "adefilmprstu",
-  2: "r"
+  2: "ces",
+  3: "r"
 };
 
 var indexSectionNames =
 {
   0: "all",
   1: "classes",
-  2: "pages"
+  2: "functions",
+  3: "pages"
 };
 
 var indexSectionLabels =
 {
   0: "All",
   1: "Classes",
-  2: "Pages"
+  2: "Functions",
+  3: "Pages"
 };
 

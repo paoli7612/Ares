@@ -4,21 +4,5 @@ digraph "Graphical Class Hierarchy"
   edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
   node [fontname="Helvetica",fontsize="10",shape=record];
   rankdir="LR";
-  Node24 [label="db.Model",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
-  Node24 -> Node0 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node0 [label="web.models.ElementQ",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classweb_1_1models_1_1ElementQ.html",tooltip=" "];
-  Node24 -> Node26 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node26 [label="web.models.Experiment",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classweb_1_1models_1_1Experiment.html",tooltip=" "];
-  Node24 -> Node27 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node27 [label="web.models.Mount",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classweb_1_1models_1_1Mount.html",tooltip=" "];
-  Node24 -> Node28 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node28 [label="web.models.Platform",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classweb_1_1models_1_1Platform.html",tooltip=" "];
-  Node24 -> Node29 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node29 [label="web.models.Room",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classweb_1_1models_1_1Room.html",tooltip=" "];
-  Node24 -> Node30 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node30 [label="web.models.Source",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classweb_1_1models_1_1Source.html",tooltip=" "];
-  Node24 -> Node31 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node31 [label="web.models.User",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classweb_1_1models_1_1User.html",tooltip=" "];
-  Node46 [label="UserMixin",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
-  Node46 -> Node31 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node0 [label="web.forms.ExperimentForm.Meta",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dba/classweb_1_1forms_1_1ExperimentForm_1_1Meta.html",tooltip=" "];
 }

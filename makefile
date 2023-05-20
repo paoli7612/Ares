@@ -1,3 +1,7 @@
+runWeb:
+	python3 app/runWeb.py
+runEngine:
+	python3 app/runEngine.py
 
 buildApp:
 	sudo docker build -t ares ./app

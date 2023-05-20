@@ -7,11 +7,9 @@
 {% block content %}
 
 {{ cBack() }}
-{{ cLink(icon='trash', url=url_for('experiment.deleteSource', id=source.id)) }}
+{{ cLink(label='Delete', icon='trash', url=url_for('experiment.deleteSource', id=source.id)) }}
 {{ pHeader(source.name) }}
 
-<pre>
-    {{ text }}
-</pre>
+<pre class="w3-padding w3-border w3-round w3-margin w3-bottombar w3-topbar w3-card">{{ text }}</pre>
 
 {% endblock %}

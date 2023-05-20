@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
+
 from flask_login import login_user, login_required, logout_user, current_user
 from .models.User import User, UserStatus
 from . import db, doc
@@ -7,13 +8,17 @@ from . import db, doc
 auth = Blueprint('auth', __name__)
 
 def register_user(email, username, password, status=UserStatus.USER):
-    user = User(email=email, username=username, password=generate_password_hash(password, method='sha256'), status=status)
+    user = User(email=email, username=username, password=generate_password_hash(password, method='scrypt'), status=status)
     db.session.add(user)
     db.session.commit()
     return user
 
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
+    """
+        Signup new user and login
+        Errors if email exist or if password1!=password2
+    """
     if request.method == 'POST':
         data = request.form
         # if exist a user this email
@@ -23,15 +28,12 @@ def signup():
 
         # if password1 and password 2 are not equal
         if  data['password1'] != data['password2']:
-            flash('control password wrong', category='red')
+            flash(doc.Auth.Signup.password_different, category='red')
             return redirect(url_for('auth.signup'))
 
-        # register user
         user = register_user(data['email'], data['username'], data['password1'])
-        # login user
         login_user(user, remember=True)
-
-        flash('Account created', category='green')
+        flash(doc.Auth.Signup.account_created, category='green')
         return redirect(url_for('auth.account'))
     return render_template('auth/signup.html')
 

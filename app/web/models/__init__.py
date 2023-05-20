@@ -3,7 +3,7 @@ from flask import flash
 from web import db
 
 def existImg(img, folder):
-    if os.path.exists("web/static/%s/%s" %(folder, img)):
+    if os.path.exists("app/web/static/%s/%s" %(folder, img)):
         return img
     else:
         flash("image (static/%s/%s) not found. Rplaced my (none.png)" %(folder, img), category='yellow')

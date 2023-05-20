@@ -1,23 +1,18 @@
 from flask import Blueprint, render_template, request, redirect, flash, url_for
-from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
-from . import db, doc
-from . import database
-from web.models.Source import Source
-from web.models.Mount import Mount
-from web.models.Platform import Platform
-from web.models.User import User
-from web.models.Experiment import Experiment
-from web.models.ElementQ import ElementQ
-from web.models.Room import Room
-from web.models.Source import Source
-from web.models.Mount import Mount
+from werkzeug.utils import secure_filename
+
+from web import db, doc
+from web import database
+from web.models import Source, Mount, Platform, User, Experiment, ElementQ, Room, Source, Mount
+
 from ares import Ares
 
 views = Blueprint('views', __name__)
 
 @views.route('/reset')
 def reset():
+    """ Reset data from database """
     database.empty()
     return redirect(url_for('views.welcome'))
 
