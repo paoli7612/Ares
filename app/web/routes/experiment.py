@@ -93,19 +93,18 @@ def savePlatforms(id):
     for s in experiment.sources:
         s.mounts[:] = list()
         db.session.add(s)
+        db.session.commit()
     
     # set files in mounts as the user want
     ready = False
     for mount_id, source_id in request.form.items():
-        try:
-            mount = Mount.query.get(int(mount_id))
-            if source_id:
-                source = Source.query.get(int(source_id))
-                source.mounts.append(mount)
-                ready = True
-                db.session.add(mount)
-                db.session.add(source)
-        except: pass
+        mount = Mount.query.get(int(mount_id))
+        if source_id:
+            source = Source.query.get(int(source_id))
+            source.mounts.append(mount)
+            ready = True
+            db.session.add(mount)
+            db.session.add(source)
     # for source in experiment.sources: print(source, source.mounts)
     # set state of experiment
     if ready:

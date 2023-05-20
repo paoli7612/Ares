@@ -11,6 +11,8 @@ def next():
     if element:
         # costruisco il json da dare all'engine
         e['status'] = 'experiment'   
+        e['experiment_id'] = element.experiment.id
+        e['elementQ_id'] = element.id
         e['email'] = element.experiment.user.email
         e['mounts'] = list()
         e['minutes'] = element.experiment.minutes
@@ -28,6 +30,7 @@ def next():
 
 @engine.route('/finish/<int:id>')
 def end(id):
+    print(id, type(id))
     e = ElementQ.query.get(id)
     e.end()
     print("COMMIT")
