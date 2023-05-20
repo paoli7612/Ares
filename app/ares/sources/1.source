@@ -1,23 +1,30 @@
-#include <iostream>
+#include <WiFi.h>
+#include <ESPmDNS.h>
+#include <WiFiUdp.h>
+#include <ArduinoOTA.h>
 
-#include "tree.h"
-
-using namespace std;
-
-int main(int argc, char const *argv[])
-{
-    tree_t tree = new_node(1, "IO");
-    tree->left = new_node(2, "MAMMA");
-    tree->left->left = new_node(3, "NONNA MATERNA");
-    tree->left->right = new_node(3, "NONNO MATERNAO");
-    tree->right = new_node(2, "PAPA");
-    tree->right->left = new_node(3, "NONNA PATERNA");
-    tree->right->right = new_node(3, "NONNO PATERNO");
-
-    tree_t newTree = new_node(0, "FIGLIO");
-    newTree->right = tree;
-    newTree->left = new_node(1, "MOGLIE");
-    print(newTree);
-
-    return 0;
+void setup() {
+  WiFi.mode(WIFI_STA);
+    WiFi.begin("FASTWEB7612", "modena7612");
+  ArduinoOTA.begin();
 }
+
+void loop() {
+  ArduinoOTA.handle();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
