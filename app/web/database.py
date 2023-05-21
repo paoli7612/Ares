@@ -3,28 +3,34 @@ from web.models import *
 from web.auth import register_user
 from web import db, doc
 
+def register_platform(name, img, description)
+    db.session.add(Platform(name=name,img=img,test=True,description=description))
+
 def empty():
-    Source.mounts = list()
-    Mount.sources = list()
-    Platform.query.delete()
-    User.query.delete()
-    Experiment.query.delete()
-    ElementQ.query.delete()
-    Room.query.delete()
-    Source.query.delete()
-    Mount.query.delete()
+    """
+    Empty function to reset the database by dropping and recreating all tables, and populating with initial data.
+
+    This function performs the following steps:
+    1. Drops all tables in the database.
+    2. Recreates all tables based on the defined models.
+    3. Registers two users: 'admin@root.com' with admin privileges and 'user@root.com' with regular user privileges.
+    4. Registers two platforms: 'Esp8266' and 'Esp32'.
+    5. Commits the changes to the database.
+
+    This function is useful for resetting the database to its initial state with predefined data.
+
+    Note: Make sure to configure the database connection before executing this function.
+
+    Usage:
+        empty()
+
+    """
+    db.drop_all()
+    db.create_all()
     register_user('admin@root.com', 'admin', 'qwerty', status=UserStatus.ADMIN)
-    register_user('user@root.com', 'admin', 'qwerty', status=UserStatus.USER)
-    db.session.add(Platform(name='esp8266',
-                img='esp8266.png',
-                test=True,
-                description='The ESP8266 is a low-cost Wi-Fi microchip, with built-in TCP/IP networking software, and microcontroller capability, produced by Espressif'
-        ))
-    db.session.add(Platform(name='esp32',
-                img='esp32.png',
-                test=True,
-                description='ESP32 is a series of low-cost, low-power system on a chip microcontrollers with integrated Wi-Fi and dual-mode Bluetooth'
-        ))
+    register_user('user@root.com', 'user', 'qwerty', status=UserStatus.USER)
+    register_platform('Esp8266', 'esp8266.png', '...')
+    register_platform('Esp32', 'esp32.png', '...')
     db.session.commit()
 
 def reset():
