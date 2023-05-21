@@ -12,7 +12,22 @@ views = Blueprint('views', __name__)
 
 @views.route('/reset')
 def reset():
-    """ Reset data from database """
+    """
+    Endpoint to reset the database and redirect to the welcome page.
+
+    This endpoint performs the following steps:
+    1. Calls the `empty()` function from the `database` module to reset the database by dropping and recreating all tables,
+       and populating with initial data.
+    2. Redirects to the 'welcome' page.
+
+    This endpoint is useful for triggering a database reset operation and returning the user to the welcome page or any other desired destination.
+
+    Note: Make sure to import and configure the `database` module before using this endpoint.
+
+    Returns:
+        A redirect response to the 'welcome' page.
+
+    """
     database.empty()
     return redirect(url_for('views.welcome'))
 

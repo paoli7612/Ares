@@ -1,3 +1,4 @@
 app/instance/ares.db
 ares_env
 doc/html/*
+*.pyc
