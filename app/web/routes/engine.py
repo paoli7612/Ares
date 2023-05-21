@@ -14,14 +14,17 @@ def next():
         e['experiment_id'] = element.experiment.id
         e['elementQ_id'] = element.id
         e['email'] = element.experiment.user.email
-        e['mounts'] = list()
+        e['sources'] = list()
         e['minutes'] = element.experiment.minutes
         for source in element.experiment.sources:
             s = dict()
+            s['mounts'] = list()
+            for mount in source.mounts:
+                s['mounts'].append(mount.name)
+            s['id'] = source.id
             s['name'] = source.name
             s['content'] = source.content()
-            e['mounts'].append(s)
-
+            e['sources'].append(s)
         # L'esperimento è cominciato ora
         element.start()
     else:

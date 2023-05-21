@@ -1,4 +1,4 @@
-import time, requests, logging
+import time, requests, logging, os, subprocess
 from engine import config
 
 logging.basicConfig(level=logging.DEBUG, format='%(levelname)s: %(message)s')
@@ -25,7 +25,23 @@ class Engine:
                 self.wait(response)
 
     def experiment(self, response):
-        logging.info(response)
+        logging.info("start experiment")
+        for source in response['sources']:
+            logging.info("Load source")
+
+            # source['content'] sul main.cpp
+            path = os.path.dirname(os.path.abspath(__file__))
+            project = os.path.join(path, 'camera-mia')
+            src = os.path.join(project, 'src')
+            main = os.path.join(src, 'main.cpp')
+            with open(main, 'w') as f:
+                f.write(source['content'])
+
+            # platformio run -e source['mount_name']           
+            os.chdir(project)
+            for mount_name in source['mounts']:
+                subprocess.run('platformio run -e ' + mount_name, shell=True)
+            
         time.sleep(2)
         self.finish(response)
 
@@ -38,12 +54,6 @@ class Engine:
     def wait(self, response):
         logging.debug("Nessun esperimento in coda. Aspetto 2 secondi")
         time.sleep(2)
-
-
-
-
-
-
 
 a = """
     def __init__(self):

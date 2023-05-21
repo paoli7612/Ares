@@ -36,7 +36,7 @@
     {{ section('rooms', rooms, ['name', 'description', 'img', 'platforms']) }}
     {{ section('experiments', experiments, ['name', 'description', 'minutes', 'user', 'room', 'state']) }}
     {{ section('sources', sources, ['path', 'user', 'experiment', 'mounts']) }}
-    {{ section('mounts', mounts, ['platform', 'room', 'name', 'sources']) }}
+    {{ section('mounts', mounts, ['platform', 'room name', 'name', 'ip', 'sources']) }}
     {{ section('queue', elementsQ, ['experiment', 'enqueue', 'start', 'end']) }}
 
 {% endblock %}

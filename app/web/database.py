@@ -41,31 +41,36 @@ def reset():
         platform=esp8266,
         room=cameraMia,
         description="Primo dispositivo con un led collegato al pin 6",
-        name='192.168.1.227'
+        ip='192.168.1.227',
+        name='Led1'
     ))
     db.session.add(Mount(
         platform=esp8266,
         room=cameraMia,
         description="Secondo dispositivo con un led collegato al pin 6",
-        name='192.168.1.214'
+        ip='192.168.1.214',
+        name='Led2'
     ))
     db.session.add(Mount(
         platform=esp8266,
         room=cameraMia,
         description="Secondo dispositivo senza led esterni collegati",
-        name='192.168.1.200'
+        ip='192.168.1.200',
+        name='LedEsterno'
     ))
     db.session.add(Mount(
         platform=esp32,
         room=cameraMia,
         description="Platform con servomotore collegato al pin 4",
-        name='192.168.1.179'
+        ip='192.168.1.179',
+        name='Servomotore'
     ))
     db.session.add(Mount(
         platform=esp32,
         room=cameraMia,
         description="Secondo esp32 senza nulla esterno collegato",
-        name='192.168.1.176'
+        ip='192.168.1.176',
+        name='Nulla'
     ))
 
     db.session.add(Experiment(

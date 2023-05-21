@@ -105,6 +105,7 @@ def mountEdit(id):
     print(id, request.form)
     mount = Mount.query.get(id)
     mount.name = request.form.get('name')
+    mount.ip = request.form.get('ip')
     mount.description = request.form.get('description')
     db.session.add(mount)
     db.session.commit()

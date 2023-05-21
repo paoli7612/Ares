@@ -1,5 +1,6 @@
 from web import db
 from . import existImg, tr
+
 class Room(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), unique=True)
@@ -7,7 +8,6 @@ class Room(db.Model):
     img = db.Column(db.String(128), default='none.png')
     experiments = db.relationship('Experiment', backref='room', cascade="all,delete",)
     mounts = db.relationship('Mount', backref='room', cascade="all,delete")
-    
     
     def __init__(self, *args, **kwargs):
         db.Model.__init__(self, *args, **kwargs)
