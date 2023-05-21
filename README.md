@@ -69,4 +69,42 @@ This project is licensed under the MIT License.
 ## Contact
 If you have any questions or need further assistance, feel free to contact us at <a href="mailto:280873@studenti.unimore.it">280873</a>
 
-Happy coding!
+
+# camera-mia
+First room already created
+```ini
+[env:Led1]
+    platform = espressif8266
+    board = esp12e
+    framework = arduino
+    upload_protocol = espota
+    upload_port = 192.168.1.227
+
+[env:Led2]
+    platform = espressif8266
+    board = esp12e
+    framework = arduino
+    upload_protocol = espota
+    upload_port = 192.168.1.214
+
+[env:LedEsterno]
+    platform = espressif8266
+    board = esp12e
+    framework = arduino
+    upload_protocol = espota
+    upload_port = 192.168.1.200
+
+[env:Servomotore]
+    platform = espressif32
+    board = featheresp32
+    framework = arduino
+    upload_protocol = espota
+    upload_port = 192.168.1.179
+
+[env:Nulla]
+    platform = espressif32
+    board = featheresp32
+    framework = arduino
+    upload_protocol = espota
+    upload_port = 192.168.1.176
+```
