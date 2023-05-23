@@ -3,7 +3,7 @@ from web.models import *
 from web.auth import register_user
 from web import db, doc
 
-def register_platform(name, img, description)
+def register_platform(name, img, description):
     db.session.add(Platform(name=name,img=img,test=True,description=description))
 
 def empty():
