@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <title>Pallette</title>
+</head>
+<body>
+    <table class="w3-block">
+        <tr class="w3-red"><td style="width: 300px">&#160;</td><td class="w3-large w3-center">f44336</td></tr>
+        <tr class="w3-yellow"><td style="width: 300px">&#160;</td><td class="w3-large w3-center">ffeb3b</td></tr>
+        <tr class="w3-green"><td style="width: 300px">&#160;</td><td class="w3-large w3-center">4CAF50</td></tr>
+        <tr class="w3-blue"><td style="width: 300px">&#160;</td><td class="w3-large w3-center">2196F3</td></tr>
+        <tr class="w3-orange"><td style="width: 300px">&#160;</td><td class="w3-large w3-center">ff9800</td></tr>
+        <tr class="w3-purple"><td style="width: 300px">&#160;</td><td class="w3-large w3-center">9c27b0</td></tr>
+    </table>
+
+    <script>
+        const elements = document.querySelectorAll('tr');
+        elements.forEach((element) => {
+            for (let i = 0; i < element.style.length; i++) {
+                console.log(element.style[i]);
+            }
+        });
+    </script>
+    
+</body>
+</html>
