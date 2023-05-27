@@ -35,49 +35,28 @@ def empty():
 
 def reset():
     empty()
-    cameraMia = Room(id=1,
-                img='camera-mia.png',
-                name='Camera mia',
-                description='Un pugno di ESP 8266 e 32'
+    roomTest = Room(id=1,
+                img='test.png',
+                name='Room test',
+                description='Primo test di una room'
             )
-    db.session.add(cameraMia)
+    db.session.add(roomTest)
     esp8266 = Platform.query.get(1)
     esp32 = Platform.query.get(2)
-    db.session.add(Mount(
-        platform=esp8266,
-        room=cameraMia,
-        description="Primo dispositivo con un led collegato al pin 6",
-        ip='192.168.1.227',
-        name='Led1'
-    ))
-    db.session.add(Mount(
-        platform=esp8266,
-        room=cameraMia,
-        description="Secondo dispositivo con un led collegato al pin 6",
-        ip='192.168.1.214',
-        name='Led2'
-    ))
-    db.session.add(Mount(
-        platform=esp8266,
-        room=cameraMia,
-        description="Secondo dispositivo senza led esterni collegati",
-        ip='192.168.1.200',
-        name='LedEsterno'
-    ))
-    db.session.add(Mount(
-        platform=esp32,
-        room=cameraMia,
-        description="Platform con servomotore collegato al pin 4",
-        ip='192.168.1.179',
-        name='Servomotore'
-    ))
-    db.session.add(Mount(
-        platform=esp32,
-        room=cameraMia,
-        description="Secondo esp32 senza nulla esterno collegato",
-        ip='192.168.1.176',
-        name='Nulla'
-    ))
+
+    mounts = {
+        'esp8266': ['192.168.1.179', '192.168.1.176', '192.168.1.197'],
+        'esp32': ['192.168.1.227', '192.168.1.214', '192.168.1.200']
+    }
+
+    for esp, mm in mounts.items():
+        if esp == 'esp8266':
+            for i,ip in enumerate(mm):
+                db.session.add(Mount(platform=esp8266, room=roomTest, ip=ip, name=esp+"-"+str(i+1)))
+        elif esp == 'esp32':
+            for i,ip in enumerate(mm):
+                db.session.add(Mount(platform=esp32, room=roomTest, ip=ip, name=esp+"-"+str(i+1)))
+
 
     db.session.add(Experiment(
         name = 'Il mio primo esperimento ',

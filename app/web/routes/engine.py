@@ -39,3 +39,8 @@ def end(id):
     print("COMMIT")
     db.session.commit()
     return jsonify('ottimo lavoro')
+
+@engine.route('/status/<int:id>')
+def status(id):
+    e = ElementQ.query.get(id)
+    return jsonify(str(e.__dict__))

@@ -1,10 +1,16 @@
 import time, requests, logging, os, subprocess
-from engine import config
+from engine import config, email
 
-logging.basicConfig(level=logging.DEBUG, format='%(levelname)s: %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 class Engine:
-    def __init__(self):
+    def __init__(self, name):
+        self.name = name
+        self.path = os.path.dirname(os.path.abspath(__file__))
+        self.project = os.path.join(self.path, self.name)
+        self.src = os.path.join(self.project, 'src')
+        self.log = os.path.join(self.project, 'log')
+        self.main = os.path.join(self.src, 'main.cpp')
         self.loop()
 
     def get_next(self):
@@ -25,84 +31,36 @@ class Engine:
                 self.wait(response)
 
     def experiment(self, response):
-        logging.info("start experiment")
+        logging.info('Start experiment [%s]' %str(response['experiment_id']))
+        os.chdir(self.project)
+        try:
+            import shutil
+            shutil.rmtree(self.log)
+            os.mkdir(self.log)
+        except: pass
         for source in response['sources']:
-            logging.info("Load source")
-
-            # source['content'] sul main.cpp
-            path = os.path.dirname(os.path.abspath(__file__))
-            project = os.path.join(path, 'camera-mia')
-            src = os.path.join(project, 'src')
-            main = os.path.join(src, 'main.cpp')
-            with open(main, 'w') as f:
+            # main.cpp = source['content']
+            with open(self.main, 'w') as f:
                 f.write(source['content'])
 
-            # platformio run -e source['mount_name']           
-            os.chdir(project)
+            # platformio run -e source['mount_name'] --target upload     
             for mount_name in source['mounts']:
-                subprocess.run('platformio run -e ' + mount_name, shell=True)
+                attempts = 4
+                while attempts and not os.path.exists(os.path.join('log', mount_name)):
+                    subprocess.run('platformio run -e %s -t upload && echo ok > log/%s.txt' %(mount_name, mount_name), shell=True)
+                    attempts -= 1
             
-        time.sleep(2)
+        
+        time.sleep(response['minutes'] * 60)
+        email.send_confirm(response['email'])
         self.finish(response)
 
     def finish(self, response):
-        logging.info('__FINISH__')
+        logging.info('Finish experiment [%s]' %str(response['experiment_id']))
         experiment_id = response['experiment_id']
-        print(self.get_finish(experiment_id))
-        time.sleep(1)
+        self.get_finish(experiment_id)
 
     def wait(self, response):
-        logging.debug("Nessun esperimento in coda. Aspetto 2 secondi")
+        logging.debug("I'm waiting")
         time.sleep(2)
 
-a = """
-    def __init__(self):
-        self.run()
-
-    def experiment(self, e):
-        logging.info('Inizio esperimento. experiment_id: %d' %(e['experiment_id']))
-        minutes = e['minutes']
-        for m in minutes:
-            print("Sto eseguendo", e['name'])
-            time.sleep(m)
-        time.sleep(minutes)
-        self.finish(e)
-
-    def start(self):
-        response = requests.get(config.next()).json()
-        if response['status'] == 'experiment':
-            self.experiment(response)
-        elif response['status'] == 'wait':
-            print("Nessun esperimento da runnare. riprovo tra poco")
-            time.sleep(5)
-
-    def finish(self, e):
-        logging.info('Inizio esperimento. experiment_id: %d' %(e['experiment_id']))
-        requests.get(config.finish(e['experiment_id'])).json()
-
-    def run(self):
-        e = None
-        while True:
-            s = input("1) next\n2)finish\n3)exit")
-            if s == '1':
-                e = self.start()
-            elif s == '2':
-                e = {'experiment_id': 2}
-                self.finish(e)
-            else:
-                break
-
-        self.running = True
-        while self.running == True:
-            try:
-                response = requests.get(config.next()).json()
-                if response['status'] == 'experiment':
-                    self.experiment(response)
-                elif response['status'] == 'wait':
-                    print("Nessun esperimento da runnare. riprovo tra poco")
-                    time.sleep(5)
-                raise Exception('campo \'status\' non valido')
-            except Exception as e:
-                logging.error(e)
-                time.sleep(2)
-"""
