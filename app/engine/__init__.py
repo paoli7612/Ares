@@ -11,6 +11,8 @@ class Engine:
         self.src = os.path.join(self.project, 'src')
         self.log = os.path.join(self.project, 'log')
         self.main = os.path.join(self.src, 'main.cpp')
+
+        os.chdir(self.project)
         self.loop()
 
     def get_next(self):
@@ -32,12 +34,13 @@ class Engine:
 
     def experiment(self, response):
         logging.info('Start experiment [%s]' %str(response['experiment_id']))
-        os.chdir(self.project)
+        
         try:
             import shutil
             shutil.rmtree(self.log)
             os.mkdir(self.log)
         except: pass
+        
         for source in response['sources']:
             # main.cpp = source['content']
             with open(self.main, 'w') as f:
