@@ -70,7 +70,10 @@ This project is licensed under the MIT License.
 If you have any questions or need further assistance, feel free to contact us at <a href="mailto:280873@studenti.unimore.it">280873</a>
 
 
-# camera-mia
+# Config
+In this folder there is a project of Platformio to config a platform via USB
+
+# test Toom
 First room already created
 ```ini
 [env:Led1]
