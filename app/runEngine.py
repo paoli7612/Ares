@@ -1,4 +1,4 @@
 from engine import Engine
 
 if __name__ == '__main__':
-    Engine('phone', 3)
+    Engine('test', 1)
