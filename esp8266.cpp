@@ -4,8 +4,8 @@
 
 void setup()
 {
-    pinMode(13, OUTPUT);
-    digitalWrite(13, LOW);
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, HIGH);
 
     Serial.begin(9600);
 
@@ -21,12 +21,12 @@ void loop()
     ArduinoOTA.handle();
     if (WiFi.status() == WL_CONNECTED)
     {
-        digitalWrite(13, HIGH); 
+        digitalWrite(LED_BUILTIN, LOW); 
         Serial.println(WiFi.localIP());
     }
     else
     {
-        digitalWrite(13, LOW); 
+        digitalWrite(LED_BUILTIN, HIGH); 
     }
-    delay(2000);
+    delay(1000);
 }

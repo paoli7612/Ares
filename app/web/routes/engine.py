@@ -1,12 +1,17 @@
 from flask import Blueprint, render_template, url_for, redirect, jsonify
-from web.models import ElementQ
+from web.models import ElementQ, Room, Experiment, ExperimentState
 from web import db, doc
 
 engine = Blueprint('engine', __name__)
 
-@engine.route('/next')
-def next():
-    element = ElementQ.query.filter_by(start_time=None).order_by('enqueue_time').first()
+@engine.route('/next/<int:id_room>')
+def next(id_room):
+    room = Room.query.get(id_room)
+    element = ElementQ.query \
+        .filter_by(start_time=None) \
+        .order_by('enqueue_time') \
+        .filter(ElementQ.experiment.has(room=room)) \
+        .first()
     e = dict()
     if element:
         # costruisco il json da dare all'engine

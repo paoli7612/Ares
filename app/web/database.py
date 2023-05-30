@@ -35,20 +35,22 @@ def empty():
 
 def reset():
     empty()
+    
+   
+    esp8266 = Platform.query.get(1)
+    esp32 = Platform.query.get(2)
+
+    # TEST
     roomTest = Room(id=1,
                 img='test.png',
                 name='Room test',
                 description='Primo test di una room'
             )
     db.session.add(roomTest)
-    esp8266 = Platform.query.get(1)
-    esp32 = Platform.query.get(2)
-
     mounts = {
         'esp8266': ['192.168.1.179', '192.168.1.176', '192.168.1.197'],
         'esp32': ['192.168.1.227', '192.168.1.214', '192.168.1.200']
     }
-
     for esp, mm in mounts.items():
         if esp == 'esp8266':
             for i,ip in enumerate(mm):
@@ -56,6 +58,28 @@ def reset():
         elif esp == 'esp32':
             for i,ip in enumerate(mm):
                 db.session.add(Mount(platform=esp32, room=roomTest, ip=ip, name=esp+"-"+str(i+1)))
+
+
+    # PHONE
+    roomPhone = Room(id=2,
+                img='phone.png',
+                name='Room phone',
+                description='Room degli ESP collegati al mio iphone'
+            )
+    db.session.add(roomPhone)
+    mounts = {
+        'esp32': ['172.20.10.9', '172.20.10.10', '172.20.10.11'],
+        'esp8266': ['172.20.10.12', '172.20.10.13']
+    }
+
+    for esp, mm in mounts.items():
+        if esp == 'esp8266':
+            for i,ip in enumerate(mm):
+                db.session.add(Mount(platform=esp8266, room=roomPhone, ip=ip, name=esp+"-"+str(i+1)))
+        elif esp == 'esp32':
+            for i,ip in enumerate(mm):
+                db.session.add(Mount(platform=esp32, room=roomPhone, ip=ip, name=esp+"-"+str(i+1)))
+
 
 
     db.session.add(Experiment(

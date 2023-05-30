@@ -22,7 +22,7 @@ sourceMount = db.Table('source_mount',
 )
 
 from .ElementQ import ElementQ
-from .Experiment import Experiment
+from .Experiment import Experiment, ExperimentState
 from .Mount import Mount
 from .Platform import Platform
 from .Room import Room

@@ -4,19 +4,20 @@ from engine import config, email
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 class Engine:
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, room, id):
+        self.room = room
+        self.id_room = id
         self.path = os.path.dirname(os.path.abspath(__file__))
-        self.project = os.path.join(self.path, self.name)
-        self.src = os.path.join(self.project, 'src')
-        self.log = os.path.join(self.project, 'log')
-        self.main = os.path.join(self.src, 'main.cpp')
+        self.path_project = os.path.join(self.path, self.room)
+        self.path_src = os.path.join(self.path_project, 'src')
+        self.path_log = os.path.join(self.path_project, 'log')
+        self.path_main = os.path.join(self.path_src, 'main.cpp')
 
-        os.chdir(self.project)
+        os.chdir(self.path_project)
         self.loop()
 
     def get_next(self):
-        r = requests.get(config.next())
+        r = requests.get(config.next(self.id_room))
         return r.json()
     
     def get_finish(self, id):
@@ -34,16 +35,15 @@ class Engine:
 
     def experiment(self, response):
         logging.info('Start experiment [%s]' %str(response['experiment_id']))
-        
         try:
             import shutil
-            shutil.rmtree(self.log)
-            os.mkdir(self.log)
+            shutil.rmtree(self.path_log)
+            os.mkdir(self.path_log)
         except: pass
         
         for source in response['sources']:
             # main.cpp = source['content']
-            with open(self.main, 'w') as f:
+            with open(self.path_main, 'w') as f:
                 f.write(source['content'])
 
             # platformio run -e source['mount_name'] --target upload     
