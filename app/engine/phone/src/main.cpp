@@ -1,19 +1,21 @@
 #include <Arduino.h>
 #include <ArduinoOTA.h>
 #include <WiFiUdp.h>
+#include <HTTPClient.h>
+
 
 void setup()
 {
     pinMode(13, OUTPUT);
-    digitalWrite(13, LOW);
 
     Serial.begin(9600);
-
     WiFi.begin("Tomaoliphone", "nonlasoio");
     while (WiFi.status() != WL_CONNECTED)
     {
         delay(1000);
+        Serial.println("Connecting to WiFi...");
     }
+    ArduinoOTA.begin();  // Inizia la gestione OTA
 }
 
 void loop()
@@ -21,12 +23,15 @@ void loop()
     ArduinoOTA.handle();
     if (WiFi.status() == WL_CONNECTED)
     {
-        digitalWrite(13, HIGH); 
         Serial.println(WiFi.localIP());
+        digitalWrite(13, HIGH);
+        delay(400);
+        digitalWrite(13, LOW);
     }
     else
     {
-        digitalWrite(13, LOW); 
+        digitalWrite(13, LOW);
+        Serial.println("Not connected to WiFi");
     }
-    delay(2000);
+    delay(800);
 }

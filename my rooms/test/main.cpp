@@ -9,7 +9,7 @@ void setup()
     pinMode(13, OUTPUT);
 
     Serial.begin(9600);
-    WiFi.begin("Tomaoliphone", "nonlasoio");
+    WiFi.begin("FASTWEB7612", "modena7612");
     while (WiFi.status() != WL_CONNECTED)
     {
         delay(1000);
