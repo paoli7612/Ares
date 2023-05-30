@@ -1,3 +1,8 @@
+/*
+  Rimane collegato usando l'OTA alla rete del mio iphone.
+  lampeggia il led 13 se connesso alla rete
+*/
+
 #include <Arduino.h>
 #include <ArduinoOTA.h>
 #include <WiFiUdp.h>
@@ -14,6 +19,8 @@ void setup()
     {
         delay(1000);
     }
+    ArduinoOTA.begin();
+
 }
 
 void loop()
@@ -21,12 +28,14 @@ void loop()
     ArduinoOTA.handle();
     if (WiFi.status() == WL_CONNECTED)
     {
-        digitalWrite(13, HIGH); 
+        digitalWrite(13, HIGH);
+        delay(1000);
+        digitalWrite(13, LOW);
         Serial.println(WiFi.localIP());
     }
     else
     {
         digitalWrite(13, LOW); 
     }
-    delay(2000);
+    delay(1000);
 }
