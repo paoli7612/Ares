@@ -1,12 +1,31 @@
 from web.models import *
+from web.routes.auth import register_user
+from web import db
+import json
 
-from web.auth import register_user
-from web import db, doc
+config_path = 'data/config.json'
 
-def register_platform(name, img, description):
-    db.session.add(Platform(name=name,img=img,test=True,description=description))
+def register_platform(name, description, img):
+    p = Platform(name=name,img=img,description=description)
+    db.session.add(p)
 
-def empty():
+def register_room(name, description, img):
+    r = Room(name=name, img=img, description=description)
+    db.session.add(r)
+    return r
+
+def register_mount(name, ip, platform, room):
+    print("____________________")
+    print(type(name))
+    print(type(ip))
+    print(type(platform))
+    print(type(room))
+    print("____________________")
+    
+    m = Mount(name=name, ip=ip, platform=platform, room=room)
+    db.session.add(m)
+
+def reset():
     """
     Empty function to reset the database by dropping and recreating all tables, and populating with initial data.
 
@@ -27,68 +46,36 @@ def empty():
     """
     db.drop_all()
     db.create_all()
-    register_user('admin@root.com', 'admin', 'qwerty', status=UserStatus.ADMIN)
-    register_user('user@root.com', 'user', 'qwerty', status=UserStatus.USER)
-    register_platform('Esp8266', 'esp8266.png', '...')
-    register_platform('Esp32', 'esp32.png', '...')
-    db.session.commit()
 
-def reset():
-    empty()
-    
-   
-    esp8266 = Platform.query.get(1)
-    esp32 = Platform.query.get(2)
+    config = json.load(open(config_path))
+    for platform in config['platforms']:
+        name = platform['name']
+        description = platform['description']
+        img = platform['image']
 
-    # TEST
-    roomTest = Room(id=1,
-                img='test.png',
-                name='Room test',
-                description='Primo test di una room'
-            )
-    db.session.add(roomTest)
-    mounts = {
-        'esp8266': ['192.168.1.179', '192.168.1.176', '192.168.1.197'],
-        'esp32': ['192.168.1.227', '192.168.1.214', '192.168.1.200']
-    }
-    for esp, mm in mounts.items():
-        if esp == 'esp8266':
-            for i,ip in enumerate(mm):
-                db.session.add(Mount(platform=esp8266, room=roomTest, ip=ip, name=esp+"-"+str(i+1)))
-        elif esp == 'esp32':
-            for i,ip in enumerate(mm):
-                db.session.add(Mount(platform=esp32, room=roomTest, ip=ip, name=esp+"-"+str(i+1)))
+        register_platform(name, description, img)
 
+    for user in config['users']:
+        email = user['email']
+        username = user['username']
+        password = user['password']
+        status = UserStatus.ADMIN if user.get('status') == 'admin' else UserStatus.USER
 
-    # PHONE
-    roomPhone = Room(id=2,
-                img='phone.png',
-                name='Room phone',
-                description='Room degli ESP collegati al mio iphone'
-            )
-    db.session.add(roomPhone)
-    mounts = {
-        'esp32': ['172.20.10.9', '172.20.10.10', '172.20.10.11'],
-        'esp8266': ['172.20.10.12', '172.20.10.13']
-    }
+        register_user(email, username, password, status)
 
-    for esp, mm in mounts.items():
-        if esp == 'esp8266':
-            for i,ip in enumerate(mm):
-                db.session.add(Mount(platform=esp8266, room=roomPhone, ip=ip, name=esp+"-"+str(i+1)))
-        elif esp == 'esp32':
-            for i,ip in enumerate(mm):
-                db.session.add(Mount(platform=esp32, room=roomPhone, ip=ip, name=esp+"-"+str(i+1)))
+    for room in config['rooms']:
+        room_name = room['name']
+        description = room['description']
+        img = room['image']
 
-
-
-    db.session.add(Experiment(
-        name = 'Il mio primo esperimento ',
-        description = 'Questo è il primo esperimento nella room di camera mia',
-        minutes = 10,
-        user = User.query.get(1),
-        room = Room.query.get(1)
-    ))
+        r = register_room(room_name, description, img)
+        #db.session.commit()
+        for mount in room['mounts']:
+            name = mount['name']
+            ip = mount['ip']
+            platform = mount['platform']
+            platform = Platform.query.filter_by(name=platform).first()
+            register_mount(name, ip, platform, r)
 
 
     db.session.commit()

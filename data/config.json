@@ -1,0 +1,52 @@
+{
+    "users": [
+        {
+            "email": "admin@root.com",
+            "username": "admin",
+            "password": "qwerty",
+            "status": "admin"
+        },
+        {
+            "email": "user@root.com",
+            "username": "user",
+            "password": "qwerty"
+        }
+    ],
+    "platforms": [
+        {
+            "name": "esp8266",
+            "description": "The ESP8266 is a low-cost Wi-Fi microchip, with built-in TCP/IP networking software, and microcontroller capability, produced by Espressif Systems in Shanghai, China. The chip was popularized in the English-speaking maker community in August 2014 via the ESP-01 module, made by a third-party manufacturer Ai-Thinker.",
+            "image": "esp8266.png"
+        },
+        {
+            "name": "esp32",
+            "description": "The ESP8266 is a low-cost Wi-Fi microchip, with built-in TCP/IP networking software, and microcontroller capability, produced by Espressif Systems in Shanghai, China. The chip was popularized in the English-speaking maker community in August 2014 via the ESP-01 module, made by a third-party manufacturer Ai-Thinker.",
+            "image": "esp32.png"
+        }
+    ],
+    "rooms": [
+        {
+            "name": "Test",
+            "description": "Questa room è stata la prima prova. Usa la rete locale del mio appartamento a Modena. Sono presenti 3 dispositivi ESP32 e 3 ESP8266",
+            "image": "test.png", 
+            "mounts": [
+                {"platform": "esp32", "name": "esp32-1", "ip": "192.168.1.227"},
+                {"platform": "esp32", "name": "esp32-2", "ip": "192.168.1.214"},
+                {"platform": "esp32", "name": "esp32-3", "ip": "192.168.1.200"},
+                {"platform": "esp8266", "name": "esp8266-1", "ip": "192.168.1.179"},
+                {"platform": "esp8266", "name": "esp8266-2", "ip": "192.168.1.176"},
+                {"platform": "esp8266", "name": "esp8266-3", "ip": "192.168.1.197"}
+            ]
+        },
+        {
+            "name": "Phone",
+            "description": "Questa room è stata la prima prova mobile (tramite la rete hostata dal mio smartphone). Usa unicamente 3 dispositivi esp32 con 3 led collegati (rosso, blu e verde)",
+            "image": "phone.png", 
+            "mounts": [
+                {"platform": "esp32", "name": "esp32-1", "ip": "172.20.10.9"},
+                {"platform": "esp32", "name": "esp32-2", "ip": "172.20.10.10"},
+                {"platform": "esp32", "name": "esp32-3", "ip": "172.20.10.11"}
+            ]
+        }
+    ]
+}

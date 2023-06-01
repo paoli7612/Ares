@@ -5,3 +5,4 @@ wtforms==3.0.1
 wtforms_alchemy==0.18.0
 requests==2.30.0
 platformio==6.1.7
+termcolor

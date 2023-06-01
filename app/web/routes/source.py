@@ -4,7 +4,6 @@ from werkzeug.utils import secure_filename
 
 from web.models import Source
 from web import db
-from ares import Ares
 
 source = Blueprint('source', __name__)
 

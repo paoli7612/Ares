@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, url_for, redirect, jsonify
-from web.models import ElementQ, Room, Experiment, ExperimentState
-from web import db, doc
+from flask import Blueprint, jsonify
+from web.models import ElementQ, Room
+from web import db
 
 engine = Blueprint('engine', __name__)
 
@@ -38,12 +38,9 @@ def next(id_room):
 
 @engine.route('/finish/<int:id>')
 def end(id):
-    print(id, type(id))
-    e = ElementQ.query.get(id)
-    e.end()
-    print("COMMIT")
+    ElementQ.query.get(id).end()
     db.session.commit()
-    return jsonify('ottimo lavoro')
+    return jsonify('ottimo lavoro engine')
 
 @engine.route('/status/<int:id>')
 def status(id):

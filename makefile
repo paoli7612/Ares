@@ -24,3 +24,7 @@ stop:
 	sudo docker rm $$(sudo docker ps -a -q)
 deleteAll:
 	sudo docker system prune -a
+
+clean:
+	find . -name "*.pyc" -delete
+	find . -type d -name "__pycache__" -exec rm -r {} +

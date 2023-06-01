@@ -1,1 +1,0 @@
-Qui verranno caricati i file quando dovranno essere compilati per creare il firmware dei dispositivi

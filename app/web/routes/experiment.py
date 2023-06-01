@@ -10,7 +10,7 @@ from web.models.ElementQ import ElementQ
 
 from web import db, doc
 from web.forms import ExperimentForm
-from ares import Ares
+from web.ares import Ares
 
 experiment = Blueprint('experiment', __name__)
 

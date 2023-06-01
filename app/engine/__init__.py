@@ -55,7 +55,7 @@ class Engine:
             
         
         time.sleep(response['minutes'] * 60)
-        email.send_confirm(response['email'])
+        email.send_confirm(response['email'], response['experiment_id'])
         self.finish(response)
 
     def finish(self, response):
