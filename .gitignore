@@ -1,3 +1,4 @@
 ares_env
 doc/html/*
 *.pyc
+.vscode
