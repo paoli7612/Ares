@@ -14,8 +14,10 @@
     {% endif %}
     <style>
         body {
-            background-color: rgb(64, 61, 88);
-            background-image: url("{{ url_for('static', filename='images/wpaper.png') }}");
+            /* background-color: #eae6df; */
+            background-image: url("{{ url_for('static', filename='images/tpaper.png') }}");
+            background-size: 1200px;
+            background-repeat: repeat;
         }
         footer {
             position: fixed;
@@ -27,7 +29,7 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 
-<body>
+<body class="w3-theme-l4">
 
     {% include 'layout/navbar.html' %}
     <div class="w3-panel">
